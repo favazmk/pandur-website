@@ -43,23 +43,44 @@ export function SplitLine({
 }) {
   const words = useMemo(() => text.split(" "), [text]);
 
+  /*
+   * The viewport observer MUST sit on this unclipped container, never on the
+   * translated word itself.
+   *
+   * IntersectionObserver clips a target against its ancestors' overflow. A word
+   * parked at y:115% inside an overflow-hidden mask has an empty intersection
+   * rect, so `whileInView` on the word never fires — and because it never fires
+   * the word never moves, so it stays clipped forever. That deadlock leaves
+   * headlines permanently invisible. Observing the parent and driving the words
+   * through variants avoids it entirely.
+   */
   return (
     <Tag className={className}>
       <span className="sr-only">{text}</span>
-      <span aria-hidden className="inline-block">
+      <motion.span
+        aria-hidden
+        className="inline-block"
+        initial="hidden"
+        whileInView="shown"
+        viewport={once ? VIEWPORT_ONCE : VIEWPORT}
+        variants={{
+          hidden: {},
+          shown: { transition: { staggerChildren: stagger, delayChildren: delay } },
+        }}
+      >
         {words.map((w, i) => (
           <span key={i} className="line-mask inline-block align-bottom">
             <motion.span
               className={`inline-block ${
                 accentLast && i === words.length - 1 ? "text-red" : ""
               }`}
-              initial={{ y: "115%", rotate: 4 }}
-              whileInView={{ y: "0%", rotate: 0 }}
-              viewport={once ? VIEWPORT_ONCE : VIEWPORT}
-              transition={{
-                duration: 0.95,
-                ease: ease.expo,
-                delay: delay + i * stagger,
+              variants={{
+                hidden: { y: "115%", rotate: 4 },
+                shown: {
+                  y: "0%",
+                  rotate: 0,
+                  transition: { duration: 0.95, ease: ease.expo },
+                },
               }}
             >
               {w}
@@ -67,7 +88,7 @@ export function SplitLine({
             </motion.span>
           </span>
         ))}
-      </span>
+      </motion.span>
     </Tag>
   );
 }
@@ -94,18 +115,31 @@ export function SplitChars({
   return (
     <span className={className}>
       <span className="sr-only">{text}</span>
-      <span aria-hidden className="inline-flex flex-wrap">
+      {/* Same rule as SplitLine: observe the unclipped container, never the
+          masked characters, or they deadlock permanently out of view. */}
+      <motion.span
+        aria-hidden
+        className="inline-flex flex-wrap"
+        initial="hidden"
+        whileInView="shown"
+        viewport={once ? VIEWPORT_ONCE : VIEWPORT}
+        variants={{
+          hidden: {},
+          shown: { transition: { staggerChildren: stagger, delayChildren: delay } },
+        }}
+      >
         {chars.map((c, i) => (
           <span key={i} className="line-mask inline-block">
             <motion.span
               className="inline-block"
-              initial={{ y: "110%", rotateX: -75, opacity: 0 }}
-              whileInView={{ y: "0%", rotateX: 0, opacity: 1 }}
-              viewport={once ? VIEWPORT_ONCE : VIEWPORT}
-              transition={{
-                duration: 0.8,
-                ease: ease.expo,
-                delay: delay + i * stagger,
+              variants={{
+                hidden: { y: "110%", rotateX: -75, opacity: 0 },
+                shown: {
+                  y: "0%",
+                  rotateX: 0,
+                  opacity: 1,
+                  transition: { duration: 0.8, ease: ease.expo },
+                },
               }}
               style={{ transformOrigin: "50% 100%" }}
             >
@@ -113,7 +147,7 @@ export function SplitChars({
             </motion.span>
           </span>
         ))}
-      </span>
+      </motion.span>
     </span>
   );
 }

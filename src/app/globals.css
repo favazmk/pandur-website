@@ -210,9 +210,13 @@ html.lenis body {
    Fluid type — every heading scales, none are fixed
    ============================================================ */
 
+/*
+ * 8vw, not 11vw. At 11vw a 1536px viewport renders this at 169px, which makes
+ * "Our Signature Taste." wider than the screen and wraps it one word per line.
+ */
 @utility text-hero {
-  font-size: clamp(3rem, 11vw, 11.5rem);
-  line-height: 0.86;
+  font-size: clamp(2.6rem, 8vw, 8.5rem);
+  line-height: 0.9;
   letter-spacing: -0.03em;
 }
 @utility text-display {

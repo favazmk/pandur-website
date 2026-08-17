@@ -102,6 +102,16 @@ export default function CookieStage({
           <Canvas
             dpr={[1, 2]}
             camera={camera}
+            /*
+             * Verified in a real browser: without this the canvas stays at its
+             * 300x150 intrinsic size and the 3D never appears. Mounting on idle
+             * means the container is already laid out, and react-use-measure's
+             * debounced ResizeObserver misses that first measurement — nothing
+             * resizes afterwards, so no observation ever fires to correct it.
+             * offsetSize reads offsetWidth/offsetHeight directly; debounce 0
+             * stops the initial read being swallowed.
+             */
+            resize={{ debounce: 0, scroll: false, offsetSize: true }}
             gl={{
               antialias: true,
               alpha: true,
