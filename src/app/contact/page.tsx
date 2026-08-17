@@ -15,7 +15,6 @@ export default function ContactPage() {
   return (
     <main id="main">
       <PageHero
-        eyebrow="Contact"
         title="Let's grow together."
         lead="Retail, distribution, food service or something else — tell us what you need."
       />

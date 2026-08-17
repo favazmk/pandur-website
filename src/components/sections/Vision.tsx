@@ -38,12 +38,12 @@ export default function Vision() {
         className="pointer-events-none absolute left-1/2 top-1/2 h-[26vmin] w-[26vmin] -translate-x-1/2 -translate-y-1/2 rounded-full border border-cream/25"
       />
 
+      {/* one line, nothing else — the emptiness is the point */}
       <div className="relative z-10 px-6 text-center">
-        <p className="text-eyebrow text-cream/50">The Ambition</p>
         <SplitLine
           as="h2"
           text="Next: the GCC."
-          className="text-display mt-6 font-display font-black text-cream"
+          className="text-display font-display font-black text-cream"
         />
       </div>
     </section>

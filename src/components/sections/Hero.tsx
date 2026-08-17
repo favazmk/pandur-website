@@ -49,7 +49,7 @@ export default function Hero() {
 
       {/* --- headline --- */}
       <motion.div
-        className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 pt-28 text-center md:pt-32"
+        className="relative z-content flex flex-1 flex-col items-center justify-center px-6 pt-28 text-center md:pt-32"
         style={
           reduced
             ? undefined

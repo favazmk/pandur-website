@@ -38,13 +38,10 @@ export default function Markets() {
     <section className="relative overflow-hidden bg-cream-deep py-24 md:py-36">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-2xl">
-          <Reveal>
-            <p className="text-eyebrow text-red-deep">Market Presence</p>
-          </Reveal>
           <SplitLine
             as="h2"
             text="Eight markets. One taste."
-            className="text-display mt-5 font-display font-black text-ink"
+            className="text-display font-display font-black text-ink"
           />
         </div>
 
@@ -61,7 +58,7 @@ export default function Markets() {
               <motion.path
                 d={OUTLINE}
                 fill="none"
-                stroke="#221F1F"
+                className="stroke-ink"
                 strokeOpacity={0.28}
                 strokeWidth={0.6}
                 strokeLinejoin="round"
@@ -74,7 +71,7 @@ export default function Markets() {
               <motion.path
                 d={routePath}
                 fill="none"
-                stroke="#EC2126"
+                className="stroke-red"
                 strokeOpacity={0.5}
                 strokeWidth={0.45}
                 strokeDasharray="1.6 1.4"
@@ -98,13 +95,13 @@ export default function Markets() {
                   }}
                   style={{ transformOrigin: `${m.x}px ${m.y}px` }}
                 >
-                  <circle cx={m.x} cy={m.y} r={1.5} fill="#EC2126" />
+                  <circle cx={m.x} cy={m.y} r={1.5} className="fill-red" />
                   <circle
                     cx={m.x}
                     cy={m.y}
                     r={3}
                     fill="none"
-                    stroke="#EC2126"
+                    className="stroke-red"
                     strokeOpacity={0.35}
                     strokeWidth={0.35}
                   />

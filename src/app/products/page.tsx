@@ -26,7 +26,6 @@ export default function ProductsPage() {
   return (
     <main id="main">
       <PageHero
-        eyebrow="Our Products"
         title="Four cookies. Four reasons to come back."
         lead="Developed to deliver a delicious, memorable taste — with a six-month shelf life built for modern retail."
         cookie
@@ -49,10 +48,7 @@ export default function ProductsPage() {
                     </HoverDrift>
                   </Tilt3D>
                 </ClipReveal>
-                <p className="text-eyebrow mt-6" style={{ color: f.accent }}>
-                  {`0${i + 1}`}
-                </p>
-                <h2 className="text-title mt-2 font-display font-black text-ink">
+                <h2 className="text-title mt-6 font-display font-black text-ink">
                   <HoverRule on="group">{f.name}</HoverRule>
                 </h2>
                 <p className="text-lead mt-2 text-ash">{f.note}</p>

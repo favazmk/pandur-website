@@ -35,6 +35,23 @@
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
 
+  /*
+   * Semantic stacking order. Replaces an ad-hoc ladder of 0/10/20/30/50/55/
+   * 60/70/-10 scattered across components — those numbers carried no meaning,
+   * so every new layer was a guess. Order here IS the contract; use the names.
+   */
+  --z-index-under: -1; /* spotlight wash behind card content */
+  --z-index-scene: 1; /* in-section 3D canvas */
+  --z-index-content: 10; /* section copy sitting over a scene */
+  --z-index-raised: 20; /* panels that ride over the section before them */
+  --z-index-rail: 30; /* in-section progress rails, badges */
+  --z-index-menu: 40; /* mobile nav overlay */
+  --z-index-header: 50; /* sticky site header */
+  --z-index-progress: 55; /* page scroll rail, above header */
+  --z-index-grain: 60; /* film grain over everything */
+  --z-index-cursor: 70; /* custom cursor */
+  --z-index-preloader: 100; /* blocks the page on first load */
+
   /* --- easing, lifted from the benchmark then extended --- */
   --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-expo: cubic-bezier(0.23, 1, 0.32, 1);

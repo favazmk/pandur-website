@@ -54,7 +54,6 @@ export default function FranchisesPage() {
   return (
     <main id="main">
       <PageHero
-        eyebrow="Franchises & Partnerships"
         title="Grow with Pandur."
         lead="We're building long-term relationships with distributors, retailers and food-service partners across the UAE and GCC."
         cookie
@@ -89,13 +88,10 @@ export default function FranchisesPage() {
       <section className="relative bg-cream-deep px-6 py-24 md:py-32">
         <div className="mx-auto max-w-6xl">
           <div className="max-w-2xl">
-            <Reveal>
-              <p className="text-eyebrow text-red-deep">What Pandur brings</p>
-            </Reveal>
             <SplitLine
               as="h2"
               text="A product built to travel."
-              className="text-display mt-5 font-display font-black text-ink"
+              className="text-display font-display font-black text-ink"
             />
           </div>
 
@@ -150,13 +146,10 @@ export default function FranchisesPage() {
       <section id="enquire" className="relative bg-cream-deep px-6 py-24 md:py-32">
         <div className="mx-auto max-w-5xl">
           <div className="text-center">
-            <Reveal>
-              <p className="text-eyebrow text-red-deep">Start the conversation</p>
-            </Reveal>
             <SplitLine
               as="h2"
               text="Let's grow together."
-              className="text-display mt-5 font-display font-black text-ink"
+              className="text-display font-display font-black text-ink"
             />
           </div>
 

@@ -47,7 +47,7 @@ export default function SiteHeader() {
   return (
     <>
       <motion.header
-        className="fixed inset-x-0 top-0 z-50"
+        className="fixed inset-x-0 top-0 z-header"
         animate={{ y: hidden && !reduced ? "-110%" : "0%" }}
         transition={{ duration: 0.45, ease: ease.expo }}
       >
@@ -78,7 +78,7 @@ export default function SiteHeader() {
                       href={l.href}
                       data-cursor="grow"
                       aria-current={isActive(l.href) ? "page" : undefined}
-                      className="group relative block px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] text-ink transition-opacity hover:opacity-100"
+                      className="group relative flex min-h-11 items-center px-4 text-xs font-extrabold uppercase tracking-[0.16em] text-ink transition-opacity hover:opacity-100"
                     >
                       {/* 70%, not 60%: ink at 60% over cream is 4.22:1, under the AA floor for this size. */}
                       <span
@@ -107,7 +107,7 @@ export default function SiteHeader() {
                 data-cursor="grow"
                 className="hidden overflow-hidden rounded-full bg-ink text-xs font-extrabold uppercase tracking-[0.16em] text-cream lg:block"
               >
-                <HoverSweep fill="bg-red-deep" className="px-6 py-2.5">
+                <HoverSweep fill="bg-red-deep" className="min-h-11 px-6">
                   Get in Touch
                 </HoverSweep>
               </Link>
@@ -143,7 +143,7 @@ export default function SiteHeader() {
         {open && (
           <motion.div
             id="mobile-menu"
-            className="fixed inset-0 z-40 flex flex-col justify-center bg-cream px-8 lg:hidden"
+            className="fixed inset-0 z-menu flex flex-col justify-center bg-cream px-8 lg:hidden"
             initial={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
             animate={{ opacity: 1, clipPath: "inset(0 0 0% 0)" }}
             exit={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}

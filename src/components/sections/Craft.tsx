@@ -1,6 +1,6 @@
 "use client";
 
-import { Reveal, RevealGroup, RevealItem, SplitLine } from "@/components/motion/Text";
+import { RevealGroup, RevealItem, SplitLine } from "@/components/motion/Text";
 import {
   Parallax,
   Tilt3D,
@@ -11,9 +11,9 @@ import ProductSlot from "./ProductSlot";
 import { tiltAt } from "@/lib/motion";
 
 const CLAIMS = [
-  { n: "01", title: "45 years in the oven.", note: "Four decades of bakery craft behind every batch." },
-  { n: "02", title: "Consistent, every batch.", note: "Controlled production, repeatable results." },
-  { n: "03", title: "Built for the shelf.", note: "Six months, without trading away taste." },
+  { title: "45 years in the oven.", note: "Four decades of bakery craft behind every batch." },
+  { title: "Consistent, every batch.", note: "Controlled production, repeatable results." },
+  { title: "Built for the shelf.", note: "Six months, without trading away taste." },
 ];
 
 export default function Craft() {
@@ -22,14 +22,10 @@ export default function Craft() {
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 md:grid-cols-2 md:gap-20">
         {/* left — the claims */}
         <div>
-          <Reveal variant="blur">
-            <p className="text-eyebrow text-red-deep">The Craft</p>
-          </Reveal>
-
           <SplitLine
             as="h2"
             text="Made properly. Then made again."
-            className="text-display mt-5 font-display font-black text-ink"
+            className="text-display font-display font-black text-ink"
           />
 
           <ScrollFillText
@@ -39,15 +35,13 @@ export default function Craft() {
 
           <RevealGroup className="mt-12 space-y-9" stagger={0.12}>
             {CLAIMS.map((c) => (
-              <RevealItem key={c.n} variant="wipe">
-                <div className="flex gap-6 border-t border-ink/12 pt-6">
-                  <span className="text-eyebrow pt-1 text-ash">{c.n}</span>
-                  <div>
-                    <h3 className="text-title font-display font-black text-ink">
-                      {c.title}
-                    </h3>
-                    <p className="text-lead mt-2 text-ash">{c.note}</p>
-                  </div>
+              <RevealItem key={c.title} variant="wipe">
+                {/* no 01/02/03 — these are three claims, not a sequence */}
+                <div className="border-t border-ink/12 pt-6">
+                  <h3 className="text-title font-display font-black text-ink">
+                    {c.title}
+                  </h3>
+                  <p className="text-lead mt-2 text-ash">{c.note}</p>
                 </div>
               </RevealItem>
             ))}

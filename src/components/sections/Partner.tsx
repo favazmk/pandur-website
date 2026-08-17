@@ -9,13 +9,10 @@ export default function Partner() {
     <section id="partner" className="relative overflow-hidden bg-cream py-24 md:py-36">
       <div className="mx-auto max-w-5xl px-6">
         <div className="text-center">
-          <Reveal>
-            <p className="text-eyebrow text-red-deep">Partner With Pandur</p>
-          </Reveal>
           <SplitLine
             as="h2"
             text="Let's grow together."
-            className="text-display mt-5 font-display font-black text-ink"
+            className="text-display font-display font-black text-ink"
           />
           <Reveal delay={0.15}>
             <p className="text-lead mx-auto mt-6 max-w-2xl text-ash">

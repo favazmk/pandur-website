@@ -21,7 +21,6 @@ export default function BlogPage() {
   return (
     <main id="main">
       <PageHero
-        eyebrow="Journal"
         title="Notes from the bakery."
         lead="On product, distribution, and building a UAE bakery brand."
       />

@@ -118,7 +118,19 @@ export function ScrollTilt({
   if (reduced) return <div className={className}>{children}</div>;
 
   return (
-    <div ref={ref} className={className} style={{ perspective }}>
+    /*
+     * overflow-x: clip is load-bearing, not cosmetic. Perspective-projecting a
+     * rotateX plane makes its painted box wider than its layout box (measured:
+     * 398px inside a 390px viewport), and transformed boxes count toward
+     * scrollable overflow — so without this the page gains a few px of
+     * horizontal scroll at every breakpoint. Clipping the sub-pixel overhang is
+     * invisible; the overflow is not.
+     */
+    <div
+      ref={ref}
+      className={className}
+      style={{ perspective, overflowX: "clip" }}
+    >
       <motion.div
         style={{ rotateX: rx, y, opacity, transformStyle: "preserve-3d" }}
       >
@@ -355,7 +367,7 @@ export function ScrollProgress() {
   return (
     <motion.div
       aria-hidden
-      className="fixed inset-x-0 top-0 z-[55] h-[3px] origin-left bg-red-deep"
+      className="fixed inset-x-0 top-0 z-progress h-[3px] origin-left bg-red-deep"
       style={{ scaleX }}
     />
   );

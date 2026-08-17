@@ -62,7 +62,7 @@ export default function Cursor() {
   return (
     <motion.div
       aria-hidden
-      className="pointer-events-none fixed top-0 left-0 z-[70] hidden md:block"
+      className="pointer-events-none fixed top-0 left-0 z-cursor hidden md:block"
       style={{ x: sx, y: sy }}
     >
       <motion.span

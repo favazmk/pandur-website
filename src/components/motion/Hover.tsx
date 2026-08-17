@@ -149,7 +149,7 @@ export function HoverSpotlight({
     >
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 transition-opacity duration-500"
+        className="pointer-events-none absolute inset-0 z-under transition-opacity duration-500"
         style={{
           opacity: "var(--spot)",
           background: `radial-gradient(${size}px circle at var(--mx) var(--my), ${colour}, transparent 70%)`,

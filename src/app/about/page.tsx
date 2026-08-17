@@ -47,7 +47,6 @@ export default function AboutPage() {
   return (
     <main id="main">
       <PageHero
-        eyebrow="About Pandur"
         title="Our Taste. Our Experience. Our Future."
         lead="A signature cookie brand from Royal Quality Bakes LLC, based in Zubara, Khorfakkan."
         cookie
@@ -56,7 +55,9 @@ export default function AboutPage() {
 
       {/* --- story --- */}
       <section className="relative bg-cream px-6 pb-24 md:pb-32">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-14 md:grid-cols-2 md:gap-20">
+        {/* 1fr/1.3fr, not an even split — 50/50 put the prose at 39ch, which
+            reads choppy. This gives the text column a fuller measure. */}
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-14 md:grid-cols-[1fr_1.3fr] md:gap-20">
           <div>
             <SplitLine
               as="h2"
@@ -110,13 +111,10 @@ export default function AboutPage() {
       <section className="relative bg-cream px-6 py-24 md:py-32">
         <div className="mx-auto max-w-6xl">
           <div className="max-w-2xl">
-            <Reveal>
-              <p className="text-eyebrow text-red-deep">Why Pandur</p>
-            </Reveal>
             <SplitLine
               as="h2"
               text="Six reasons to stock us."
-              className="text-display mt-5 font-display font-black text-ink"
+              className="text-display font-display font-black text-ink"
             />
           </div>
 
@@ -152,25 +150,25 @@ export default function AboutPage() {
       <section className="relative bg-ink px-6 py-24 text-cream md:py-32">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-14 md:grid-cols-2 md:gap-20">
           <div>
-            <Reveal>
-              <p className="text-eyebrow text-cream/60">Our Vision</p>
-            </Reveal>
             <SplitLine
               as="h2"
               text="A leading UAE-origin bakery brand."
-              className="text-title mt-5 font-display font-black text-cream"
+              className="text-title font-display font-black text-cream"
             />
+            <Reveal delay={0.1}>
+              <p className="text-lead mt-4 text-cream/70">Our vision.</p>
+            </Reveal>
           </div>
           <div>
-            <Reveal delay={0.1}>
-              <p className="text-eyebrow text-cream/60">Our Mission</p>
-            </Reveal>
             <SplitLine
               as="h2"
               text="Great products. Trust. Growth."
-              className="text-title mt-5 font-display font-black text-dough"
+              className="text-title font-display font-black text-dough"
               delay={0.1}
             />
+            <Reveal delay={0.2}>
+              <p className="text-lead mt-4 text-cream/70">Our mission.</p>
+            </Reveal>
           </div>
         </div>
 

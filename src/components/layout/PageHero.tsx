@@ -24,8 +24,14 @@ const DOODLES = [
  * Shared header for interior pages. Lighter than the home hero, with an
  * optional 3D mark on the more brand-forward pages.
  */
+/*
+ * No kicker above the title.
+ *
+ * A tiny uppercase tracked label over every page heading is AI section grammar,
+ * not voice. The h1 carries the page on its own; where the label held real
+ * information it has been folded into the lead line instead.
+ */
 export default function PageHero({
-  eyebrow,
   title,
   lead,
   children,
@@ -33,7 +39,6 @@ export default function PageHero({
   cookie = false,
   seed = 7,
 }: {
-  eyebrow: string;
   title: string;
   lead?: string;
   children?: ReactNode;
@@ -79,14 +84,10 @@ export default function PageHero({
         className="relative z-10 mx-auto max-w-5xl text-center"
         style={reduced ? undefined : { y, opacity }}
       >
-        <Reveal variant="blur">
-          <p className="text-eyebrow text-red-deep">{eyebrow}</p>
-        </Reveal>
-
         <SplitLine
           as="h1"
           text={title}
-          className="text-display mt-5 font-display font-black text-ink"
+          className="text-display font-display font-black text-ink"
           stagger={0.04}
         />
 

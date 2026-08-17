@@ -66,7 +66,7 @@ export default function HeroScene({
      * cover anything and the text stays selectable underneath.
      */
     <CookieStage
-      className="pointer-events-none absolute inset-0 z-20"
+      className="pointer-events-none absolute inset-0 z-raised"
       camera={{ position: [0, 0.75, 3.05], fov: 38 }}
     >
       <Lights />

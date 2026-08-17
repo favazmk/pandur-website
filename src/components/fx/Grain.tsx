@@ -11,7 +11,7 @@ export default function Grain() {
   return (
     <div
       aria-hidden
-      className="grain-layer pointer-events-none fixed inset-0 z-[60] opacity-[0.16] mix-blend-multiply"
+      className="grain-layer pointer-events-none fixed inset-0 z-grain opacity-[0.16] mix-blend-multiply"
     >
       <svg className="absolute inset-0 h-full w-full">
         <filter id="pandur-grain">

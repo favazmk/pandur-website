@@ -51,7 +51,7 @@ export default function Flavours() {
           />
         </div>
         <div className="mt-14 space-y-14">
-          {FLAVOURS.map((f, i) => (
+          {FLAVOURS.map((f) => (
             <div key={f.id} className="mx-auto max-w-md px-6 text-center">
               <div
                 className="mx-auto flex h-56 w-56 items-center justify-center rounded-full"
@@ -63,10 +63,7 @@ export default function Flavours() {
                   stroke={f.chip}
                 />
               </div>
-              <p className="text-eyebrow mt-6" style={{ color: f.accent }}>
-                {`0${i + 1}`}
-              </p>
-              <h3 className="text-title mt-2 font-display font-black text-ink">
+              <h3 className="text-title mt-6 font-display font-black text-ink">
                 {f.name}
               </h3>
               <p className="text-lead mt-3 text-ash">{f.note}</p>

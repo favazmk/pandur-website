@@ -42,10 +42,12 @@ export default function Footer() {
             <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
               {NAV.map((l) => (
                 <li key={l.href}>
+                  {/* min-h-11 = 44px. The bare label measured 45x15, which
+                      fails WCAG 2.2 AA target size (24x24) outright. */}
                   <Link
                     href={l.href}
                     data-cursor="grow"
-                    className="text-eyebrow text-cream/70 transition-colors hover:text-cream"
+                    className="text-eyebrow inline-flex min-h-11 items-center px-1 text-cream/70 transition-colors hover:text-cream"
                   >
                     <HoverRule colour="bg-cream">{l.label}</HoverRule>
                   </Link>
