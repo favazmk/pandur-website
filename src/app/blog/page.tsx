@@ -1,0 +1,77 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import PageHero from "@/components/layout/PageHero";
+import { Reveal } from "@/components/motion/Text";
+import { CookieDoodle } from "@/components/brand/Marks";
+import { getAllPosts, formatDate } from "@/content/blog";
+import { tiltAt } from "@/lib/motion";
+import { FLAVOURS } from "@/lib/assets";
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description:
+    "Notes from Pandur on product, distribution and building a UAE bakery brand.",
+};
+
+export default function BlogPage() {
+  const posts = getAllPosts();
+
+  return (
+    <main id="main">
+      <PageHero
+        eyebrow="Journal"
+        title="Notes from the bakery."
+        lead="On product, distribution, and building a UAE bakery brand."
+      />
+
+      <section className="relative bg-cream px-6 pb-24 md:pb-32">
+        <ul className="mx-auto grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
+          {posts.map((p, i) => (
+            <Reveal key={p.slug} delay={i * 0.08}>
+              <li className="h-full">
+                <Link
+                  href={`/blog/${p.slug}`}
+                  data-cursor="grow"
+                  className="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-ink/12 bg-white/50 transition-colors hover:border-ink/30"
+                >
+                  <div
+                    className="flex aspect-[16/10] items-center justify-center"
+                    style={{
+                      backgroundColor: FLAVOURS[i % FLAVOURS.length].ground,
+                    }}
+                  >
+                    <CookieDoodle
+                      className={`h-24 w-24 ${tiltAt(i)}`}
+                      strokeWidth={5}
+                      stroke={FLAVOURS[i % FLAVOURS.length].chip}
+                    />
+                  </div>
+
+                  <div className="flex flex-1 flex-col p-8">
+                    <p className="text-eyebrow text-red-deep">{p.category}</p>
+                    <h2 className="mt-4 font-display text-2xl font-black leading-tight text-ink">
+                      {p.title}
+                    </h2>
+                    <p className="mt-3 flex-1 text-ash">{p.excerpt}</p>
+                    <p className="text-eyebrow mt-6 text-ash">
+                      <time dateTime={p.date}>{formatDate(p.date)}</time>
+                      {" · "}
+                      {p.readMinutes} min read
+                    </p>
+                  </div>
+                </Link>
+              </li>
+            </Reveal>
+          ))}
+        </ul>
+
+        <Reveal delay={0.2}>
+          <p className="mx-auto mt-16 max-w-2xl text-center text-sm text-ash">
+            Sample articles, written from the company brief. Replace with
+            client-approved posts before launch.
+          </p>
+        </Reveal>
+      </section>
+    </main>
+  );
+}

@@ -1,0 +1,60 @@
+"use client";
+
+import { Reveal, SplitLine } from "@/components/motion/Text";
+import ProductSlot from "./ProductSlot";
+import { tiltAt } from "@/lib/motion";
+
+const CLAIMS = [
+  { n: "01", title: "45 years in the oven.", note: "Four decades of bakery craft behind every batch." },
+  { n: "02", title: "Consistent, every batch.", note: "Controlled production, repeatable results." },
+  { n: "03", title: "Built for the shelf.", note: "Six months, without trading away taste." },
+];
+
+export default function Craft() {
+  return (
+    <section className="relative overflow-hidden bg-cream py-24 md:py-36">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 md:grid-cols-2 md:gap-20">
+        {/* left — the claims */}
+        <div>
+          <Reveal>
+            <p className="text-eyebrow text-red-deep">The Craft</p>
+          </Reveal>
+
+          <SplitLine
+            as="h2"
+            text="Made properly. Then made again."
+            className="text-display mt-5 font-display font-black text-ink"
+          />
+
+          <ul className="mt-12 space-y-9">
+            {CLAIMS.map((c, i) => (
+              <Reveal key={c.n} delay={0.1 + i * 0.1}>
+                <li className="flex gap-6 border-t border-ink/12 pt-6">
+                  <span className="text-eyebrow pt-1 text-ash">{c.n}</span>
+                  <div>
+                    <h3 className="text-title font-display font-black text-ink">
+                      {c.title}
+                    </h3>
+                    <p className="text-lead mt-2 text-ash">{c.note}</p>
+                  </div>
+                </li>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
+
+        {/* right — reserved for photography */}
+        <Reveal delay={0.15} className="relative">
+          <div className={tiltAt(1)}>
+            <ProductSlot flavour={1} index={0} />
+          </div>
+          <div className="absolute -bottom-10 -left-6 w-1/2 md:-left-12">
+            <div className={tiltAt(2)}>
+              <ProductSlot flavour={3} index={1} />
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}

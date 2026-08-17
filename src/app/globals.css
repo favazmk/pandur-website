@@ -1,26 +1,277 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ============================================================
+   PANDUR — design tokens
+   Brand colours extracted directly from the supplied logo PDF.
+   Do not alter the first four.
+   ============================================================ */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  /* --- extracted, non-negotiable --- */
+  --color-red: #ec2126;
+  --color-ink: #221f1f;
+  --color-black: #020404;
+  --color-white: #ffffff;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /*
+   * Accessible companion to the brand red. #EC2126 measures 4.03:1 on cream and
+   * 3.63:1 on cream-deep — fine for large display type (needs 3:1) but short of
+   * the 4.5:1 AA floor for small text, and white on it is only 4.36:1.
+   * #CE1419 clears AA on every ground we use (5.18 / 4.67 / 5.62) and is close
+   * enough to read as the same red.
+   *   --color-red      -> large display type, fills, graphics
+   *   --color-red-deep -> small text, and the marquee band behind white text
+   */
+  --color-red-deep: #ce1419;
+
+  /* --- proposed extensions --- */
+  --color-cream: #fbf5ec;
+  --color-cream-deep: #f3e9d9;
+  --color-dough: #e8c89a;
+  --color-cocoa: #3a2318;
+  --color-ash: #6e6866;
+
+  /* --- type --- */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  /* --- easing, lifted from the benchmark then extended --- */
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-expo: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-slam: cubic-bezier(0.85, 0, 0.15, 1);
+  --ease-glide: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* --- marquee bands: never two adjacent at the same speed --- */
+  --animate-ticker-40: ticker 40s linear infinite;
+  --animate-ticker-60: ticker 60s linear infinite;
+  --animate-ticker-80: ticker 80s linear infinite;
+  --animate-ticker-40-rev: ticker-rev 40s linear infinite;
+  --animate-ticker-60-rev: ticker-rev 60s linear infinite;
+
+  /* --- desynced idle tilt: coprime-ish durations never re-sync --- */
+  --animate-tilt-4: tilt-4 2.5s ease-in-out infinite;
+  --animate-tilt-6: tilt-6 3s ease-in-out infinite;
+  --animate-tilt-8: tilt-8 3.5s ease-in-out infinite;
+
+  --animate-bob: bob 2.4s ease-in-out infinite;
+  --animate-drift: drift 9s ease-in-out infinite;
+  --animate-grain: grain 0.6s steps(1) infinite;
+
+  @keyframes ticker {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+  @keyframes ticker-rev {
+    from {
+      transform: translate3d(-50%, 0, 0);
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  @keyframes tilt-4 {
+    0%,
+    100% {
+      transform: rotate(-1.6deg) translate3d(0, 0, 0);
+    }
+    50% {
+      transform: rotate(1.6deg) translate3d(0, -5px, 0);
+    }
+  }
+  @keyframes tilt-6 {
+    0%,
+    100% {
+      transform: rotate(1.4deg) translate3d(0, -3px, 0);
+    }
+    50% {
+      transform: rotate(-1.8deg) translate3d(0, 4px, 0);
+    }
+  }
+  @keyframes tilt-8 {
+    0%,
+    100% {
+      transform: rotate(-1deg) translate3d(0, 3px, 0);
+    }
+    50% {
+      transform: rotate(2deg) translate3d(0, -4px, 0);
+    }
+  }
+  @keyframes bob {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, 10px, 0);
+    }
+  }
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    33% {
+      transform: translate3d(14px, -18px, 0) rotate(6deg);
+    }
+    66% {
+      transform: translate3d(-10px, 10px, 0) rotate(-5deg);
+    }
+  }
+  @keyframes grain {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    10% {
+      transform: translate3d(-5%, -5%, 0);
+    }
+    20% {
+      transform: translate3d(-10%, 5%, 0);
+    }
+    30% {
+      transform: translate3d(5%, -10%, 0);
+    }
+    40% {
+      transform: translate3d(-5%, 12%, 0);
+    }
+    50% {
+      transform: translate3d(-10%, 5%, 0);
+    }
+    60% {
+      transform: translate3d(12%, 0, 0);
+    }
+    70% {
+      transform: translate3d(0, 10%, 0);
+    }
+    80% {
+      transform: translate3d(-12%, 0, 0);
+    }
+    90% {
+      transform: translate3d(10%, 5%, 0);
+    }
+    100% {
+      transform: translate3d(2%, 0, 0);
+    }
   }
 }
 
+/* ============================================================
+   Base
+   ============================================================ */
+
+:root {
+  --ground: var(--color-cream);
+  color-scheme: light;
+}
+
+* {
+  min-width: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--ground);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+  transition: background-color 900ms var(--ease-expo);
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+::selection {
+  background: var(--color-red);
+  color: var(--color-white);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-red);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   Fluid type — every heading scales, none are fixed
+   ============================================================ */
+
+@utility text-hero {
+  font-size: clamp(3rem, 11vw, 11.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+}
+@utility text-display {
+  font-size: clamp(2.5rem, 7.5vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: -0.025em;
+}
+@utility text-title {
+  font-size: clamp(1.75rem, 4vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+@utility text-lead {
+  font-size: clamp(1.05rem, 1.6vw, 1.5rem);
+  line-height: 1.4;
+}
+@utility text-eyebrow {
+  font-size: clamp(0.7rem, 0.9vw, 0.82rem);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+@utility text-band {
+  font-size: clamp(2.75rem, 9vw, 9rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* Masked reveal: headline lines sit behind this until released */
+@utility line-mask {
+  overflow: hidden;
+  display: block;
+}
+
+@utility edge-fade {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+}
+
+/* ============================================================
+   Reduced motion — every scrub becomes a static state.
+   No information may live only in motion.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain-layer {
+    display: none;
+  }
 }
