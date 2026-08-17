@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { MARKETS } from "@/lib/assets";
 import { SplitLine, Reveal } from "@/components/motion/Text";
+import { Parallax, Tilt3D } from "@/components/motion/Scroll";
 import { ease } from "@/lib/motion";
 
 /**
@@ -48,7 +49,8 @@ export default function Markets() {
 
         <div className="mt-16 grid grid-cols-1 items-center gap-14 lg:grid-cols-[1.4fr_1fr]">
           {/* --- map --- */}
-          <div className="relative">
+          <Parallax distance={45} className="relative">
+           <Tilt3D max={7} lift={18}>
             <svg
               viewBox="0 0 100 72"
               className="w-full"
@@ -64,7 +66,7 @@ export default function Markets() {
                 strokeLinejoin="round"
                 initial={{ pathLength: 0 }}
                 whileInView={{ pathLength: 1 }}
-                viewport={{ once: true, margin: "-20%" }}
+                viewport={{ once: false, margin: "-20%" }}
                 transition={{ duration: 2, ease: ease.expo }}
               />
 
@@ -78,7 +80,7 @@ export default function Markets() {
                 strokeLinecap="round"
                 initial={{ pathLength: 0 }}
                 whileInView={{ pathLength: 1 }}
-                viewport={{ once: true, margin: "-20%" }}
+                viewport={{ once: false, margin: "-20%" }}
                 transition={{ duration: 2.2, delay: 0.5, ease: ease.expo }}
               />
 
@@ -87,7 +89,7 @@ export default function Markets() {
                   key={m.name}
                   initial={{ scale: 0, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
-                  viewport={{ once: true, margin: "-20%" }}
+                  viewport={{ once: false, margin: "-20%" }}
                   transition={{
                     duration: 0.55,
                     delay: 0.75 + i * 0.09,
@@ -108,7 +110,8 @@ export default function Markets() {
                 </motion.g>
               ))}
             </svg>
-          </div>
+           </Tilt3D>
+          </Parallax>
 
           {/* --- list --- */}
           <ul className="grid grid-cols-2 gap-x-6 gap-y-1">

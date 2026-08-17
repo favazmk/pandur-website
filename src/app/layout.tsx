@@ -6,6 +6,7 @@ import Grain from "@/components/fx/Grain";
 import Cursor from "@/components/fx/Cursor";
 import SiteHeader from "@/components/layout/SiteHeader";
 import Footer from "@/components/sections/Footer";
+import { ScrollProgress } from "@/components/motion/Scroll";
 
 /**
  * Display face. The SOFT and WONK axes are what make Fraunces rhyme with the
@@ -77,6 +78,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <SmoothScroll>
+          <ScrollProgress />
           <SiteHeader />
           {children}
           <Footer />

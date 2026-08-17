@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import PageHero from "@/components/layout/PageHero";
 import EnquiryForm from "@/components/forms/EnquiryForm";
 import MarqueeBand from "@/components/sections/MarqueeBand";
-import { Reveal, SplitLine } from "@/components/motion/Text";
+import { Reveal, RevealGroup, RevealItem, SplitLine } from "@/components/motion/Text";
+import { ScrollTilt, Tilt3D } from "@/components/motion/Scroll";
 import { CookieDoodle } from "@/components/brand/Marks";
 import { tiltAt } from "@/lib/motion";
 
@@ -55,25 +56,32 @@ export default function FranchisesPage() {
         eyebrow="Franchises & Partnerships"
         title="Grow with Pandur."
         lead="We're building long-term relationships with distributors, retailers and food-service partners across the UAE and GCC."
+        cookie
+        seed={23}
       />
 
       {/* --- models --- */}
       <section className="relative bg-cream px-6 pb-24 md:pb-32">
-        <ul className="mx-auto grid max-w-6xl grid-cols-1 gap-8 sm:grid-cols-2">
+        <RevealGroup
+          className="mx-auto grid max-w-6xl grid-cols-1 gap-8 sm:grid-cols-2"
+          stagger={0.1}
+        >
           {MODELS.map((m, i) => (
-            <Reveal key={m.t} delay={i * 0.08}>
-              <li
-                className={`h-full rounded-[2rem] border border-ink/12 bg-white/50 p-9 ${tiltAt(i)}`}
-              >
-                <CookieDoodle className="h-10 w-10 text-red-deep" strokeWidth={5} />
-                <h2 className="text-title mt-6 font-display font-black text-ink">
-                  {m.t}
-                </h2>
-                <p className="text-lead mt-3 text-ash">{m.d}</p>
-              </li>
-            </Reveal>
+            <RevealItem key={m.t} variant="scale">
+              <Tilt3D max={10} lift={22} className="h-full">
+                <div
+                  className={`h-full rounded-[2rem] border border-ink/12 bg-white/50 p-9 ${tiltAt(i)}`}
+                >
+                  <CookieDoodle className="h-10 w-10 text-red-deep" strokeWidth={5} />
+                  <h2 className="text-title mt-6 font-display font-black text-ink">
+                    {m.t}
+                  </h2>
+                  <p className="text-lead mt-3 text-ash">{m.d}</p>
+                </div>
+              </Tilt3D>
+            </RevealItem>
           ))}
-        </ul>
+        </RevealGroup>
       </section>
 
       {/* --- what we bring --- */}
@@ -116,19 +124,24 @@ export default function FranchisesPage() {
             className="text-display font-display font-black text-ink"
           />
 
-          <ol className="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {STEPS.map((s, i) => (
-              <Reveal key={s.n} delay={i * 0.08}>
-                <li className="border-t-2 border-ink pt-6">
-                  <span className="text-eyebrow text-red-deep">{s.n}</span>
-                  <h3 className="mt-3 font-display text-2xl font-black text-ink">
-                    {s.t}
-                  </h3>
-                  <p className="mt-2 text-ash">{s.d}</p>
-                </li>
-              </Reveal>
-            ))}
-          </ol>
+          <ScrollTilt angle={20}>
+            <RevealGroup
+              className="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4"
+              stagger={0.1}
+            >
+              {STEPS.map((s) => (
+                <RevealItem key={s.n} variant="wipe">
+                  <div className="border-t-2 border-ink pt-6">
+                    <span className="text-eyebrow text-red-deep">{s.n}</span>
+                    <h3 className="mt-3 font-display text-2xl font-black text-ink">
+                      {s.t}
+                    </h3>
+                    <p className="mt-2 text-ash">{s.d}</p>
+                  </div>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+          </ScrollTilt>
         </div>
       </section>
 

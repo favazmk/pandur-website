@@ -1,6 +1,7 @@
 "use client";
 
-import { Reveal, SplitLine } from "@/components/motion/Text";
+import { Reveal, RevealGroup, RevealItem, SplitLine } from "@/components/motion/Text";
+import { Parallax, Tilt3D, ClipReveal } from "@/components/motion/Scroll";
 import ProductSlot from "./ProductSlot";
 import { tiltAt } from "@/lib/motion";
 
@@ -16,7 +17,7 @@ export default function Craft() {
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 md:grid-cols-2 md:gap-20">
         {/* left — the claims */}
         <div>
-          <Reveal>
+          <Reveal variant="blur">
             <p className="text-eyebrow text-red-deep">The Craft</p>
           </Reveal>
 
@@ -26,10 +27,10 @@ export default function Craft() {
             className="text-display mt-5 font-display font-black text-ink"
           />
 
-          <ul className="mt-12 space-y-9">
-            {CLAIMS.map((c, i) => (
-              <Reveal key={c.n} delay={0.1 + i * 0.1}>
-                <li className="flex gap-6 border-t border-ink/12 pt-6">
+          <RevealGroup className="mt-12 space-y-9" stagger={0.12}>
+            {CLAIMS.map((c) => (
+              <RevealItem key={c.n} variant="wipe">
+                <div className="flex gap-6 border-t border-ink/12 pt-6">
                   <span className="text-eyebrow pt-1 text-ash">{c.n}</span>
                   <div>
                     <h3 className="text-title font-display font-black text-ink">
@@ -37,23 +38,35 @@ export default function Craft() {
                     </h3>
                     <p className="text-lead mt-2 text-ash">{c.note}</p>
                   </div>
-                </li>
-              </Reveal>
+                </div>
+              </RevealItem>
             ))}
-          </ul>
+          </RevealGroup>
         </div>
 
-        {/* right — reserved for photography */}
-        <Reveal delay={0.15} className="relative">
-          <div className={tiltAt(1)}>
-            <ProductSlot flavour={1} index={0} />
-          </div>
+        {/* right — reserved for photography, on two parallax planes */}
+        <div className="relative">
+          <Parallax distance={60}>
+            <ClipReveal>
+              <Tilt3D max={9} lift={22}>
+                <div className={tiltAt(1)}>
+                  <ProductSlot flavour={1} index={0} />
+                </div>
+              </Tilt3D>
+            </ClipReveal>
+          </Parallax>
+
+          {/* deeper plane — moves further, so the two separate as you scroll */}
           <div className="absolute -bottom-10 -left-6 w-1/2 md:-left-12">
-            <div className={tiltAt(2)}>
-              <ProductSlot flavour={3} index={1} />
-            </div>
+            <Parallax distance={-110}>
+              <Tilt3D max={12} lift={26}>
+                <div className={tiltAt(2)}>
+                  <ProductSlot flavour={3} index={1} />
+                </div>
+              </Tilt3D>
+            </Parallax>
           </div>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { CookieDoodle, Wordmark } from "@/components/brand/Marks";
 import { Reveal } from "@/components/motion/Text";
+import { Parallax, ClipReveal } from "@/components/motion/Scroll";
 import { COMPANY, NAV } from "@/lib/nav";
 
 /** Independent drift per doodle — no two share a delay, so they never sync. */
@@ -29,9 +30,11 @@ export default function Footer() {
       ))}
 
       <div className="relative mx-auto max-w-7xl px-6">
-        <Reveal className="flex justify-center">
-          <Wordmark className="w-full max-w-4xl brightness-0 invert" />
-        </Reveal>
+        <Parallax distance={-40}>
+          <ClipReveal className="flex justify-center">
+            <Wordmark className="w-full max-w-4xl brightness-0 invert" />
+          </ClipReveal>
+        </Parallax>
 
         <Reveal delay={0.1}>
           <nav aria-label="Footer" className="mt-16">

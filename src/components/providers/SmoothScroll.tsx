@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import { MotionConfig } from "motion/react";
 import Lenis from "lenis";
 import { usePrefersReducedMotion } from "@/lib/useMedia";
 
@@ -79,5 +80,12 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     }
   }, [pathname]);
 
-  return <>{children}</>;
+  /*
+   * The prefers-reduced-motion block in globals.css only neutralises CSS
+   * animations — Motion drives its animations in JS and ignores it entirely.
+   * `reducedMotion="user"` makes every motion component on the site respect the
+   * OS setting: transform and layout animations are dropped while opacity still
+   * cross-fades, so content appears without flying around.
+   */
+  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
 }

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/layout/PageHero";
-import { Reveal } from "@/components/motion/Text";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Text";
+import { Tilt3D } from "@/components/motion/Scroll";
 import { CookieDoodle } from "@/components/brand/Marks";
 import { getAllPosts, formatDate } from "@/content/blog";
 import { tiltAt } from "@/lib/motion";
@@ -25,10 +26,13 @@ export default function BlogPage() {
       />
 
       <section className="relative bg-cream px-6 pb-24 md:pb-32">
-        <ul className="mx-auto grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
+        <RevealGroup
+          className="mx-auto grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3"
+          stagger={0.09}
+        >
           {posts.map((p, i) => (
-            <Reveal key={p.slug} delay={i * 0.08}>
-              <li className="h-full">
+            <RevealItem key={p.slug} variant="scale">
+              <Tilt3D max={9} lift={20} className="h-full">
                 <Link
                   href={`/blog/${p.slug}`}
                   data-cursor="grow"
@@ -60,10 +64,10 @@ export default function BlogPage() {
                     </p>
                   </div>
                 </Link>
-              </li>
-            </Reveal>
+              </Tilt3D>
+            </RevealItem>
           ))}
-        </ul>
+        </RevealGroup>
 
         <Reveal delay={0.2}>
           <p className="mx-auto mt-16 max-w-2xl text-center text-sm text-ash">

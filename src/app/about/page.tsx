@@ -3,7 +3,8 @@ import Link from "next/link";
 import PageHero from "@/components/layout/PageHero";
 import StatBand from "@/components/sections/StatBand";
 import MarqueeBand from "@/components/sections/MarqueeBand";
-import { Reveal, SplitLine } from "@/components/motion/Text";
+import { Reveal, RevealGroup, RevealItem, SplitLine } from "@/components/motion/Text";
+import { ScrollTilt, Tilt3D } from "@/components/motion/Scroll";
 import { CookieDoodle } from "@/components/brand/Marks";
 import { tiltAt } from "@/lib/motion";
 
@@ -48,6 +49,8 @@ export default function AboutPage() {
         eyebrow="About Pandur"
         title="Our Taste. Our Experience. Our Future."
         lead="A signature cookie brand from Royal Quality Bakes LLC, based in Zubara, Khorfakkan."
+        cookie
+        seed={7}
       />
 
       {/* --- story --- */}
@@ -88,18 +91,20 @@ export default function AboutPage() {
             className="text-display font-display font-black text-ink"
           />
 
-          <ol className="mt-14 space-y-0">
-            {JOURNEY.map((j, i) => (
-              <Reveal key={j.k} delay={i * 0.08}>
-                <li className="grid grid-cols-1 gap-3 border-t border-ink/12 py-8 md:grid-cols-[1fr_2fr] md:gap-10">
-                  <h3 className="text-eyebrow pt-1 text-red-deep">{j.k}</h3>
-                  <p className="text-title font-display font-black text-ink">
-                    {j.v}
-                  </p>
-                </li>
-              </Reveal>
-            ))}
-          </ol>
+          <ScrollTilt angle={18}>
+            <RevealGroup className="mt-14 space-y-0" stagger={0.1}>
+              {JOURNEY.map((j) => (
+                <RevealItem key={j.k} variant="wipe">
+                  <div className="grid grid-cols-1 gap-3 border-t border-ink/12 py-8 md:grid-cols-[1fr_2fr] md:gap-10">
+                    <h3 className="text-eyebrow pt-1 text-red-deep">{j.k}</h3>
+                    <p className="text-title font-display font-black text-ink">
+                      {j.v}
+                    </p>
+                  </div>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+          </ScrollTilt>
         </div>
       </section>
 
@@ -117,22 +122,29 @@ export default function AboutPage() {
             />
           </div>
 
-          <ul className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <RevealGroup
+            className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
+            stagger={0.07}
+          >
             {STRENGTHS.map((s, i) => (
-              <Reveal key={s.t} delay={i * 0.06}>
-                <li className={`h-full rounded-[2rem] border border-ink/12 bg-white/50 p-8 ${tiltAt(i)}`}>
-                  <CookieDoodle
-                    className="h-10 w-10 text-red-deep"
-                    strokeWidth={5}
-                  />
-                  <h3 className="mt-6 font-display text-2xl font-black text-ink">
-                    {s.t}
-                  </h3>
-                  <p className="mt-2 text-ash">{s.d}</p>
-                </li>
-              </Reveal>
+              <RevealItem key={s.t} variant="scale">
+                <Tilt3D max={10} lift={20} className="h-full">
+                  <div
+                    className={`h-full rounded-[2rem] border border-ink/12 bg-white/50 p-8 ${tiltAt(i)}`}
+                  >
+                    <CookieDoodle
+                      className="h-10 w-10 text-red-deep"
+                      strokeWidth={5}
+                    />
+                    <h3 className="mt-6 font-display text-2xl font-black text-ink">
+                      {s.t}
+                    </h3>
+                    <p className="mt-2 text-ash">{s.d}</p>
+                  </div>
+                </Tilt3D>
+              </RevealItem>
             ))}
-          </ul>
+          </RevealGroup>
         </div>
       </section>
 

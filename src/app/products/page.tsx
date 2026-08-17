@@ -3,7 +3,8 @@ import Link from "next/link";
 import PageHero from "@/components/layout/PageHero";
 import ProductSlot from "@/components/sections/ProductSlot";
 import Bite from "@/components/sections/Bite";
-import { Reveal, SplitLine } from "@/components/motion/Text";
+import { Reveal, RevealGroup, RevealItem, SplitLine } from "@/components/motion/Text";
+import { ScrollTilt, Tilt3D, ClipReveal } from "@/components/motion/Scroll";
 import { FLAVOURS } from "@/lib/assets";
 import { tiltAt } from "@/lib/motion";
 
@@ -27,28 +28,35 @@ export default function ProductsPage() {
         eyebrow="Our Products"
         title="Four cookies. Four reasons to come back."
         lead="Developed to deliver a delicious, memorable taste — with a six-month shelf life built for modern retail."
+        cookie
+        seed={11}
       />
 
       {/* --- flavour grid --- */}
       <section className="relative bg-cream px-6 pb-24 md:pb-32">
-        <ul className="mx-auto grid max-w-6xl grid-cols-1 gap-x-10 gap-y-16 sm:grid-cols-2">
+        <RevealGroup
+          className="mx-auto grid max-w-6xl grid-cols-1 gap-x-10 gap-y-16 sm:grid-cols-2"
+          stagger={0.1}
+        >
           {FLAVOURS.map((f, i) => (
-            <Reveal key={f.id} delay={i * 0.08}>
-              <li>
-                <div className={tiltAt(i)}>
-                  <ProductSlot flavour={f.id} index={i} />
-                </div>
-                <p className="text-eyebrow mt-6" style={{ color: f.accent }}>
-                  {`0${i + 1}`}
-                </p>
-                <h2 className="text-title mt-2 font-display font-black text-ink">
-                  {f.name}
-                </h2>
-                <p className="text-lead mt-2 text-ash">{f.note}</p>
-              </li>
-            </Reveal>
+            <RevealItem key={f.id} variant="scale">
+              <ClipReveal>
+                <Tilt3D max={11} lift={24}>
+                  <div className={tiltAt(i)}>
+                    <ProductSlot flavour={f.id} index={i} />
+                  </div>
+                </Tilt3D>
+              </ClipReveal>
+              <p className="text-eyebrow mt-6" style={{ color: f.accent }}>
+                {`0${i + 1}`}
+              </p>
+              <h2 className="text-title mt-2 font-display font-black text-ink">
+                {f.name}
+              </h2>
+              <p className="text-lead mt-2 text-ash">{f.note}</p>
+            </RevealItem>
           ))}
-        </ul>
+        </RevealGroup>
 
         <Reveal delay={0.2}>
           <p className="mx-auto mt-16 max-w-2xl text-center text-sm text-ash">
@@ -60,18 +68,23 @@ export default function ProductsPage() {
 
       {/* --- spec strip --- */}
       <section className="relative border-y border-ink/12 bg-cream-deep px-6 py-16">
-        <dl className="mx-auto grid max-w-6xl grid-cols-2 gap-y-10 lg:grid-cols-4">
-          {SPECS.map((s, i) => (
-            <Reveal key={s.k} delay={i * 0.07}>
-              <div className="text-center">
-                <dt className="text-eyebrow text-ash">{s.k}</dt>
-                <dd className="text-title mt-3 font-display font-black text-ink">
-                  {s.v}
-                </dd>
-              </div>
-            </Reveal>
-          ))}
-        </dl>
+        <ScrollTilt angle={20}>
+          <RevealGroup
+            className="mx-auto grid max-w-6xl grid-cols-2 gap-y-10 lg:grid-cols-4"
+            stagger={0.09}
+          >
+            {SPECS.map((s) => (
+              <RevealItem key={s.k} variant="scale">
+                <dl className="text-center">
+                  <dt className="text-eyebrow text-ash">{s.k}</dt>
+                  <dd className="text-title mt-3 font-display font-black text-ink">
+                    {s.v}
+                  </dd>
+                </dl>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </ScrollTilt>
       </section>
 
       {/* --- the bite scene, reused --- */}
