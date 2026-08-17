@@ -1,3 +1,4 @@
+import { PanelOver } from "@/components/motion/Scroll";
 import Preloader from "@/components/sections/Preloader";
 import Hero from "@/components/sections/Hero";
 import StatBand from "@/components/sections/StatBand";
@@ -17,11 +18,16 @@ export default function Home() {
         <Hero />
         <StatBand />
         <Flavours />
-        <Bite />
+        {/* dark panels ride up over the light section before them */}
+        <PanelOver z={20}>
+          <Bite />
+        </PanelOver>
         <Craft />
         <Markets />
         <MarqueeBand />
-        <Vision />
+        <PanelOver z={30}>
+          <Vision />
+        </PanelOver>
         <Partner />
       </main>
     </>

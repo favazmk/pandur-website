@@ -1,7 +1,12 @@
 "use client";
 
 import { Reveal, RevealGroup, RevealItem, SplitLine } from "@/components/motion/Text";
-import { Parallax, Tilt3D, ClipReveal } from "@/components/motion/Scroll";
+import {
+  Parallax,
+  Tilt3D,
+  ClipReveal,
+  ScrollFillText,
+} from "@/components/motion/Scroll";
 import ProductSlot from "./ProductSlot";
 import { tiltAt } from "@/lib/motion";
 
@@ -25,6 +30,11 @@ export default function Craft() {
             as="h2"
             text="Made properly. Then made again."
             className="text-display mt-5 font-display font-black text-ink"
+          />
+
+          <ScrollFillText
+            className="text-lead mt-6 max-w-md"
+            text="Every batch runs the same way, so the cookie a shop orders in Kalba is the cookie they got in Sharjah."
           />
 
           <RevealGroup className="mt-12 space-y-9" stagger={0.12}>

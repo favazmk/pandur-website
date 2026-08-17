@@ -52,15 +52,21 @@ export default function HeroScene({
 }) {
   const body = (
     <ParallaxGroup enabled={interactive} maxTilt={6}>
-      <group rotation={[-0.42, 0, 0.12]} scale={mobile ? 1.05 : 1.35}>
+      <group rotation={[-0.42, 0, 0.12]} scale={mobile ? 0.92 : 1.12}>
         <Cookie quality={mobile ? "low" : "high"} />
       </group>
     </ParallaxGroup>
   );
 
   return (
+    /*
+     * z-20 puts the cookie IN FRONT of the headline so it occludes the type,
+     * the way the reference site sits its product over its wordmark. The canvas
+     * is transparent and pointer-events-none, so only the cookie's own pixels
+     * cover anything and the text stays selectable underneath.
+     */
     <CookieStage
-      className="pointer-events-none absolute inset-0 z-0"
+      className="pointer-events-none absolute inset-0 z-20"
       camera={{ position: [0, 0.75, 3.05], fov: 38 }}
     >
       <Lights />

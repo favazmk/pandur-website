@@ -4,7 +4,7 @@ import PageHero from "@/components/layout/PageHero";
 import StatBand from "@/components/sections/StatBand";
 import MarqueeBand from "@/components/sections/MarqueeBand";
 import { Reveal, RevealGroup, RevealItem, SplitLine } from "@/components/motion/Text";
-import { ScrollTilt, Tilt3D } from "@/components/motion/Scroll";
+import { ScrollTilt, Tilt3D, ScrollFillText } from "@/components/motion/Scroll";
 import { CookieDoodle } from "@/components/brand/Marks";
 import { tiltAt } from "@/lib/motion";
 
@@ -63,19 +63,16 @@ export default function AboutPage() {
               className="text-title font-display font-black text-ink"
             />
           </div>
+          {/* words darken one by one as the block scrolls past */}
           <div className="space-y-6">
-            <Reveal>
-              <p className="text-lead text-ash">
-                We combine decades of manufacturing experience with modern
-                production to make bakery products built on great taste,
-                consistent quality and reliable shelf life.
-              </p>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p className="text-lead text-ash">
-                Pandur is more than a cookie — it is our signature product.
-              </p>
-            </Reveal>
+            <ScrollFillText
+              className="text-lead"
+              text="We combine decades of manufacturing experience with modern production to make bakery products built on great taste, consistent quality and reliable shelf life."
+            />
+            <ScrollFillText
+              className="text-lead"
+              text="Pandur is more than a cookie — it is our signature product."
+            />
           </div>
         </div>
       </section>

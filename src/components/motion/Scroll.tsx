@@ -227,6 +227,122 @@ export function ClipReveal({
   );
 }
 
+/**
+ * Scroll-driven word fill.
+ *
+ * Words start muted and darken one by one as the block scrolls through the
+ * viewport, so reading the sentence and scrolling become the same gesture.
+ *
+ * Deliberately interpolates COLOUR, not opacity: the muted state is `--ash`,
+ * which still clears AA at 5.05:1 on cream. Fading opacity toward zero (the
+ * usual way this effect is built) leaves the un-filled words illegible for
+ * anyone who has not scrolled to them yet.
+ */
+export function ScrollFillText({
+  text,
+  className,
+  from = "#6E6866",
+  to = "#221F1F",
+}: {
+  text: string;
+  className?: string;
+  from?: string;
+  to?: string;
+}) {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const reduced = usePrefersReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 0.9", "start 0.3"],
+  });
+
+  const words = text.split(" ");
+
+  if (reduced) {
+    return (
+      <p ref={ref} className={className} style={{ color: to }}>
+        {text}
+      </p>
+    );
+  }
+
+  return (
+    <p ref={ref} className={className}>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden>
+        {words.map((w, i) => (
+          <FillWord
+            key={i}
+            word={w}
+            index={i}
+            total={words.length}
+            progress={scrollYProgress}
+            from={from}
+            to={to}
+          />
+        ))}
+      </span>
+    </p>
+  );
+}
+
+function FillWord({
+  word,
+  index,
+  total,
+  progress,
+  from,
+  to,
+}: {
+  word: string;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+  from: string;
+  to: string;
+}) {
+  // Overlap each word's range slightly so the fill sweeps rather than steps.
+  const start = index / total;
+  const end = Math.min(1, (index + 1.4) / total);
+  const color = useTransform(progress, [start, end], [from, to]);
+  return <motion.span style={{ color }}>{word} </motion.span>;
+}
+
+/**
+ * Panel slide-over. The section rides up over whatever precedes it with a hard
+ * top edge, instead of the page simply scrolling it into view — the transition
+ * the reference uses between its light and dark sections.
+ */
+export function PanelOver({
+  children,
+  className,
+  distance = "16vh",
+  z = 10,
+}: {
+  children: ReactNode;
+  className?: string;
+  distance?: string;
+  z?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduced = usePrefersReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "start 0.35"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [distance, "0vh"]);
+
+  return (
+    <div
+      ref={ref}
+      className={`relative ${className ?? ""}`}
+      style={{ zIndex: z }}
+    >
+      <motion.div style={reduced ? undefined : { y }}>{children}</motion.div>
+    </div>
+  );
+}
+
 /** Thin page-progress rail, fixed under the header. */
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
