@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { MARKETS } from "@/lib/assets";
 import { SplitLine, Reveal } from "@/components/motion/Text";
 import { Parallax, Tilt3D } from "@/components/motion/Scroll";
+import { HoverRule } from "@/components/motion/Hover";
 import { ease } from "@/lib/motion";
 
 /**
@@ -117,10 +118,10 @@ export default function Markets() {
           <ul className="grid grid-cols-2 gap-x-6 gap-y-1">
             {MARKETS.map((m, i) => (
               <Reveal key={m.name} delay={0.75 + i * 0.06} y={14}>
-                <li className="flex items-center gap-3 border-b border-ink/10 py-3">
-                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-red" />
+                <li className="group flex items-center gap-3 border-b border-ink/10 py-3 transition-transform duration-500 ease-[var(--ease-expo)] hover:translate-x-2">
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-red transition-transform duration-500 ease-[var(--ease-pop)] group-hover:scale-[2.2]" />
                   <span className="font-display text-lg font-bold text-ink">
-                    {m.name}
+                    <HoverRule on="group">{m.name}</HoverRule>
                   </span>
                 </li>
               </Reveal>

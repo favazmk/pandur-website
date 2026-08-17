@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { Logo } from "@/components/brand/Marks";
+import { HoverLetters, HoverSweep } from "@/components/motion/Hover";
 import { NAV } from "@/lib/nav";
 import { ease } from "@/lib/motion";
 import { usePrefersReducedMotion } from "@/lib/useMedia";
@@ -80,8 +81,12 @@ export default function SiteHeader() {
                       className="group relative block px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] text-ink transition-opacity hover:opacity-100"
                     >
                       {/* 70%, not 60%: ink at 60% over cream is 4.22:1, under the AA floor for this size. */}
-                      <span className={isActive(l.href) ? "" : "opacity-70 group-hover:opacity-100"}>
-                        {l.label}
+                      <span
+                        className={
+                          isActive(l.href) ? "" : "opacity-70 group-hover:opacity-100"
+                        }
+                      >
+                        <HoverLetters text={l.label} />
                       </span>
                       <span
                         className={`absolute inset-x-4 -bottom-0.5 h-[2px] origin-left bg-red-deep transition-transform duration-400 ease-[var(--ease-expo)] ${
@@ -100,9 +105,11 @@ export default function SiteHeader() {
               <Link
                 href="/contact"
                 data-cursor="grow"
-                className="hidden rounded-full bg-ink px-6 py-2.5 text-xs font-extrabold uppercase tracking-[0.16em] text-cream transition-colors hover:bg-red-deep lg:block"
+                className="hidden overflow-hidden rounded-full bg-ink text-xs font-extrabold uppercase tracking-[0.16em] text-cream lg:block"
               >
-                Get in Touch
+                <HoverSweep fill="bg-red-deep" className="px-6 py-2.5">
+                  Get in Touch
+                </HoverSweep>
               </Link>
 
               {/* --- menu toggle --- */}

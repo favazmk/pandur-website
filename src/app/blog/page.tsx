@@ -3,6 +3,7 @@ import Link from "next/link";
 import PageHero from "@/components/layout/PageHero";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Text";
 import { Tilt3D } from "@/components/motion/Scroll";
+import { HoverSpotlight, HoverDrift, HoverRule } from "@/components/motion/Hover";
 import { CookieDoodle } from "@/components/brand/Marks";
 import { getAllPosts, formatDate } from "@/content/blog";
 import { tiltAt } from "@/lib/motion";
@@ -35,26 +36,31 @@ export default function BlogPage() {
               <Tilt3D max={9} lift={20} className="h-full">
                 <Link
                   href={`/blog/${p.slug}`}
-                  data-cursor="grow"
+                  data-cursor-label="Read"
                   className="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-ink/12 bg-white/50 transition-colors hover:border-ink/30"
                 >
-                  <div
+                  <HoverDrift
+                    amount={18}
                     className="flex aspect-[16/10] items-center justify-center"
-                    style={{
-                      backgroundColor: FLAVOURS[i % FLAVOURS.length].ground,
-                    }}
                   >
-                    <CookieDoodle
-                      className={`h-24 w-24 ${tiltAt(i)}`}
-                      strokeWidth={5}
-                      stroke={FLAVOURS[i % FLAVOURS.length].chip}
-                    />
-                  </div>
+                    <div
+                      className="flex h-full w-full items-center justify-center"
+                      style={{
+                        backgroundColor: FLAVOURS[i % FLAVOURS.length].ground,
+                      }}
+                    >
+                      <CookieDoodle
+                        className={`h-24 w-24 ${tiltAt(i)}`}
+                        strokeWidth={5}
+                        stroke={FLAVOURS[i % FLAVOURS.length].chip}
+                      />
+                    </div>
+                  </HoverDrift>
 
-                  <div className="flex flex-1 flex-col p-8">
+                  <HoverSpotlight className="flex flex-1 flex-col p-8">
                     <p className="text-eyebrow text-red-deep">{p.category}</p>
                     <h2 className="mt-4 font-display text-2xl font-black leading-tight text-ink">
-                      {p.title}
+                      <HoverRule on="group">{p.title}</HoverRule>
                     </h2>
                     <p className="mt-3 flex-1 text-ash">{p.excerpt}</p>
                     <p className="text-eyebrow mt-6 text-ash">
@@ -62,7 +68,7 @@ export default function BlogPage() {
                       {" · "}
                       {p.readMinutes} min read
                     </p>
-                  </div>
+                  </HoverSpotlight>
                 </Link>
               </Tilt3D>
             </RevealItem>

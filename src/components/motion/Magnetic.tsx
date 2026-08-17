@@ -3,6 +3,7 @@
 import { ReactNode, useRef } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { spring } from "@/lib/motion";
+import { HoverSweep } from "@/components/motion/Hover";
 import { useIsTouch, usePrefersReducedMotion } from "@/lib/useMedia";
 
 /**
@@ -99,15 +100,21 @@ export function MagneticButton({
   className?: string;
 }) {
   const base =
-    "group inline-flex items-center justify-center rounded-full px-9 py-4 text-sm font-extrabold uppercase tracking-[0.16em] transition-colors duration-400";
+    "group relative inline-flex items-center justify-center overflow-hidden rounded-full text-sm font-extrabold uppercase tracking-[0.16em] transition-colors duration-400";
   const styles =
     variant === "solid"
-      // red-deep, not red: the label is 14px bold, which WCAG counts as small
-      // text, and white on the brand red is only 4.36:1.
-      ? "bg-red-deep text-white hover:bg-ink"
-      : "border-2 border-ink text-ink hover:bg-ink hover:text-cream";
+      ? // red-deep, not red: the label is 14px bold, which WCAG counts as small
+        // text, and white on the brand red is only 4.36:1.
+        "bg-red-deep text-white"
+      : "border-2 border-ink text-ink group-hover:text-cream";
 
-  const inner = <RollLabel label={label} />;
+  // Two effects stacked: the ink background sweeps up from the bottom while the
+  // label rolls to its duplicate.
+  const inner = (
+    <HoverSweep fill="bg-ink" className="w-full px-9 py-4">
+      <RollLabel label={label} />
+    </HoverSweep>
+  );
 
   return (
     <Magnetic className={className}>

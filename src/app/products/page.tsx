@@ -5,6 +5,7 @@ import ProductSlot from "@/components/sections/ProductSlot";
 import Bite from "@/components/sections/Bite";
 import { Reveal, RevealGroup, RevealItem, SplitLine } from "@/components/motion/Text";
 import { ScrollTilt, Tilt3D, ClipReveal } from "@/components/motion/Scroll";
+import { HoverDrift, HoverRule, HoverScramble } from "@/components/motion/Hover";
 import { FLAVOURS } from "@/lib/assets";
 import { tiltAt } from "@/lib/motion";
 
@@ -40,20 +41,22 @@ export default function ProductsPage() {
         >
           {FLAVOURS.map((f, i) => (
             <RevealItem key={f.id} variant="scale">
-              <ClipReveal>
-                <Tilt3D max={11} lift={24}>
-                  <div className={tiltAt(i)}>
-                    <ProductSlot flavour={f.id} index={i} />
-                  </div>
-                </Tilt3D>
-              </ClipReveal>
-              <p className="text-eyebrow mt-6" style={{ color: f.accent }}>
-                {`0${i + 1}`}
-              </p>
-              <h2 className="text-title mt-2 font-display font-black text-ink">
-                {f.name}
-              </h2>
-              <p className="text-lead mt-2 text-ash">{f.note}</p>
+              <div className="group" data-cursor-label="View">
+                <ClipReveal>
+                  <Tilt3D max={11} lift={24}>
+                    <HoverDrift amount={16} className={`rounded-[2rem] ${tiltAt(i)}`}>
+                      <ProductSlot flavour={f.id} index={i} />
+                    </HoverDrift>
+                  </Tilt3D>
+                </ClipReveal>
+                <p className="text-eyebrow mt-6" style={{ color: f.accent }}>
+                  {`0${i + 1}`}
+                </p>
+                <h2 className="text-title mt-2 font-display font-black text-ink">
+                  <HoverRule on="group">{f.name}</HoverRule>
+                </h2>
+                <p className="text-lead mt-2 text-ash">{f.note}</p>
+              </div>
             </RevealItem>
           ))}
         </RevealGroup>
@@ -75,10 +78,11 @@ export default function ProductsPage() {
           >
             {SPECS.map((s) => (
               <RevealItem key={s.k} variant="scale">
+                {/* spec values read as data, so the scramble suits them here */}
                 <dl className="text-center">
                   <dt className="text-eyebrow text-ash">{s.k}</dt>
                   <dd className="text-title mt-3 font-display font-black text-ink">
-                    {s.v}
+                    <HoverScramble text={s.v} />
                   </dd>
                 </dl>
               </RevealItem>

@@ -4,6 +4,7 @@ import EnquiryForm from "@/components/forms/EnquiryForm";
 import MarqueeBand from "@/components/sections/MarqueeBand";
 import { Reveal, RevealGroup, RevealItem, SplitLine } from "@/components/motion/Text";
 import { ScrollTilt, Tilt3D } from "@/components/motion/Scroll";
+import { HoverSpotlight, HoverOutline } from "@/components/motion/Hover";
 import { CookieDoodle } from "@/components/brand/Marks";
 import { tiltAt } from "@/lib/motion";
 
@@ -69,15 +70,15 @@ export default function FranchisesPage() {
           {MODELS.map((m, i) => (
             <RevealItem key={m.t} variant="scale">
               <Tilt3D max={10} lift={22} className="h-full">
-                <div
-                  className={`h-full rounded-[2rem] border border-ink/12 bg-white/50 p-9 ${tiltAt(i)}`}
-                >
-                  <CookieDoodle className="h-10 w-10 text-red-deep" strokeWidth={5} />
-                  <h2 className="text-title mt-6 font-display font-black text-ink">
-                    {m.t}
-                  </h2>
-                  <p className="text-lead mt-3 text-ash">{m.d}</p>
-                </div>
+                <HoverOutline radius={32} className={`h-full text-red-deep ${tiltAt(i)}`}>
+                  <HoverSpotlight className="h-full rounded-[2rem] border border-ink/12 bg-white/50 p-9">
+                    <CookieDoodle className="h-10 w-10 text-red-deep" strokeWidth={5} />
+                    <h2 className="text-title mt-6 font-display font-black text-ink">
+                      {m.t}
+                    </h2>
+                    <p className="text-lead mt-3 text-ash">{m.d}</p>
+                  </HoverSpotlight>
+                </HoverOutline>
               </Tilt3D>
             </RevealItem>
           ))}

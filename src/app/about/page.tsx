@@ -5,6 +5,7 @@ import StatBand from "@/components/sections/StatBand";
 import MarqueeBand from "@/components/sections/MarqueeBand";
 import { Reveal, RevealGroup, RevealItem, SplitLine } from "@/components/motion/Text";
 import { ScrollTilt, Tilt3D, ScrollFillText } from "@/components/motion/Scroll";
+import { HoverSpotlight } from "@/components/motion/Hover";
 import { CookieDoodle } from "@/components/brand/Marks";
 import { tiltAt } from "@/lib/motion";
 
@@ -126,7 +127,7 @@ export default function AboutPage() {
             {STRENGTHS.map((s, i) => (
               <RevealItem key={s.t} variant="scale">
                 <Tilt3D max={10} lift={20} className="h-full">
-                  <div
+                  <HoverSpotlight
                     className={`h-full rounded-[2rem] border border-ink/12 bg-white/50 p-8 ${tiltAt(i)}`}
                   >
                     <CookieDoodle
@@ -137,7 +138,7 @@ export default function AboutPage() {
                       {s.t}
                     </h3>
                     <p className="mt-2 text-ash">{s.d}</p>
-                  </div>
+                  </HoverSpotlight>
                 </Tilt3D>
               </RevealItem>
             ))}

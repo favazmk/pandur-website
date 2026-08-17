@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CookieDoodle, Wordmark } from "@/components/brand/Marks";
 import { Reveal } from "@/components/motion/Text";
 import { Parallax, ClipReveal } from "@/components/motion/Scroll";
+import { HoverRule } from "@/components/motion/Hover";
 import { COMPANY, NAV } from "@/lib/nav";
 
 /** Independent drift per doodle — no two share a delay, so they never sync. */
@@ -46,7 +47,7 @@ export default function Footer() {
                     data-cursor="grow"
                     className="text-eyebrow text-cream/70 transition-colors hover:text-cream"
                   >
-                    {l.label}
+                    <HoverRule colour="bg-cream">{l.label}</HoverRule>
                   </Link>
                 </li>
               ))}
