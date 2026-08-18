@@ -108,14 +108,14 @@ become static states, and no information lives only in motion.
 
 | # | Item | Where |
 |---|---|---|
-| 1 | **Arabic flavour names** — read off the packaging photographs, not supplied as text. `butter` and `cardamom` are confident readings; `coconut` follows the pack's own transliteration; `peanut` is standard Arabic because that panel was illegible at the supplied resolution. Confirm all four against a physical pack | `src/lib/assets.ts` → `nameAr` |
+| 1 | **Packaging Arabic looks wrong** — not a site issue any more (the site carries no Arabic), but worth raising: the supplied artwork shows coconut's Arabic line on the peanut pack, misspelt. Check a physical carton before the next print run | client-side |
 | 2 | **"Aman" → Ajman?** built as Ajman, needs sign-off | `src/lib/assets.ts` |
 | 3 | **The four pack images look like renders, not photographs** — and two carry visible errors. Decide whether to re-shoot before launch. Detail below | `public/products/pack-*.jpg` |
 | 4 | **Form destination** — forms validate but send nowhere | `src/components/forms/EnquiryForm.tsx` → `submitEnquiry()` |
 | 5 | **Contact email + phone** — page correctly hides the block rather than faking it | `src/lib/nav.ts` → `COMPANY` |
 | 6 | **Franchise commercial terms** — none published, by design | `src/app/franchises/page.tsx` |
 | 7 | **Blog content** — the three posts are samples written from the brief; decide whether the client needs a CMS to self-publish | `src/content/blog.ts` |
-| 8 | **Full Arabic / RTL site?** — flavour names are now bilingual, which makes this a live question rather than a hypothetical | — |
+| 8 | **Arabic / RTL?** — the site is English-only by decision. Worth settling before the layout hardens | — |
 
 **Closed by the delivered photography:** the four flavour names (Butter, Coconut,
 Peanut, Cardamom), the per-flavour palette — now sampled from the actual packaging
@@ -150,8 +150,28 @@ photography exists; no other change is needed.
 
 `HAS_RETAIL_IMAGES` is **on** — that pair is genuine.
 
-The site’s own Arabic is **not** copied from this artwork — see the note above
-`FLAVOURS` for what was corrected and why.
+### How the four flavours are told apart
+
+With the pack photography switched off, the flavour cards would otherwise be
+four identical cookie doodles. Each flavour instead carries three things, all
+defined together in `FLAVOURS`:
+
+| | Butter | Coconut | Peanut | Cardamom |
+|---|---|---|---|---|
+| Ground | `#F4F1E2` | `#F3EADD` | `#F8EFDB` | `#EBF1E8` |
+| Accent | `#4F5A2B` | `#7A4A22` | `#8A4A16` | `#0E5C3F` |
+| Mark | butter block | coconut half | peanut shell | cardamom pod |
+
+The marks live in `src/components/brand/Ingredients.tsx`, drawn in the same
+monoline language as the cookie marks — stroked paths on a 200x200 viewBox
+taking `currentColor`, so each renders in its flavour's accent. Their
+silhouettes are deliberately unlike one another (block, ring, waisted shell,
+pointed pod) so they stay distinguishable at the small sizes where interior
+detail disappears first.
+
+Every accent was checked against every ground it actually appears on — its own,
+`cream` and `cream-deep` — and clears AA for small text in all twelve pairings,
+worst case 5.69:1.
 
 ### Asset contract
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/layout/PageHero";
 import ProductSlot from "@/components/sections/ProductSlot";
+import IngredientMark from "@/components/brand/Ingredients";
 import Bite from "@/components/sections/Bite";
 import Retail from "@/components/sections/Retail";
 import { Reveal, RevealGroup, RevealItem, SplitLine } from "@/components/motion/Text";
@@ -49,23 +50,26 @@ export default function ProductsPage() {
                     </HoverDrift>
                   </Tilt3D>
                 </ClipReveal>
-                <div className="mt-6 flex items-baseline justify-between gap-4">
-                  <h2 className="text-title font-display font-black text-ink">
-                    <HoverRule on="group">{f.name}</HoverRule>
-                  </h2>
-                  <span
-                    lang="ar"
-                    dir="rtl"
-                    className="font-display text-lg"
-                    style={{ color: f.accent }}
-                  >
-                    {f.nameAr}
-                  </span>
+                <div className="mt-6 flex items-start gap-4">
+                  <IngredientMark
+                    slug={f.slug}
+                    stroke={f.accent}
+                    strokeWidth={6}
+                    className="mt-1 h-11 w-11 shrink-0"
+                  />
+                  <div>
+                    <span className="text-eyebrow" style={{ color: f.accent }}>
+                      {f.ingredient}
+                    </span>
+                    <h2 className="text-title mt-2 font-display font-black text-ink">
+                      <HoverRule on="group">{f.name}</HoverRule>
+                    </h2>
+                    <p className="text-lead mt-2 text-ash">{f.note}</p>
+                    <p className={`text-eyebrow mt-3 ${MUTED}`}>
+                      {PACK.pieces} pieces · {PACK.origin}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-lead mt-2 text-ash">{f.note}</p>
-                <p className={`text-eyebrow mt-3 ${MUTED}`}>
-                  {PACK.pieces} pieces · {PACK.origin}
-                </p>
               </div>
             </RevealItem>
           ))}
