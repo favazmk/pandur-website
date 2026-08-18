@@ -52,7 +52,17 @@ export default function HeroScene({
 }) {
   const body = (
     <ParallaxGroup enabled={interactive} maxTilt={6}>
-      <group rotation={[-0.42, 0, 0.12]} scale={mobile ? 0.92 : 1.12}>
+      {/*
+       * Dropped below the headline and tilted toward the camera. At the old
+       * rotation it presented almost edge-on, which read as a beige smear
+       * rather than a cookie, and at the old height it sat across the second
+       * line of the headline.
+       */}
+      <group
+        position={[0, mobile ? -0.95 : -1.15, 0]}
+        rotation={[-1.0, 0, 0.12]}
+        scale={mobile ? 0.66 : 0.82}
+      >
         <Cookie quality={mobile ? "low" : "high"} />
       </group>
     </ParallaxGroup>
@@ -60,13 +70,17 @@ export default function HeroScene({
 
   return (
     /*
-     * z-20 puts the cookie IN FRONT of the headline so it occludes the type,
-     * the way the reference site sits its product over its wordmark. The canvas
-     * is transparent and pointer-events-none, so only the cookie's own pixels
-     * cover anything and the text stays selectable underneath.
+     * BEHIND the headline, not in front of it.
+     *
+     * This sat at z-raised so the cookie would occlude the type the way the
+     * reference site sits its product over its wordmark. At this size that
+     * reads as a bug rather than as art — the cookie covered the middle of
+     * "Our Signature Taste." and the headline was simply unreadable. The
+     * subject is also smaller now and dropped below centre, so the type has
+     * clear air and the cookie reads as the ground it sits on.
      */
     <CookieStage
-      className="pointer-events-none absolute inset-0 z-raised"
+      className="pointer-events-none absolute inset-0 z-scene"
       camera={{ position: [0, 0.75, 3.05], fov: 38 }}
     >
       <Lights />

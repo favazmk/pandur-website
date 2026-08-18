@@ -213,7 +213,7 @@ function Field({
 }) {
   const describedBy = error ? `${id}-error` : undefined;
   const base =
-    "w-full rounded-2xl border-2 bg-white/70 px-5 py-4 text-ink outline-none transition-colors placeholder:text-ash/50 focus:border-ink";
+    "w-full rounded-2xl border-2 bg-white/70 px-5 py-4 text-ink outline-none transition-colors placeholder:text-ash focus:border-ink";
   const tone = error ? "border-red" : "border-ink/15";
 
   return (

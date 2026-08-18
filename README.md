@@ -85,8 +85,19 @@ small text. Hence two reds:
 - `--color-red` `#EC2126` — large display type, fills, graphics
 - `--color-red-deep` `#CE1419` — small text, and the marquee band behind white text
 
+Each flavour also carries its own accent, sampled from that flavour's packaging
+and then deepened until it cleared 4.5:1 on its own ground — the measured ratio
+is recorded beside every value in `src/lib/assets.ts`.
+
+Muted small text sits at `text-ink/65` and no lighter, exported as `MUTED`. Below
+that it drops under 4.5:1 on the lightest flavour ground, which is invisible in
+review because the composite still looks like ordinary legible grey.
+
 If you touch the palette, re-check every pairing including opacity-derived ones
-(`/60`, `/70` variants composite against their backdrop and fail silently).
+(`/60`, `/70` variants composite against their backdrop and fail silently). Note
+that Tailwind v4 emits `oklab()`, so a checker that parses `getComputedStyle`
+colours as `rgb()` will read the lightness as a red channel and report confident
+nonsense — resolve colours through a canvas instead.
 
 `prefers-reduced-motion` is honoured throughout: Lenis is disabled, scroll-scrubs
 become static states, and no information lives only in motion.
@@ -97,25 +108,82 @@ become static states, and no information lives only in motion.
 
 | # | Item | Where |
 |---|---|---|
-| 1 | **Four flavour names** — currently `FLAVOUR_01`–`04` | `src/lib/assets.ts` |
+| 1 | **Arabic flavour names** — read off the packaging photographs, not supplied as text. `butter` and `cardamom` are confident readings; `coconut` follows the pack's own transliteration; `peanut` is standard Arabic because that panel was illegible at the supplied resolution. Confirm all four against a physical pack | `src/lib/assets.ts` → `nameAr` |
 | 2 | **"Aman" → Ajman?** built as Ajman, needs sign-off | `src/lib/assets.ts` |
-| 3 | **Product photography** — drop in, flip one flag, no layout shift | `src/lib/assets.ts` → `HAS_PRODUCT_IMAGES` |
+| 3 | **The four pack images look like renders, not photographs** — and two carry visible errors. Decide whether to re-shoot before launch. Detail below | `public/products/pack-*.jpg` |
 | 4 | **Form destination** — forms validate but send nowhere | `src/components/forms/EnquiryForm.tsx` → `submitEnquiry()` |
 | 5 | **Contact email + phone** — page correctly hides the block rather than faking it | `src/lib/nav.ts` → `COMPANY` |
 | 6 | **Franchise commercial terms** — none published, by design | `src/app/franchises/page.tsx` |
 | 7 | **Blog content** — the three posts are samples written from the brief; decide whether the client needs a CMS to self-publish | `src/content/blog.ts` |
-| 8 | **Arabic / RTL?** — worth deciding before the layout hardens | — |
+| 8 | **Full Arabic / RTL site?** — flavour names are now bilingual, which makes this a live question rather than a hypothetical | — |
+
+**Closed by the delivered photography:** the four flavour names (Butter, Coconut,
+Peanut, Cardamom), the per-flavour palette — now sampled from the actual packaging
+rather than invented — and the pack facts printed on the box (16 pieces, Made in
+UAE, Premium Quality seal).
+
+### The pack images need a decision before launch
+
+All six files are in and switched on. The two retail shots are genuine store
+photography — 4032×3024, straight off a camera, and they look it.
+
+The four pack images are a different matter. Enlarging the fine print shows text
+that no print run would produce:
+
+- **`pack-peanut.jpg`** — the round quality seal reads **“SOEMIMS GOAUTT”** where
+  it should read “PREMIUM QUALITY”, and the ring of text around it is not words.
+- **`pack-peanut.jpg`** — the Arabic line reads **كوكوتات كوكيز**, which is
+  coconut’s line sitting on the peanut box.
+- **`pack-coconut.jpg`** — same Arabic line, and it misspells the
+  transliteration too: ت where ن belongs.
+- Butter and cardamom render “PREMIUM QUALITY” correctly, so the fault is not
+  uniform across the set.
+
+Add the non-uniform aspect ratios (0.750, 0.848, 0.854, 0.862 — a real shoot is
+consistent) and a 896px width, and these read as generated mockups rather than
+photographs of the product.
+
+So `HAS_PACK_IMAGES` is **off**, by decision rather than by omission — the files
+are present and wired, and the procedural stand-ins render instead. They look
+deliberate and assert nothing false. Set the flag to `true` once real packaging
+photography exists; no other change is needed.
+
+`HAS_RETAIL_IMAGES` is **on** — that pair is genuine.
+
+The site’s own Arabic is **not** copied from this artwork — see the note above
+`FLAVOURS` for what was corrected and why.
 
 ### Asset contract
 
-Photography drops into `public/products/` and is switched on with a single flag:
+Photography drops into `public/products/` under these exact names, then the
+matching flag in `src/lib/assets.ts` flips. The two sets are independent, so
+either can go live without the other.
 
 ```
-flavour-01.png … flavour-04.png    transparent PNG, ≥2000px long edge,
-pack-01.png    … pack-04.png       cookie centred, soft contact shadow
+pack-butter.jpg  pack-coconut.jpg      portrait 3:4, ≥1600px long edge, JPEG
+pack-peanut.jpg  pack-cardamom.jpg     box left of centre, props to its right
+    → HAS_PACK_IMAGES
+
+retail-shelf.jpg   the gondola end, boxes facing
+retail-aisle.jpg   the wider aisle view
+                                       landscape 4:3, ≥2000px long edge, JPEG
+    → HAS_RETAIL_IMAGES
 ```
 
-Every slot reserves its aspect ratio already, so nothing reflows when the flag flips.
+Lowercase `.jpg`, no spaces. The originals arrived as `butter.JPG` and
+`retail 1.JPG`; uppercase extensions 404 on a case-sensitive host even when they
+work on Windows, and spaces force URL encoding. Both were renamed.
+
+What landed against that spec: the retail pair is exactly on it. The pack images
+are 896px wide rather than ≥1600, and only butter is on 3:4 — the other three get
+centre-cropped ~6% per side, which was checked image by image and takes
+background props rather than the box.
+
+These are photographs on styled sets, not cut-outs — there is no transparency to
+preserve, so JPEG rather than PNG, and slots `object-cover` rather than
+`object-contain`. Every slot already reserves its aspect ratio, so nothing
+reflows when a flag flips; but if the delivered ratio ever changes, change the
+slot's `aspect` prop with it rather than letting the image be centre-cropped.
 
 ---
 

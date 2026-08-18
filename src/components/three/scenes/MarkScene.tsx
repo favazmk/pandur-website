@@ -28,7 +28,18 @@ export default function MarkScene({
       <Lights />
       <StudioEnv />
       <ParallaxGroup enabled={interactive} maxTilt={8} idleSpeed={0.18}>
-        <group rotation={[-0.5, 0, 0.16]} scale={0.92}>
+        {/*
+         * Offset and small, deliberately. At full size and dead centre this
+         * sat squarely behind the page title, and a headline set over the
+         * middle of a cookie is just harder to read — the mark competed with
+         * the words instead of supporting them. Pushed down and to the right,
+         * it frames the title rather than sitting under it.
+         */}
+        <group
+          position={[1.42, -1.0, 0]}
+          rotation={[-1.02, 0, 0.16]}
+          scale={0.56}
+        >
           <Cookie quality="low" seed={seed} dough={dough} chip={chip} />
         </group>
       </ParallaxGroup>

@@ -51,12 +51,14 @@ export default function Bite() {
           <SplitLine
             as="h2"
             text="Six months on shelf."
-            className="text-title font-display font-black text-cream"
+            className="text-title block font-display font-black text-cream"
           />
+          {/* Tailwind's reset zeroes block margins, so without this the two
+              lines sit flush and their glyphs touch. */}
           <SplitLine
             as="p"
             text="Tastes like it left the oven this morning."
-            className="text-title font-display font-black text-dough"
+            className="text-title mt-3 block font-display font-black text-dough md:mt-4"
             delay={0.12}
           />
         </motion.div>
