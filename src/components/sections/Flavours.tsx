@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform } from "motion/react";
 import SceneFallback from "@/components/three/SceneFallback";
 import { CookieDoodle } from "@/components/brand/Marks";
+import IngredientMark from "@/components/brand/Ingredients";
 import { SplitLine } from "@/components/motion/Text";
 import { FLAVOURS, MUTED } from "@/lib/assets";
 import { useIsMobile, usePrefersReducedMotion } from "@/lib/useMedia";
@@ -57,18 +58,22 @@ export default function Flavours() {
                 className="mx-auto flex h-56 w-56 items-center justify-center rounded-full"
                 style={{ backgroundColor: f.ground }}
               >
-                <CookieDoodle
-                  className="h-32 w-32"
+                <IngredientMark
+                  slug={f.slug}
+                  className="h-28 w-28"
                   strokeWidth={5}
-                  stroke={f.chip}
+                  stroke={f.accent}
                 />
               </div>
-              <h3 className="text-title mt-6 font-display font-black text-ink">
+              <span
+                className="text-eyebrow mt-6 block"
+                style={{ color: f.accent }}
+              >
+                {f.ingredient}
+              </span>
+              <h3 className="text-title mt-2 font-display font-black text-ink">
                 {f.name}
               </h3>
-              <p lang="ar" dir="rtl" className={`mt-1 text-sm ${MUTED}`}>
-                {f.nameAr}
-              </p>
               <p className="text-lead mt-3 text-ash">{f.note}</p>
             </div>
           ))}
@@ -123,19 +128,25 @@ export default function Flavours() {
                 <span className={`text-eyebrow ${MUTED}`}>Signature</span>
               </div>
 
-              <div className="max-w-xl">
-                <h3 className="text-display font-display font-black text-ink">
-                  {f.name}
-                </h3>
-                <p
-                  lang="ar"
-                  dir="rtl"
-                  className="text-lead mt-2 font-display"
-                  style={{ color: f.accent }}
-                >
-                  {f.nameAr}
-                </p>
-                <p className="text-lead mt-4 text-ash">{f.note}</p>
+              <div className="flex max-w-xl items-end gap-7">
+                {/* The ingredient, drawn and in the flavour's own accent —
+                    so each panel is told apart by an object and a colour
+                    before the name is even read. */}
+                <IngredientMark
+                  slug={f.slug}
+                  stroke={f.accent}
+                  strokeWidth={5}
+                  className="hidden h-28 w-28 shrink-0 lg:block"
+                />
+                <div>
+                  <span className="text-eyebrow" style={{ color: f.accent }}>
+                    {f.ingredient}
+                  </span>
+                  <h3 className="text-display mt-3 font-display font-black text-ink">
+                    {f.name}
+                  </h3>
+                  <p className="text-lead mt-4 text-ash">{f.note}</p>
+                </div>
               </div>
             </div>
           ))}

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { CookieDoodle } from "@/components/brand/Marks";
+import IngredientMark from "@/components/brand/Ingredients";
 import { FLAVOURS, HAS_PACK_IMAGES, packImage } from "@/lib/assets";
 import { tiltAt } from "@/lib/motion";
 
@@ -54,11 +55,25 @@ export default function ProductSlot({
           className="object-cover"
         />
       ) : (
-        <div className="flex h-full w-full items-center justify-center">
+        /*
+         * The stand-in is the flavour's own ingredient in the flavour's own
+         * accent, not a generic cookie. With the pack photography switched
+         * off these four slots are the only thing distinguishing the products
+         * on the page, and four identical doodles made them look like one
+         * product listed four times.
+         */
+        <div className="relative flex h-full w-full items-center justify-center">
           <CookieDoodle
-            className={`h-3/5 w-3/5 ${tiltAt(index)}`}
+            aria-hidden
+            className="absolute -right-6 -bottom-8 h-2/5 w-2/5 opacity-25"
             strokeWidth={4}
             stroke={f.chip}
+          />
+          <IngredientMark
+            slug={f.slug}
+            className={`h-1/2 w-1/2 ${tiltAt(index)}`}
+            strokeWidth={5}
+            stroke={f.accent}
           />
         </div>
       )}

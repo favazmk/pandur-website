@@ -98,10 +98,11 @@ export type Flavour = {
   /** English name as printed on the pack */
   name: string;
   /**
-   * Arabic name, transcribed from the packaging photography rather than
-   * supplied as text — see the sign-off note below before this ships.
+   * The one ingredient the flavour is built on. This drives the flavour's
+   * mark (see `components/brand/Ingredients.tsx`) as well as the label, so
+   * the four are told apart by a drawn object and a colour, not only a word.
    */
-  nameAr: string;
+  ingredient: string;
   /** one short line, never a paragraph */
   note: string;
   /** page ground while this panel is active */
@@ -119,29 +120,23 @@ export type Flavour = {
 };
 
 /**
- * The pack prints its Arabic name alongside the English one, so the site does
- * too. `butter` (بسكويت الزبدة) and `cardamom` (بسكويت الهيل) match their packs.
+ * Each flavour is identified three ways — its name, its own ground and accent
+ * sampled from that pack, and the ingredient it is built on. Nothing here is
+ * decorative: a page that shows one flavour takes its colour from this row,
+ * and the ingredient drives the drawn mark that goes with it.
  *
- * The other two deliberately DO NOT match the artwork supplied, because the
- * artwork is wrong:
- *
- *   coconut  pack reads كوكوتات كوكيز — a transliteration of "coconut" with a
- *            ت where the ن belongs. Corrected to كوكونات كوكيز here.
- *   peanut   pack reads كوكوتات كوكيز as well — that is coconut's line, on the
- *            peanut box. Replaced with بسكويت الفول السوداني, which is what
- *            peanut biscuits are actually called.
- *
- * So this array is the correct naming, not a transcription. If the physical
- * packs carry the same errors, that is a packaging problem to raise with the
- * client rather than something to mirror onto the site. Confirm all four
- * against a real pack before launch — see README, outstanding item 1.
+ * The site carries no Arabic. The supplied artwork's Arabic was unreliable
+ * (peanut's pack shows coconut's line), and rather than publish a
+ * transcription nobody had signed off, the flavours are told apart visually
+ * instead. The packaging error is still worth raising with the client — see
+ * README.
  */
 export const FLAVOURS: Flavour[] = [
   {
     id: 1,
     slug: "butter",
     name: "Butter",
-    nameAr: "بسكويت الزبدة",
+    ingredient: "Sweet cream butter",
     note: "Rich, short and properly buttery.",
     ground: "#F4F1E2",
     dough: "#E8C89A",
@@ -152,7 +147,7 @@ export const FLAVOURS: Flavour[] = [
     id: 2,
     slug: "coconut",
     name: "Coconut",
-    nameAr: "كوكونات كوكيز",
+    ingredient: "Toasted coconut",
     note: "Toasted coconut, right through the crumb.",
     ground: "#F3EADD",
     dough: "#E3BE8C",
@@ -163,7 +158,7 @@ export const FLAVOURS: Flavour[] = [
     id: 3,
     slug: "peanut",
     name: "Peanut",
-    nameAr: "بسكويت الفول السوداني",
+    ingredient: "Roasted peanut",
     note: "Roasted peanut, deep and savoury-sweet.",
     ground: "#F8EFDB",
     dough: "#E8C486",
@@ -174,7 +169,7 @@ export const FLAVOURS: Flavour[] = [
     id: 4,
     slug: "cardamom",
     name: "Cardamom",
-    nameAr: "بسكويت الهيل",
+    ingredient: "Green cardamom",
     note: "Green cardamom. Built for the tea tray.",
     ground: "#EBF1E8",
     dough: "#E5C79B",
