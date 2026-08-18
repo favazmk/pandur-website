@@ -65,10 +65,24 @@ export default function Hero() {
           Royal Quality Bakes · Khorfakkan
         </motion.p>
 
-        <h1 className="text-hero font-display font-black text-ink">
-          <SplitLine text="Our Signature Taste." delay={0.35} stagger={0.05} once />
+        {/*
+         * Each line is `block`. As inline spans the two sentences ran together
+         * into one wrapping paragraph, so the break landed wherever the
+         * viewport happened to put it — "Our Signature / Taste. Made to /
+         * Grow." The headline reads as two deliberate lines, so it is built as
+         * two.
+         */}
+        <h1 className="text-hero max-w-[16ch] font-display font-black text-balance text-ink">
+          <SplitLine
+            text="Our Signature Taste."
+            className="block"
+            delay={0.35}
+            stagger={0.05}
+            once
+          />
           <SplitLine
             text="Made to Grow."
+            className="block"
             delay={0.55}
             stagger={0.05}
             accentLast

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Manrope } from "next/font/google";
+import { Bricolage_Grotesque, Manrope } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import Grain from "@/components/fx/Grain";
@@ -9,14 +9,26 @@ import Footer from "@/components/sections/Footer";
 import { ScrollProgress } from "@/components/motion/Scroll";
 
 /**
- * Display face. The SOFT and WONK axes are what make Fraunces rhyme with the
- * hand-lettered logo without competing with it — do not drop them.
+ * Display face.
+ *
+ * This was Fraunces with its WONK axis on — a high-contrast wonky serif. It
+ * read as ornate rather than appetising next to the rounded hand-lettered
+ * logo, so it was replaced. Bricolage Grotesque keeps a little of that
+ * character in its odd terminals while sitting much closer to the wordmark's
+ * geometry, and it holds up far better at display sizes.
+ *
+ * To try another: change the import and this call only — everything downstream
+ * reads `--font-display`. Fraunces without WONK, Outfit and Archivo were the
+ * other candidates.
+ *
+ * Its weight axis tops out at 800, so `font-black` (900) renders at 800. That
+ * is the heaviest the family has, and it is applied consistently everywhere.
  */
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const display = Bricolage_Grotesque({
+  variable: "--font-display-face",
   subsets: ["latin"],
   display: "swap",
-  axes: ["SOFT", "WONK", "opsz"],
+  axes: ["opsz"],
 });
 
 /**
@@ -67,7 +79,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
      */
     <html
       lang="en"
-      className={`${fraunces.variable} ${manrope.variable} antialiased`}
+      className={`${display.variable} ${manrope.variable} antialiased`}
       suppressHydrationWarning
     >
       <body suppressHydrationWarning>

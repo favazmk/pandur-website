@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useMemo } from "react";
+import { Fragment, ReactNode, useMemo } from "react";
 import { motion, type TargetAndTransition } from "motion/react";
 import { ease, dur } from "@/lib/motion";
 
@@ -68,25 +68,37 @@ export function SplitLine({
           shown: { transition: { staggerChildren: stagger, delayChildren: delay } },
         }}
       >
+        {/*
+         * The space between words is a real text node in THIS inline flow,
+         * deliberately outside the mask.
+         *
+         * Putting it inside the word's inline-block — which is the obvious
+         * place — silently loses it: trailing whitespace at the end of an
+         * inline-block is collapsed away, so every headline renders as
+         * "Fourcookies.Fourreasons". The mask must contain the word and
+         * nothing else.
+         */}
         {words.map((w, i) => (
-          <span key={i} className="line-mask inline-block align-bottom">
-            <motion.span
-              className={`inline-block ${
-                accentLast && i === words.length - 1 ? "text-red" : ""
-              }`}
-              variants={{
-                hidden: { y: "115%", rotate: 4 },
-                shown: {
-                  y: "0%",
-                  rotate: 0,
-                  transition: { duration: 0.95, ease: ease.expo },
-                },
-              }}
-            >
-              {w}
-              {i < words.length - 1 ? " " : ""}
-            </motion.span>
-          </span>
+          <Fragment key={i}>
+            <span className="line-mask inline-block align-bottom">
+              <motion.span
+                className={`inline-block ${
+                  accentLast && i === words.length - 1 ? "text-red" : ""
+                }`}
+                variants={{
+                  hidden: { y: "125%", rotate: 4 },
+                  shown: {
+                    y: "0%",
+                    rotate: 0,
+                    transition: { duration: 0.95, ease: ease.expo },
+                  },
+                }}
+              >
+                {w}
+              </motion.span>
+            </span>
+            {i < words.length - 1 ? " " : null}
+          </Fragment>
         ))}
       </motion.span>
     </Tag>

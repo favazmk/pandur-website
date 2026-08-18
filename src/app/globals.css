@@ -32,7 +32,7 @@
   --color-ash: #6e6866;
 
   /* --- type --- */
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-display: var(--font-display-face), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
 
   /*
@@ -228,27 +228,35 @@ html.lenis body {
    ============================================================ */
 
 /*
- * 8vw, not 11vw. At 11vw a 1536px viewport renders this at 169px, which makes
- * "Our Signature Taste." wider than the screen and wraps it one word per line.
+ * Sizes are capped well below the viewport width. At 11vw a 1536px screen
+ * renders the hero at 169px, which makes "Our Signature Taste." wider than the
+ * screen and wraps it one word per line.
+ *
+ * Line heights sit at or just above 1, never below it.
+ *
+ * These were 0.9, which is a display-type instinct that only works for a
+ * single line of caps. On a two-line headline the ascenders of line two rise
+ * into the descenders of line one and the words physically collide — which is
+ * exactly what happened on the hero and the six-months band.
  */
 @utility text-hero {
-  font-size: clamp(2.6rem, 8vw, 8.5rem);
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-}
-@utility text-display {
-  font-size: clamp(2.5rem, 7.5vw, 7rem);
-  line-height: 0.9;
-  letter-spacing: -0.025em;
-}
-@utility text-title {
-  font-size: clamp(1.75rem, 4vw, 3.5rem);
-  line-height: 1;
+  font-size: clamp(2.6rem, 7.4vw, 7.75rem);
+  line-height: 1.02;
   letter-spacing: -0.02em;
 }
+@utility text-display {
+  font-size: clamp(2.35rem, 6.6vw, 6rem);
+  line-height: 1.04;
+  letter-spacing: -0.018em;
+}
+@utility text-title {
+  font-size: clamp(1.7rem, 3.6vw, 3.15rem);
+  line-height: 1.1;
+  letter-spacing: -0.014em;
+}
 @utility text-lead {
-  font-size: clamp(1.05rem, 1.6vw, 1.5rem);
-  line-height: 1.4;
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  line-height: 1.6;
 }
 @utility text-eyebrow {
   font-size: clamp(0.7rem, 0.9vw, 0.82rem);
@@ -257,15 +265,28 @@ html.lenis body {
   font-weight: 700;
 }
 @utility text-band {
-  font-size: clamp(2.75rem, 9vw, 9rem);
-  line-height: 1;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.5rem, 7.6vw, 7.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
 }
 
-/* Masked reveal: headline lines sit behind this until released */
+/*
+ * Masked reveal: headline lines sit behind this until released.
+ *
+ * The padding is load-bearing. `overflow: hidden` clips to the line box, and a
+ * display line-height near 1 makes that box SHORTER than the glyphs it holds —
+ * so every descender (g, y, p, comma) gets sliced off. The padding extends the
+ * clip region below the baseline and the equal negative margin takes the space
+ * back, so nothing moves but nothing is cut either.
+ *
+ * If this value changes, the `hidden` y-offset in SplitLine must stay larger
+ * than it, or the parked word peeks out from under the mask.
+ */
 @utility line-mask {
   overflow: hidden;
   display: block;
+  padding-bottom: 0.18em;
+  margin-bottom: -0.18em;
 }
 
 @utility edge-fade {

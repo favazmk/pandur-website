@@ -14,9 +14,14 @@ export default function SceneFallback({
 }) {
   return (
     <div className={className}>
+      {/*
+       * Smaller and fainter than the scene it stands in for, and offset the
+       * same way, so a slow chunk or a machine without WebGL never puts a
+       * heavy outline straight through the page title.
+       */}
       <div className="flex h-full w-full items-center justify-center">
         <CookieDoodle
-          className="h-[38vmin] w-[38vmin] animate-drift text-ink/20"
+          className="h-[26vmin] w-[26vmin] translate-x-[14%] translate-y-[18%] animate-drift text-ink/12"
           strokeWidth={4}
         />
       </div>
