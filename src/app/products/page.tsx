@@ -3,10 +3,11 @@ import Link from "next/link";
 import PageHero from "@/components/layout/PageHero";
 import ProductSlot from "@/components/sections/ProductSlot";
 import Bite from "@/components/sections/Bite";
+import Retail from "@/components/sections/Retail";
 import { Reveal, RevealGroup, RevealItem, SplitLine } from "@/components/motion/Text";
 import { ScrollTilt, Tilt3D, ClipReveal } from "@/components/motion/Scroll";
 import { HoverDrift, HoverRule, HoverScramble } from "@/components/motion/Hover";
-import { FLAVOURS } from "@/lib/assets";
+import { FLAVOURS, MUTED, PACK } from "@/lib/assets";
 import { tiltAt } from "@/lib/motion";
 
 export const metadata: Metadata = {
@@ -48,21 +49,27 @@ export default function ProductsPage() {
                     </HoverDrift>
                   </Tilt3D>
                 </ClipReveal>
-                <h2 className="text-title mt-6 font-display font-black text-ink">
-                  <HoverRule on="group">{f.name}</HoverRule>
-                </h2>
+                <div className="mt-6 flex items-baseline justify-between gap-4">
+                  <h2 className="text-title font-display font-black text-ink">
+                    <HoverRule on="group">{f.name}</HoverRule>
+                  </h2>
+                  <span
+                    lang="ar"
+                    dir="rtl"
+                    className="font-display text-lg"
+                    style={{ color: f.accent }}
+                  >
+                    {f.nameAr}
+                  </span>
+                </div>
                 <p className="text-lead mt-2 text-ash">{f.note}</p>
+                <p className={`text-eyebrow mt-3 ${MUTED}`}>
+                  {PACK.pieces} pieces · {PACK.origin}
+                </p>
               </div>
             </RevealItem>
           ))}
         </RevealGroup>
-
-        <Reveal delay={0.2}>
-          <p className="mx-auto mt-16 max-w-2xl text-center text-sm text-ash">
-            Flavour names and product photography are pending from Royal Quality
-            Bakes and will replace these placeholders.
-          </p>
-        </Reveal>
       </section>
 
       {/* --- spec strip --- */}
@@ -86,6 +93,9 @@ export default function ProductsPage() {
           </RevealGroup>
         </ScrollTilt>
       </section>
+
+      {/* --- retail proof --- */}
+      <Retail />
 
       {/* --- the bite scene, reused --- */}
       <Bite />

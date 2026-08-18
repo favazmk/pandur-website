@@ -100,7 +100,7 @@ export default function Hero() {
         <Marquee
           speed={80}
           className="border-y border-ink/12 py-3"
-          itemClassName="text-eyebrow whitespace-pre text-ink/55"
+          itemClassName="text-eyebrow whitespace-pre text-ink/65"
           repeat={3}
         >
           {TICKER}

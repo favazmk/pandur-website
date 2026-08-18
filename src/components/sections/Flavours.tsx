@@ -6,7 +6,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import SceneFallback from "@/components/three/SceneFallback";
 import { CookieDoodle } from "@/components/brand/Marks";
 import { SplitLine } from "@/components/motion/Text";
-import { FLAVOURS } from "@/lib/assets";
+import { FLAVOURS, MUTED } from "@/lib/assets";
 import { useIsMobile, usePrefersReducedMotion } from "@/lib/useMedia";
 
 const FlavourScene = dynamic(
@@ -66,6 +66,9 @@ export default function Flavours() {
               <h3 className="text-title mt-6 font-display font-black text-ink">
                 {f.name}
               </h3>
+              <p lang="ar" dir="rtl" className={`mt-1 text-sm ${MUTED}`}>
+                {f.nameAr}
+              </p>
               <p className="text-lead mt-3 text-ash">{f.note}</p>
             </div>
           ))}
@@ -117,13 +120,21 @@ export default function Flavours() {
                 <span className="text-eyebrow" style={{ color: f.accent }}>
                   {`0${i + 1} / 0${N}`}
                 </span>
-                <span className="text-eyebrow text-ink/45">Signature</span>
+                <span className={`text-eyebrow ${MUTED}`}>Signature</span>
               </div>
 
               <div className="max-w-xl">
                 <h3 className="text-display font-display font-black text-ink">
                   {f.name}
                 </h3>
+                <p
+                  lang="ar"
+                  dir="rtl"
+                  className="text-lead mt-2 font-display"
+                  style={{ color: f.accent }}
+                >
+                  {f.nameAr}
+                </p>
                 <p className="text-lead mt-4 text-ash">{f.note}</p>
               </div>
             </div>

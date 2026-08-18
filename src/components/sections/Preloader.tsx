@@ -62,7 +62,7 @@ export default function Preloader() {
             duration={1.5}
           />
           <motion.span
-            className="mt-8 font-display text-2xl tabular-nums text-ink/60"
+            className="mt-8 font-display text-2xl tabular-nums text-ink/70"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}

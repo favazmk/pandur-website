@@ -5,6 +5,7 @@ import StatBand from "@/components/sections/StatBand";
 import Flavours from "@/components/sections/Flavours";
 import Bite from "@/components/sections/Bite";
 import Craft from "@/components/sections/Craft";
+import Retail from "@/components/sections/Retail";
 import Markets from "@/components/sections/Markets";
 import MarqueeBand from "@/components/sections/MarqueeBand";
 import Vision from "@/components/sections/Vision";
@@ -23,6 +24,7 @@ export default function Home() {
           <Bite />
         </PanelOver>
         <Craft />
+        <Retail />
         <Markets />
         <MarqueeBand />
         <PanelOver z={30}>

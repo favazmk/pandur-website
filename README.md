@@ -85,8 +85,19 @@ small text. Hence two reds:
 - `--color-red` `#EC2126` — large display type, fills, graphics
 - `--color-red-deep` `#CE1419` — small text, and the marquee band behind white text
 
+Each flavour also carries its own accent, sampled from that flavour's packaging
+and then deepened until it cleared 4.5:1 on its own ground — the measured ratio
+is recorded beside every value in `src/lib/assets.ts`.
+
+Muted small text sits at `text-ink/65` and no lighter, exported as `MUTED`. Below
+that it drops under 4.5:1 on the lightest flavour ground, which is invisible in
+review because the composite still looks like ordinary legible grey.
+
 If you touch the palette, re-check every pairing including opacity-derived ones
-(`/60`, `/70` variants composite against their backdrop and fail silently).
+(`/60`, `/70` variants composite against their backdrop and fail silently). Note
+that Tailwind v4 emits `oklab()`, so a checker that parses `getComputedStyle`
+colours as `rgb()` will read the lightness as a red channel and report confident
+nonsense — resolve colours through a canvas instead.
 
 `prefers-reduced-motion` is honoured throughout: Lenis is disabled, scroll-scrubs
 become static states, and no information lives only in motion.
@@ -97,25 +108,42 @@ become static states, and no information lives only in motion.
 
 | # | Item | Where |
 |---|---|---|
-| 1 | **Four flavour names** — currently `FLAVOUR_01`–`04` | `src/lib/assets.ts` |
+| 1 | **Arabic flavour names** — read off the packaging photographs, not supplied as text. `butter` and `cardamom` are confident readings; `coconut` follows the pack's own transliteration; `peanut` is standard Arabic because that panel was illegible at the supplied resolution. Confirm all four against a physical pack | `src/lib/assets.ts` → `nameAr` |
 | 2 | **"Aman" → Ajman?** built as Ajman, needs sign-off | `src/lib/assets.ts` |
-| 3 | **Product photography** — drop in, flip one flag, no layout shift | `src/lib/assets.ts` → `HAS_PRODUCT_IMAGES` |
+| 3 | **The image files themselves** — the flavour and retail photography has been seen and the site is built around it, but the files are not yet in the repo. See the asset contract below | `public/products/` |
 | 4 | **Form destination** — forms validate but send nowhere | `src/components/forms/EnquiryForm.tsx` → `submitEnquiry()` |
 | 5 | **Contact email + phone** — page correctly hides the block rather than faking it | `src/lib/nav.ts` → `COMPANY` |
 | 6 | **Franchise commercial terms** — none published, by design | `src/app/franchises/page.tsx` |
 | 7 | **Blog content** — the three posts are samples written from the brief; decide whether the client needs a CMS to self-publish | `src/content/blog.ts` |
-| 8 | **Arabic / RTL?** — worth deciding before the layout hardens | — |
+| 8 | **Full Arabic / RTL site?** — flavour names are now bilingual, which makes this a live question rather than a hypothetical | — |
+
+**Closed by the delivered photography:** the four flavour names (Butter, Coconut,
+Peanut, Cardamom), the per-flavour palette — now sampled from the actual packaging
+rather than invented — and the pack facts printed on the box (16 pieces, Made in
+UAE, Premium Quality seal).
 
 ### Asset contract
 
-Photography drops into `public/products/` and is switched on with a single flag:
+Photography drops into `public/products/` under these exact names, then the
+matching flag in `src/lib/assets.ts` flips. The two sets are independent, so
+either can go live without the other.
 
 ```
-flavour-01.png … flavour-04.png    transparent PNG, ≥2000px long edge,
-pack-01.png    … pack-04.png       cookie centred, soft contact shadow
+pack-butter.jpg  pack-coconut.jpg      portrait 3:4, ≥1600px long edge, JPEG
+pack-peanut.jpg  pack-cardamom.jpg     box left of centre, props to its right
+    → HAS_PACK_IMAGES
+
+retail-shelf.jpg   the gondola end, boxes facing
+retail-aisle.jpg   the wider aisle view
+                                       landscape 4:3, ≥2000px long edge, JPEG
+    → HAS_RETAIL_IMAGES
 ```
 
-Every slot reserves its aspect ratio already, so nothing reflows when the flag flips.
+These are photographs on styled sets, not cut-outs — there is no transparency to
+preserve, so JPEG rather than PNG, and slots `object-cover` rather than
+`object-contain`. Every slot already reserves its aspect ratio, so nothing
+reflows when a flag flips; but if the delivered ratio ever changes, change the
+slot's `aspect` prop with it rather than letting the image be centre-cropped.
 
 ---
 
