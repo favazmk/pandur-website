@@ -42,3 +42,10 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# 3D texture intermediates — regenerate with:
+#   node scripts/bake-cookie-textures.mjs
+# The source collage (reference/3d/cookie-4up-source.png) IS committed; these
+# are derived from it and would only bloat the history.
+reference/3d/raw-*.png
+reference/3d/cookie-bottom.jpg

@@ -12,13 +12,9 @@ import { Lights, ParallaxGroup, StudioEnv } from "../Rig";
 export default function MarkScene({
   interactive,
   seed = 7,
-  dough,
-  chip,
 }: {
   interactive: boolean;
   seed?: number;
-  dough?: string;
-  chip?: string;
 }) {
   return (
     <CookieStage
@@ -40,7 +36,7 @@ export default function MarkScene({
           rotation={[-1.02, 0, 0.16]}
           scale={0.56}
         >
-          <Cookie quality="low" seed={seed} dough={dough} chip={chip} />
+          <Cookie quality="low" seed={seed} />
         </group>
       </ParallaxGroup>
     </CookieStage>

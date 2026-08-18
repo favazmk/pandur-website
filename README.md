@@ -60,14 +60,46 @@ src/
   lib/                    tokens, noise, media queries, nav + company facts
 ```
 
-### The cookie is procedural
+### The cookie is procedural, and now textured from the real product
 
-No `.glb`, no HDR, no textures. `src/components/three/cookieGeometry.ts` builds it:
-a lathe profile with a periodic rim jitter, two octaves of noise displacement,
-blue-noise-scattered chips, and a real CSG sphere subtraction for the bite.
+No `.glb` and no HDR. `src/components/three/cookieGeometry.ts` builds the mesh:
+a lathe of the measured cross-section, a periodic rim jitter, two octaves of
+noise displacement, and a real CSG sphere subtraction for the bite.
 
-This is deliberate — product photography was not available when the site was
-built, and a procedural hero subject meant the build did not have to wait.
+What changed is the surface. Four reference views were supplied — top, side,
+underside and three-quarter — and they now drive it:
+
+- **`cookie-top.jpg`** is the albedo, projected **top-down** onto the mesh.
+  LatheGeometry's own UVs run around the circumference, which would smear a
+  photograph of the face into concentric rings, so `planarUVs()` replaces them
+  with an x/z projection.
+- **`cookie-bump.jpg`** is that image's luminance, driving the crumb relief. The
+  geometric displacement was softened to suit (`surfAmp` 0.014 → 0.009), because
+  the bump map now carries the fine detail and the mesh only has to supply the
+  coarse lumpiness the silhouette needs.
+- The **profile** came off the side view. The real biscuit is not symmetric: the
+  top is domed, the underside is flat where it sat on the tray, and the widest
+  point of the rim sits below the midline. Thickness lands at 0.194 of the
+  diameter.
+
+Regenerate the textures with:
+
+```bash
+node scripts/bake-cookie-textures.mjs
+```
+
+The source collage is committed at `reference/3d/cookie-4up-source.png`; the
+intermediates it produces are gitignored. The textures carry a flood ring past
+the disc edge (`BLEED`, matched by `TEXTURE_HALF_WIDTH` in the geometry) so the
+noise-displaced silhouette — which reaches radius 1.03 — never samples past the
+image and picks up the photograph's background.
+
+**It is no longer a chocolate-chip cookie.** It never should have been: the real
+Pandur biscuit has no inclusions at all. The chip scatter, the chip material and
+the per-flavour `dough`/`chip` colours are all gone, along with the flavour
+scrub's colour grading — all four flavours are the same golden biscuit, and
+tinting a photograph of it four different ways invented a difference that does
+not exist. The panels are told apart by ground, accent and ingredient mark.
 
 ### Motion tokens
 

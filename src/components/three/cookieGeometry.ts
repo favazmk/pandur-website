@@ -1,45 +1,68 @@
 import * as THREE from "three";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { Brush, Evaluator, SUBTRACTION } from "three-bvh-csg";
-import { Noise, prng } from "@/lib/noise";
+import { Noise } from "@/lib/noise";
 
 /**
- * Procedural chocolate-chip cookie.
+ * The Pandur biscuit, built from the reference photography in `public/3d/`.
  *
- * Built entirely in code — no .glb, no texture, no HDR. That is deliberate:
- * product photography has not been delivered, and a procedural hero subject is
- * what lets the build proceed without it.
+ * Geometry is still procedural — a lathe of the measured cross-section plus
+ * noise — but the surface is now the real product's photograph rather than a
+ * flat dough colour. Four views were supplied (top, side, underside, three
+ * quarter); the side view gave the profile below and the top view is the
+ * albedo and bump map.
+ *
+ * It is no longer a chocolate-chip cookie. It never should have been: the real
+ * product has no inclusions at all, it is a plain crumb biscuit, so the chip
+ * scatter that used to live here misrepresented what Pandur actually sells.
  */
 
 export type CookieBuild = {
   geometry: THREE.BufferGeometry;
-  chips: ChipTransform[];
 };
 
-export type ChipTransform = {
-  position: [number, number, number];
-  rotation: [number, number, number];
-  scale: number;
-};
-
-/** Cookie cross-section: flat-ish top, rounded rim, flat-ish base. */
+/**
+ * Cross-section measured from `raw-side.png`.
+ *
+ * The real biscuit is NOT symmetric, which the previous invented profile
+ * assumed: the top is domed, the underside is flat where it sat on the tray,
+ * and the widest point of the rim sits just below the midline. Thickness works
+ * out at 0.195 of the diameter — the photograph reads thicker than that, but
+ * it was shot slightly from above so the visible height includes some of the
+ * top face.
+ *
+ * Order runs top-centre, out over the dome, around the rim, then back along
+ * the base to bottom-centre, which is what LatheGeometry needs to close.
+ */
 const PROFILE: Array<[number, number]> = [
-  [0.0, 0.15],
-  [0.42, 0.148],
-  [0.68, 0.14],
-  [0.85, 0.126],
-  [0.945, 0.096],
-  [0.99, 0.05],
-  [1.0, 0.0],
-  [0.99, -0.05],
-  [0.945, -0.096],
-  [0.85, -0.126],
-  [0.68, -0.14],
-  [0.42, -0.148],
-  [0.0, -0.15],
+  [0.0, 0.225],
+  [0.3, 0.219],
+  [0.55, 0.204],
+  [0.72, 0.186],
+  [0.85, 0.161],
+  [0.93, 0.129],
+  [0.975, 0.09],
+  [1.0, 0.038],
+  [1.005, -0.022],
+  [0.99, -0.078],
+  [0.958, -0.122],
+  [0.9, -0.148],
+  [0.8, -0.158],
+  [0.55, -0.162],
+  [0.28, -0.164],
+  [0.0, -0.165],
 ];
 
-/** Where the bite is taken from. Shared with chip culling so chips vanish with it. */
+/**
+ * Half-width of the baked textures in mesh radius units.
+ *
+ * The textures carry a flood ring past the disc edge (BLEED in the bake
+ * script) so the noise-displaced silhouette, which reaches about 1.06, never
+ * samples past the image and picks up the photograph's background.
+ */
+const TEXTURE_HALF_WIDTH = 1.1;
+
+/** Where the bite is taken from. */
 export const BITE = {
   center: new THREE.Vector3(0.92, 0.06, -0.42),
   radius: 0.62,
@@ -50,7 +73,9 @@ function displace(
   noise: Noise,
   octaves: number,
   rimAmp = 0.055,
-  surfAmp = 0.014
+  // Gentler than it was. The bump map carries the fine crumb now, so this only
+  // has to supply the coarse lumpiness the silhouette needs.
+  surfAmp = 0.009
 ) {
   const pos = geo.attributes.position as THREE.BufferAttribute;
   const nor = geo.attributes.normal as THREE.BufferAttribute;
@@ -85,81 +110,43 @@ function displace(
   return geo;
 }
 
-/** Best-candidate sampling — cheap blue noise, so chips never grid up. */
-function scatterChips(
-  seed: number,
-  count: number,
-  bitten: boolean
-): ChipTransform[] {
-  const rnd = prng(seed);
-  const picked: Array<[number, number]> = [];
+/**
+ * Replace the lathe's UVs with a top-down planar projection.
+ *
+ * LatheGeometry lays u around the circumference and v along the profile, which
+ * is right for a wrapped label and wrong for a photograph of the face: the top
+ * view would smear into concentric rings. Projecting from x/z instead lands the
+ * photo on the biscuit the way the camera saw it.
+ *
+ * The rim and the underside receive the same projection, so they sample the
+ * outer ring of the texture — the flood colour baked from the real edge tone.
+ * That reads correctly because the rim genuinely is that colour; only the fine
+ * crumb of the underside is lost, and the underside is barely on camera.
+ */
+function planarUVs(geo: THREE.BufferGeometry) {
+  const pos = geo.attributes.position as THREE.BufferAttribute;
+  const uv = new Float32Array(pos.count * 2);
+  const s = 0.5 / TEXTURE_HALF_WIDTH;
 
-  const candidate = (): [number, number] => {
-    // uniform over a disc, kept inside the rim
-    const t = rnd() * Math.PI * 2;
-    const r = Math.sqrt(rnd()) * 0.78;
-    return [Math.cos(t) * r, Math.sin(t) * r];
-  };
-
-  for (let i = 0; i < count; i++) {
-    let best: [number, number] = candidate();
-    let bestD = -1;
-    for (let k = 0; k < 12; k++) {
-      const c = candidate();
-      let d = Infinity;
-      for (const p of picked) {
-        d = Math.min(d, (p[0] - c[0]) ** 2 + (p[1] - c[1]) ** 2);
-      }
-      if (picked.length === 0) {
-        best = c;
-        break;
-      }
-      if (d > bestD) {
-        bestD = d;
-        best = c;
-      }
-    }
-    picked.push(best);
+  for (let i = 0; i < pos.count; i++) {
+    uv[i * 2] = 0.5 + pos.getX(i) * s;
+    // negated so the projection is not mirrored against the source photograph
+    uv[i * 2 + 1] = 0.5 - pos.getZ(i) * s;
   }
 
-  return picked
-    .map(([x, z]) => {
-      const r = Math.hypot(x, z);
-      // follow the profile down as we approach the rim
-      const top = 0.15 - Math.pow(r / 1.0, 4) * 0.055;
-      const scale = 0.05 + rnd() * 0.038;
-      return {
-        position: [x, top - scale * 0.34, z] as [number, number, number],
-        rotation: [
-          rnd() * Math.PI,
-          rnd() * Math.PI,
-          rnd() * Math.PI,
-        ] as [number, number, number],
-        scale,
-      };
-    })
-    // A chip inside the bite volume would float in mid-air once the sphere is
-    // subtracted — but only cull them when there IS a bite, or the whole cookie
-    // ends up with a bare patch where the bite has not happened yet.
-    .filter(
-      (c) =>
-        !bitten ||
-        new THREE.Vector3(...c.position).distanceTo(BITE.center) >
-          BITE.radius * 0.98
-    );
+  geo.setAttribute("uv", new THREE.BufferAttribute(uv, 2));
+  return geo;
 }
 
 export function buildCookie({
   seed = 7,
   segments = 128,
   octaves = 2,
-  chipCount = 18,
   bitten = false,
 }: {
   seed?: number;
   segments?: number;
   octaves?: number;
-  chipCount?: number;
   bitten?: boolean;
 } = {}): CookieBuild {
   const noise = new Noise(seed);
@@ -175,6 +162,7 @@ export function buildCookie({
   // Weld the seam before displacing so normals stay continuous around it.
   geo = mergeVertices(geo, 1e-5);
   geo = displace(geo, noise, octaves);
+  geo = planarUVs(geo);
 
   if (bitten) {
     const evaluator = new Evaluator();
@@ -201,8 +189,5 @@ export function buildCookie({
 
   geo.computeBoundingSphere();
 
-  return {
-    geometry: geo,
-    chips: scatterChips(seed * 31 + 5, chipCount, bitten),
-  };
+  return { geometry: geo };
 }

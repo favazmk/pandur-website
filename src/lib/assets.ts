@@ -107,10 +107,12 @@ export type Flavour = {
   note: string;
   /** page ground while this panel is active */
   ground: string;
-  /** cookie dough albedo in the 3D scene */
-  dough: string;
-  /** inclusion / line-art stroke colour */
-  chip: string;
+  /**
+   * Stroke tone for this flavour's line art — the drifting cookie doodles and
+   * the decorative marks. Named for what it does; it was `chip`, back when the
+   * 3D biscuit had chocolate chips to colour, and the real product has none.
+   */
+  line: string;
   /**
    * Small label text on `ground`. Every value below was computed, not
    * eyeballed, and clears WCAG AA (4.5:1) on its own ground — the measured
@@ -139,8 +141,7 @@ export const FLAVOURS: Flavour[] = [
     ingredient: "Sweet cream butter",
     note: "Rich, short and properly buttery.",
     ground: "#F4F1E2",
-    dough: "#E8C89A",
-    chip: "#8A6A3A",
+    line: "#8A6A3A",
     accent: "#4F5A2B", // 6.55:1 on ground
   },
   {
@@ -150,8 +151,7 @@ export const FLAVOURS: Flavour[] = [
     ingredient: "Toasted coconut",
     note: "Toasted coconut, right through the crumb.",
     ground: "#F3EADD",
-    dough: "#E3BE8C",
-    chip: "#6B4A32",
+    line: "#6B4A32",
     accent: "#7A4A22", // 6.23:1 on ground
   },
   {
@@ -161,8 +161,7 @@ export const FLAVOURS: Flavour[] = [
     ingredient: "Roasted peanut",
     note: "Roasted peanut, deep and savoury-sweet.",
     ground: "#F8EFDB",
-    dough: "#E8C486",
-    chip: "#8A5A2B",
+    line: "#8A5A2B",
     accent: "#8A4A16", // 5.98:1 on ground
   },
   {
@@ -172,8 +171,7 @@ export const FLAVOURS: Flavour[] = [
     ingredient: "Green cardamom",
     note: "Green cardamom. Built for the tea tray.",
     ground: "#EBF1E8",
-    dough: "#E5C79B",
-    chip: "#4A6B2E",
+    line: "#4A6B2E",
     accent: "#0E5C3F", // 6.97:1 on ground
   },
 ];

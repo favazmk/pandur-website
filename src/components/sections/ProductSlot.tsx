@@ -67,7 +67,7 @@ export default function ProductSlot({
             aria-hidden
             className="absolute -right-6 -bottom-8 h-2/5 w-2/5 opacity-25"
             strokeWidth={4}
-            stroke={f.chip}
+            stroke={f.line}
           />
           <IngredientMark
             slug={f.slug}

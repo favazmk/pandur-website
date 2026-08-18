@@ -46,7 +46,7 @@ function RetailFrame({
           <CookieDoodle
             className={`h-2/5 w-2/5 ${tiltAt(index)}`}
             strokeWidth={4}
-            stroke={f.chip}
+            stroke={f.line}
           />
         </div>
       )}

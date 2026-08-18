@@ -51,7 +51,7 @@ export default function BlogPage() {
                       <CookieDoodle
                         className={`h-24 w-24 ${tiltAt(i)}`}
                         strokeWidth={5}
-                        stroke={FLAVOURS[i % FLAVOURS.length].chip}
+                        stroke={FLAVOURS[i % FLAVOURS.length].line}
                       />
                     </div>
                   </HoverDrift>
