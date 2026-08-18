@@ -95,7 +95,12 @@ export default function Cookie({
         ref={matRef}
         map={map}
         bumpMap={bumpMap}
-        bumpScale={0.5}
+        /*
+         * Pushed up because the albedo is de-lit: with the photograph's own
+         * shading divided out, the relief is what has to make the crumb catch
+         * the light, so it carries more of the surface than it otherwise would.
+         */
+        bumpScale={1.15}
         color={tint}
         roughness={0.82}
         metalness={0}

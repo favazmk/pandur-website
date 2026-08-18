@@ -32,8 +32,14 @@ export function StudioEnv() {
 }
 
 /**
- * Pointer parallax. The cookie leans toward the cursor by up to ±6°, damped so
- * it settles rather than snapping. Falls back to pure idle rotation on touch.
+ * Idle turn, with pointer parallax layered on top.
+ *
+ * The turn is unconditional and that is the point. This used to REPLACE the
+ * idle spin with pointer-following whenever a pointer was available, so on a
+ * desktop with the mouse held still the cookie sat perfectly motionless — and a
+ * motionless 3D object wearing a photographic texture reads as a flat image
+ * rather than a thing. The spin now always advances and the cursor lean is
+ * added to it, so the subject is never static but still answers the pointer.
  */
 export function ParallaxGroup({
   children,
@@ -49,6 +55,8 @@ export function ParallaxGroup({
   const ref = useRef<THREE.Group>(null);
   const { pointer } = useThree();
   const target = useRef({ x: 0, y: 0 });
+  const lean = useRef({ x: 0, y: 0 });
+  const spin = useRef(0);
 
   useFrame((_, delta) => {
     const g = ref.current;
@@ -59,16 +67,21 @@ export function ParallaxGroup({
     if (enabled) {
       target.current.x = -pointer.y * THREE.MathUtils.degToRad(maxTilt);
       target.current.y = pointer.x * THREE.MathUtils.degToRad(maxTilt);
-    }
-
-    // critically-damped-ish follow
-    g.rotation.x += (target.current.x - g.rotation.x) * Math.min(1, d * 4);
-
-    if (enabled) {
-      g.rotation.y += (target.current.y - g.rotation.y) * Math.min(1, d * 4);
     } else {
-      g.rotation.y += d * idleSpeed;
+      target.current.x = 0;
+      target.current.y = 0;
     }
+
+    // critically-damped-ish follow, tracked separately from the spin so the
+    // easing never fights a target that is itself moving
+    const k = Math.min(1, d * 4);
+    lean.current.x += (target.current.x - lean.current.x) * k;
+    lean.current.y += (target.current.y - lean.current.y) * k;
+
+    spin.current += d * idleSpeed;
+
+    g.rotation.x = lean.current.x;
+    g.rotation.y = spin.current + lean.current.y;
   });
 
   return <group ref={ref}>{children}</group>;

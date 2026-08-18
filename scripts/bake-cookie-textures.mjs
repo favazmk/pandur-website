@@ -132,11 +132,58 @@ async function bake(src, name) {
     }
   }
 
-  const out = name === "cookie-bottom" ? `reference/3d/${name}.jpg` : `public/3d/${name}.jpg`;
+  // only the finished maps belong in public/; intermediates stay in reference/
+  const out = name.startsWith("cookie-top") || name === "cookie-bottom"
+    ? `reference/3d/${name}.jpg`
+    : `public/3d/${name}.jpg`;
   await sharp(px, { raw: { width: OUT, height: OUT, channels: ch } })
     .jpeg({ quality: 88, chromaSubsampling: "4:4:4" })
     .toFile(out);
   console.log(`${out}   disc r=${d.rad.toFixed(0)}px   edge tone rgb(${rim.join(",")})`);
+  return out;
+}
+
+/**
+ * Divide the studio lighting out of an albedo.
+ *
+ * A photograph carries the light it was shot under — a bright side, a shaded
+ * side, a specular sheen. Painted onto a 3D object that then gets lit again,
+ * those baked highlights stay locked to the surface and turn with it, so the
+ * shading never answers the scene's lights and the object reads as a flat
+ * picture wrapped round a shape rather than as a thing.
+ *
+ * A heavy blur approximates the lighting field; dividing it out and re-centring
+ * on the mean leaves the crumb detail at even brightness and lets three.js do
+ * the shading. STRENGTH backs off from a full division — some of the original
+ * form-shading is worth keeping so the biscuit does not go completely flat.
+ */
+async function delight(file, out, { sigma = 34, strength = 0.82 } = {}) {
+  const a = await sharp(file).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+  const l = await sharp(file).removeAlpha().blur(sigma).raw().toBuffer({ resolveWithObject: true });
+  const { width, height, channels } = a.info;
+  const px = Buffer.from(a.data);
+
+  // mean of the lighting field, per channel
+  const mean = [0, 0, 0];
+  for (let i = 0; i < l.data.length; i += channels) {
+    mean[0] += l.data[i]; mean[1] += l.data[i + 1]; mean[2] += l.data[i + 2];
+  }
+  const n = l.data.length / channels;
+  for (let c = 0; c < 3; c++) mean[c] /= n;
+
+  for (let i = 0; i < px.length; i += channels) {
+    for (let c = 0; c < 3; c++) {
+      const lit = Math.max(1, l.data[i + c]);
+      const flat = (px[i + c] / lit) * mean[c];
+      const v = px[i + c] * (1 - strength) + flat * strength;
+      px[i + c] = Math.max(0, Math.min(255, Math.round(v)));
+    }
+  }
+
+  await sharp(px, { raw: { width, height, channels } })
+    .jpeg({ quality: 88, chromaSubsampling: "4:4:4" })
+    .toFile(out);
+  console.log(`${out}   de-lit (sigma ${sigma}, strength ${strength})`);
   return out;
 }
 
@@ -153,16 +200,25 @@ async function measureSide() {
 }
 
 await slice();
-const top = await bake("reference/3d/raw-top.png", "cookie-top");
+
+// bake to a temp name, then de-light into the file the site actually loads
+await bake("reference/3d/raw-top.png", "cookie-top-lit");
+const top = await delight("reference/3d/cookie-top-lit.jpg", "public/3d/cookie-top.jpg");
+
 await bake("reference/3d/raw-bottom.png", "cookie-bottom");
 
+/*
+ * Bump comes off the DE-LIT albedo, not the original. Derived from the lit
+ * version it would emboss the studio lighting into the relief — a bright side
+ * becoming raised geometry — on top of the crumb it is actually meant to carry.
+ */
 await sharp(top)
   .greyscale()
   .normalise()
   .blur(1.0)
-  .linear(1.2, -20)
+  .linear(1.25, -22)
   .jpeg({ quality: 86 })
   .toFile("public/3d/cookie-bump.jpg");
-console.log("public/3d/cookie-bump.jpg");
+console.log("public/3d/cookie-bump.jpg   from the de-lit albedo");
 
 await measureSide();

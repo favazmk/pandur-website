@@ -77,6 +77,14 @@ underside and three-quarter — and they now drive it:
   geometric displacement was softened to suit (`surfAmp` 0.014 → 0.009), because
   the bump map now carries the fine detail and the mesh only has to supply the
   coarse lumpiness the silhouette needs.
+- The albedo is **de-lit** before it ships. A photograph carries the light it was
+  shot under, and painted onto a 3D object those highlights stay locked to the
+  surface and turn with it — so the shading never answers the scene's lights and
+  the whole thing reads as a picture wrapped round a shape. The bake divides out
+  a heavy blur of the image (its lighting field) and re-centres on the mean,
+  leaving even brightness and only the crumb. `bumpScale` is correspondingly high
+  (1.15): with the photo's own shading gone, the relief is what has to catch the
+  light.
 - The **profile** came off the side view. The real biscuit is not symmetric: the
   top is domed, the underside is flat where it sat on the tray, and the widest
   point of the rim sits below the midline. Thickness lands at 0.194 of the

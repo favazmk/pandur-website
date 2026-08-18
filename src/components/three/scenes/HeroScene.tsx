@@ -50,8 +50,13 @@ export default function HeroScene({
   interactive: boolean;
   progress?: MotionValue<number>;
 }) {
+  /*
+   * idleSpeed is raised well above the default here: the hero subject is the
+   * one thing on the page that has to read as an object rather than a picture
+   * of one, and it now turns whether or not the pointer moves.
+   */
   const body = (
-    <ParallaxGroup enabled={interactive} maxTilt={6}>
+    <ParallaxGroup enabled={interactive} maxTilt={6} idleSpeed={0.3}>
       {/*
        * Dropped below the headline and tilted toward the camera. At the old
        * rotation it presented almost edge-on, which read as a beige smear
