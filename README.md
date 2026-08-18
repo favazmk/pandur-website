@@ -110,7 +110,7 @@ become static states, and no information lives only in motion.
 |---|---|---|
 | 1 | **Arabic flavour names** — read off the packaging photographs, not supplied as text. `butter` and `cardamom` are confident readings; `coconut` follows the pack's own transliteration; `peanut` is standard Arabic because that panel was illegible at the supplied resolution. Confirm all four against a physical pack | `src/lib/assets.ts` → `nameAr` |
 | 2 | **"Aman" → Ajman?** built as Ajman, needs sign-off | `src/lib/assets.ts` |
-| 3 | **The image files themselves** — the flavour and retail photography has been seen and the site is built around it, but the files are not yet in the repo. See the asset contract below | `public/products/` |
+| 3 | **The four pack images look like renders, not photographs** — and two carry visible errors. Decide whether to re-shoot before launch. Detail below | `public/products/pack-*.jpg` |
 | 4 | **Form destination** — forms validate but send nowhere | `src/components/forms/EnquiryForm.tsx` → `submitEnquiry()` |
 | 5 | **Contact email + phone** — page correctly hides the block rather than faking it | `src/lib/nav.ts` → `COMPANY` |
 | 6 | **Franchise commercial terms** — none published, by design | `src/app/franchises/page.tsx` |
@@ -121,6 +121,37 @@ become static states, and no information lives only in motion.
 Peanut, Cardamom), the per-flavour palette — now sampled from the actual packaging
 rather than invented — and the pack facts printed on the box (16 pieces, Made in
 UAE, Premium Quality seal).
+
+### The pack images need a decision before launch
+
+All six files are in and switched on. The two retail shots are genuine store
+photography — 4032×3024, straight off a camera, and they look it.
+
+The four pack images are a different matter. Enlarging the fine print shows text
+that no print run would produce:
+
+- **`pack-peanut.jpg`** — the round quality seal reads **“SOEMIMS GOAUTT”** where
+  it should read “PREMIUM QUALITY”, and the ring of text around it is not words.
+- **`pack-peanut.jpg`** — the Arabic line reads **كوكوتات كوكيز**, which is
+  coconut’s line sitting on the peanut box.
+- **`pack-coconut.jpg`** — same Arabic line, and it misspells the
+  transliteration too: ت where ن belongs.
+- Butter and cardamom render “PREMIUM QUALITY” correctly, so the fault is not
+  uniform across the set.
+
+Add the non-uniform aspect ratios (0.750, 0.848, 0.854, 0.862 — a real shoot is
+consistent) and a 896px width, and these read as generated mockups rather than
+photographs of the product.
+
+So `HAS_PACK_IMAGES` is **off**, by decision rather than by omission — the files
+are present and wired, and the procedural stand-ins render instead. They look
+deliberate and assert nothing false. Set the flag to `true` once real packaging
+photography exists; no other change is needed.
+
+`HAS_RETAIL_IMAGES` is **on** — that pair is genuine.
+
+The site’s own Arabic is **not** copied from this artwork — see the note above
+`FLAVOURS` for what was corrected and why.
 
 ### Asset contract
 
@@ -138,6 +169,15 @@ retail-aisle.jpg   the wider aisle view
                                        landscape 4:3, ≥2000px long edge, JPEG
     → HAS_RETAIL_IMAGES
 ```
+
+Lowercase `.jpg`, no spaces. The originals arrived as `butter.JPG` and
+`retail 1.JPG`; uppercase extensions 404 on a case-sensitive host even when they
+work on Windows, and spaces force URL encoding. Both were renamed.
+
+What landed against that spec: the retail pair is exactly on it. The pack images
+are 896px wide rather than ≥1600, and only butter is on 3:4 — the other three get
+centre-cropped ~6% per side, which was checked image by image and takes
+background props rather than the box.
 
 These are photographs on styled sets, not cut-outs — there is no transparency to
 preserve, so JPEG rather than PNG, and slots `object-cover` rather than

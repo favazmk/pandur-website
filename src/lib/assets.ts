@@ -21,8 +21,17 @@
  * Flip a flag only once the matching files are actually in `public/products/`.
  * Every slot reserves its aspect ratio in both states, so nothing reflows.
  */
+/**
+ * OFF deliberately, not because the files are missing — they are in
+ * `public/products/` and correctly wired. The four pack images read as
+ * generated mockups and two carry visible errors, so the procedural stand-ins
+ * are the better thing to show until real photography exists. Flip to `true`
+ * once it does; nothing else needs to change. See README, outstanding item 3.
+ */
 export const HAS_PACK_IMAGES = false;
-export const HAS_RETAIL_IMAGES = false;
+
+/** The retail pair is genuine store photography and shipping. */
+export const HAS_RETAIL_IMAGES = true;
 
 /**
  * Packaging photography — the box on a styled kitchen set.
@@ -36,6 +45,25 @@ export const HAS_RETAIL_IMAGES = false;
  * full-bleed sets — there is no transparency to preserve and PNG would triple
  * the weight). The box sits left of centre with the styled props to its right;
  * slots crop from the centre, so keep that composition.
+ *
+ * WHAT WAS ACTUALLY DELIVERED (2026-08-18) — below spec on two counts:
+ *
+ *   pack-butter    896x1195  0.750  on ratio
+ *   pack-cardamom  896x1056  0.848  12% wider than 3:4
+ *   pack-coconut   896x1040  0.862  13% wider than 3:4
+ *   pack-peanut    896x1049  0.854  12% wider than 3:4
+ *
+ * 1. 896px wide against a >=1600px spec, so these are soft on a 2x display at
+ *    the ~500px slot the products grid renders them into.
+ * 2. Only butter is on ratio. The other three are centre-cropped ~6% per side
+ *    by `object-cover`. That was checked against each image: the crop takes
+ *    background props (spice jars, cabinet edges) and leaves the box and the
+ *    plated cookies whole. If these are ever re-shot, hold 3:4 and the crop
+ *    disappears.
+ *
+ * Note also that these four read as renders rather than photographs — the
+ * quality seal garbles to "SOEMIMS GOAUTT" on peanut, and peanut carries
+ * coconut's Arabic. See README, outstanding item 3.
  */
 export const packImage = (slug: FlavourSlug) => `/products/pack-${slug}.jpg`;
 
@@ -92,11 +120,21 @@ export type Flavour = {
 
 /**
  * The pack prints its Arabic name alongside the English one, so the site does
- * too. These readings come from photographs: `butter` and `cardamom` are
- * legible and confident, `coconut` follows the transliteration the pack itself
- * uses, and `peanut` is standard Arabic because that panel is not legible at
- * the resolution supplied. Have the client confirm all four against a physical
- * pack before launch — see README, outstanding item 1.
+ * too. `butter` (بسكويت الزبدة) and `cardamom` (بسكويت الهيل) match their packs.
+ *
+ * The other two deliberately DO NOT match the artwork supplied, because the
+ * artwork is wrong:
+ *
+ *   coconut  pack reads كوكوتات كوكيز — a transliteration of "coconut" with a
+ *            ت where the ن belongs. Corrected to كوكونات كوكيز here.
+ *   peanut   pack reads كوكوتات كوكيز as well — that is coconut's line, on the
+ *            peanut box. Replaced with بسكويت الفول السوداني, which is what
+ *            peanut biscuits are actually called.
+ *
+ * So this array is the correct naming, not a transcription. If the physical
+ * packs carry the same errors, that is a packaging problem to raise with the
+ * client rather than something to mirror onto the site. Confirm all four
+ * against a real pack before launch — see README, outstanding item 1.
  */
 export const FLAVOURS: Flavour[] = [
   {
