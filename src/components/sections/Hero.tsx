@@ -1,23 +1,37 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import Marquee from "@/components/motion/Marquee";
 import { SplitLine } from "@/components/motion/Text";
 import { CookieDoodle } from "@/components/brand/Marks";
-import HeroIngredients from "@/components/hero/HeroIngredients";
-import ProductStage from "@/components/hero/ProductStage";
-import { BEAT, HERO_PRODUCTS } from "@/lib/heroLayers";
-import { FLAVOURS } from "@/lib/assets";
+import ScrubVideo from "@/components/hero/ScrubVideo";
 import { ease } from "@/lib/motion";
 import { useIsMobile, usePrefersReducedMotion } from "@/lib/useMedia";
 
 const TICKER = "MADE IN KHORFAKKAN · UAE · 45 YEARS · MADE TO GROW · ";
 
-/** The two packs on show, with their flavour copy. */
-const BEATS = HERO_PRODUCTS.map(
-  (p) => FLAVOURS.find((f) => f.slug === p.slug)!
-);
+const VIDEO = "/hero/cookie.mp4";
+const POSTER = "/hero/cookie-poster.jpg";
+const STILL = "/hero/cookie-still.jpg";
+
+/*
+ * Three lines against the film's three beats: the cookie falls in, the
+ * ingredients arrive around it, it lands beside the tea. Each line is about
+ * what is on screen while it is up, which is the only reason to sync copy to
+ * footage at all.
+ *
+ * `at` is where the line reaches full strength; they cross-fade between.
+ */
+const BEATS = [
+  { at: 0.06, text: "Four signature flavours, baked in Khorfakkan." },
+  { at: 0.46, text: "Butter, coconut, peanut and green cardamom." },
+  { at: 0.86, text: "Six months on shelf, without trading away taste." },
+];
+
+/** How long a beat takes to hand over to the next. */
+const FADE = 0.16;
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -25,136 +39,163 @@ export default function Hero() {
   const reduced = usePrefersReducedMotion();
 
   /*
-   * The pin is 150vh — one beat's worth. Off on mobile, where a hold costs a
-   * third of the visitor's patience and buys a swap they can barely see, and
-   * off under reduced motion, where the whole point is not to move the page
-   * for them. In both cases the section is its natural height and the stage
-   * renders landed.
+   * 320vh. The film is ten seconds, and a shorter track makes a normal scroll
+   * tear through it — the ingredient beat would pass in a flick of the wheel.
+   * Two extra screens is roughly a second of footage per half-screen scrolled.
+   *
+   * Off on mobile and under reduced motion. Scrubbing needs the whole file
+   * decoded and seekable, which is a poor trade on a phone, and pinning for
+   * three screens is exactly what reduced motion asks us not to do.
    */
-  const pinned = !mobile && !reduced;
+  const scrub = !mobile && !reduced;
 
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
   });
 
-  const stops = [0, BEAT.hold, BEAT.swap, 1];
+  // Copy holds through the film, then lifts away as the hero releases.
+  const copyY = useTransform(scrollYProgress, [0.86, 1], [0, -90]);
+  const copyOpacity = useTransform(scrollYProgress, [0.88, 0.99], [1, 0]);
+  const tickerX = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
-  // Copy holds through the swap, then lifts away ahead of the products, so
-  // the two layers separate in depth on the way out.
-  const copyY = useTransform(scrollYProgress, [BEAT.swap, 1], [0, -110]);
-  const copyOpacity = useTransform(scrollYProgress, [BEAT.swap, 0.94], [1, 0]);
-  const tickerX = useTransform(scrollYProgress, [0, 1], [0, -160]);
-
-  // The flavour caption crosses with the pack it belongs to.
-  const capA = useTransform(scrollYProgress, stops, [1, 1, 0, 0]);
-  const capB = useTransform(scrollYProgress, stops, [0, 0, 1, 1]);
-  const caps = [capA, capB];
+  // Hooks cannot run inside a loop, so the three are written out.
+  const b0 = useTransform(
+    scrollYProgress,
+    [BEATS[0].at, BEATS[0].at + FADE],
+    [1, 0]
+  );
+  const b1 = useTransform(
+    scrollYProgress,
+    [BEATS[1].at - FADE, BEATS[1].at, BEATS[1].at + FADE],
+    [0, 1, 0]
+  );
+  const b2 = useTransform(
+    scrollYProgress,
+    [BEATS[2].at - FADE, BEATS[2].at],
+    [0, 1]
+  );
+  const beatOpacity = [b0, b1, b2];
 
   return (
     <section
       ref={ref}
       className="relative"
-      style={pinned ? { height: "150vh" } : undefined}
+      style={scrub ? { height: "320vh" } : undefined}
     >
       <div
         className={
-          pinned
+          scrub
             ? "sticky top-0 flex h-screen flex-col overflow-hidden"
             : "relative flex min-h-[100svh] flex-col overflow-hidden"
         }
       >
-        {/*
-         * No wash, and no doodle field either.
-         *
-         * The field grounds Partner and drifts through Craft; a third helping
-         * here would make it the page's wallpaper rather than its signature.
-         * A warm radial wash was the alternative and it had to come out: the
-         * ingredient SVGs are opaque tiles whose ground is #FCF4E8, which
-         * disappears against plain cream and shows as a rectangle against
-         * anything else. The wash peaked exactly where the near ingredients
-         * sit, so it drew a box around each of them.
-         *
-         * The packs are grounded by their own drop-shadow instead, which is
-         * what was actually missing.
-         */}
-
-        <HeroIngredients plane="far" progress={scrollYProgress} parallax={pinned} />
-
-        <div className="relative z-content mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 items-center gap-6 px-6 pt-28 md:pt-32 lg:grid-cols-2 lg:gap-10">
-          {/* --- copy --- */}
-          <motion.div
-            className="text-center lg:text-left"
-            style={pinned ? { y: copyY, opacity: copyOpacity } : undefined}
-          >
-            <motion.p
-              className="text-eyebrow mb-6 text-ash"
-              initial={{ opacity: 0, letterSpacing: "0.6em" }}
-              animate={{ opacity: 1, letterSpacing: "0.28em" }}
-              transition={{ delay: 0.5, duration: 1.2, ease: ease.expo }}
-            >
-              Royal Quality Bakes · Khorfakkan
-            </motion.p>
-
-            {/*
-             * The h1 does NOT change across the swap. It is the page's one
-             * heading and its text is what a crawler and a screen reader get;
-             * rewriting it mid-scroll would mean the accessible name of the
-             * page depends on how far down you are. The caption below is what
-             * carries the beat instead.
-             */}
-            <h1 className="text-hero-split max-w-[13ch] font-display font-black text-balance text-ink lg:max-w-none">
-              <SplitLine
-                text="Cookies worth"
-                className="block"
-                delay={0.35}
-                stagger={0.05}
-                once
-              />
-              <SplitLine
-                text="the shelf space."
-                className="block"
-                delay={0.55}
-                stagger={0.05}
-                accentLast
-                once
-              />
-            </h1>
-
-            {/*
-             * Held in a fixed-height box with both captions stacked and
-             * cross-faded. Swapping them in the flow would reflow the copy
-             * column on every scroll frame.
-             */}
-            <div className="relative mt-7 h-[5.5rem] sm:h-[4.5rem]">
-              {BEATS.map((f, i) => (
-                <motion.div
-                  key={f.slug}
-                  className="absolute inset-0"
-                  style={pinned ? { opacity: caps[i] } : { opacity: i === 0 ? 1 : 0 }}
-                  aria-hidden={i === 0 ? undefined : true}
-                >
-                  <span className="text-eyebrow" style={{ color: f.accent }}>
-                    {f.ingredient}
-                  </span>
-                  <p className="text-lead mt-2 max-w-md text-ash lg:mx-0">
-                    {f.note}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* --- the packs --- */}
-          <ProductStage progress={scrollYProgress} animate={pinned} />
+        {/* --- the film --- */}
+        <div aria-hidden className="absolute inset-0 z-scene">
+          {scrub ? (
+            <ScrubVideo
+              progress={scrollYProgress}
+              src={VIDEO}
+              poster={POSTER}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            /*
+             * No video at all where it cannot be scrubbed — downloading 2.6MB
+             * to hold on a single frame is not a trade worth making. The still
+             * is the cookie whole and centred, so it reads as a finished image
+             * rather than a paused one.
+             */
+            <Image
+              src={STILL}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+          )}
         </div>
 
-        <HeroIngredients plane="near" progress={scrollYProgress} parallax={pinned} />
+        {/*
+         * Cream scrim. The copy sits over footage that changes under it for
+         * ten seconds — at the ingredient beat the middle of the frame fills
+         * with pods and butter curls. Legibility cannot depend on what the
+         * film happens to be doing. Because the film's own ground is cream
+         * this reads as light rather than as a panel: up from the bottom on
+         * small screens where the copy sits low, in from the left on large
+         * ones where it sits in the left column.
+         */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-scene bg-[linear-gradient(to_top,var(--color-cream)_0%,rgba(251,245,236,0.82)_26%,transparent_62%)] lg:bg-[linear-gradient(to_right,var(--color-cream)_0%,rgba(251,245,236,0.78)_34%,transparent_66%)]"
+        />
+
+        {/* --- copy --- */}
+        <motion.div
+          className="relative z-content mx-auto flex w-full max-w-7xl flex-1 flex-col justify-end px-6 pb-6 text-center lg:justify-center lg:pb-0 lg:text-left"
+          style={scrub ? { y: copyY, opacity: copyOpacity } : undefined}
+        >
+          <motion.p
+            className="text-eyebrow mb-6 text-ash"
+            initial={{ opacity: 0, letterSpacing: "0.6em" }}
+            animate={{ opacity: 1, letterSpacing: "0.28em" }}
+            transition={{ delay: 0.5, duration: 1.2, ease: ease.expo }}
+          >
+            Royal Quality Bakes · Khorfakkan
+          </motion.p>
+
+          {/*
+           * Fixed across every beat. It is the page's one heading and its text
+           * is what a crawler and a screen reader are given; rewriting it
+           * mid-scroll would make the accessible name of the page depend on
+           * scroll position. The line below is what carries the film.
+           */}
+          <h1 className="text-hero-split max-w-[13ch] font-display font-black text-balance text-ink lg:max-w-[16ch]">
+            <SplitLine
+              text="Cookies worth"
+              className="block"
+              delay={0.35}
+              stagger={0.05}
+              once
+            />
+            <SplitLine
+              text="the shelf space."
+              className="block"
+              delay={0.55}
+              stagger={0.05}
+              accentLast
+              once
+            />
+          </h1>
+
+          {/*
+           * Fixed-height box with the three lines stacked and cross-faded.
+           * Swapping them in the flow would reflow the copy column on every
+           * scroll frame.
+           */}
+          <div className="relative mt-7 h-[4.5rem] sm:h-[3.5rem]">
+            {BEATS.map((b, i) => (
+              <motion.p
+                key={b.at}
+                className="text-lead absolute inset-x-0 max-w-md text-ash lg:mx-0"
+                style={
+                  scrub
+                    ? { opacity: beatOpacity[i] }
+                    : { opacity: i === 0 ? 1 : 0 }
+                }
+                aria-hidden={i === 0 ? undefined : true}
+              >
+                {b.text}
+              </motion.p>
+            ))}
+          </div>
+        </motion.div>
 
         {/* --- scroll cue --- */}
         <motion.div
           className="relative z-content flex justify-center pb-4"
-          style={pinned ? { opacity: copyOpacity } : undefined}
+          style={scrub ? { opacity: copyOpacity } : undefined}
         >
           <motion.div
             className="animate-bob"
@@ -169,11 +210,11 @@ export default function Hero() {
         {/* --- ticker --- */}
         <motion.div
           className="relative z-content"
-          style={pinned ? { x: tickerX } : undefined}
+          style={scrub ? { x: tickerX } : undefined}
         >
           <Marquee
             speed={80}
-            className="border-y border-ink/12 py-3"
+            className="border-y border-ink/12 bg-cream/70 py-3"
             itemClassName="text-eyebrow whitespace-pre text-ink/65"
             repeat={3}
           >
