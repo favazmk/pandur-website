@@ -94,7 +94,7 @@ export default function Hero() {
         <div aria-hidden className="absolute inset-0 z-scene">
           {scrub ? (
             <ScrubVideo
-              progress={scrollYProgress}
+              targetRef={ref}
               src={VIDEO}
               poster={POSTER}
               className="h-full w-full object-cover"
