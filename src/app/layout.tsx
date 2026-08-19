@@ -44,13 +44,18 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   metadataBase: new URL("https://pandur.ae"),
   title: {
-    default: "Pandur — Our Signature Taste. Made to Grow.",
+    /*
+     * Matches the h1. The tagline it replaced is not lost — MarqueeBand still
+     * runs "OUR SIGNATURE TASTE" across the page, and the hero ticker still
+     * carries "MADE TO GROW".
+     */
+    default: "Pandur — Cookies worth the shelf space.",
     template: "%s · Pandur",
   },
   description:
     "Pandur is the signature cookie brand of Royal Quality Bakes LLC — 45 years of bakery experience, four signature flavours, six-month shelf life, growing across the UAE.",
   openGraph: {
-    title: "Pandur — Our Signature Taste. Made to Grow.",
+    title: "Pandur — Cookies worth the shelf space.",
     description:
       "Four signature flavours. Six-month shelf life. Eight UAE markets. Made in Khorfakkan.",
     type: "website",
