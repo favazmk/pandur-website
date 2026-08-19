@@ -9,6 +9,7 @@ import {
 } from "@/components/motion/Scroll";
 import ProductSlot from "./ProductSlot";
 import { tiltAt } from "@/lib/motion";
+import { DoodleLayer } from "@/components/brand/DoodleField";
 
 const CLAIMS = [
   { title: "45 years in the oven.", note: "Four decades of bakery craft behind every batch." },
@@ -19,7 +20,16 @@ const CLAIMS = [
 export default function Craft() {
   return (
     <section className="relative overflow-hidden bg-cream py-24 md:py-36">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 md:grid-cols-2 md:gap-20">
+      {/*
+       * Two layers, opposite corners, each on its own cadence — the point of
+       * staggering them is that the eye never catches two edges of the same
+       * drawing rising together. Both bleed past the section, which the
+       * section's `overflow-hidden` clips.
+       */}
+      <DoodleLayer index={0} className="-left-[10%] top-[3%] w-[62%]" />
+      <DoodleLayer index={1} className="-right-[12%] bottom-[1%] w-[54%]" />
+
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 md:grid-cols-2 md:gap-20">
         {/* left — the claims */}
         <div>
           <SplitLine

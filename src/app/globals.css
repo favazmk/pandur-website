@@ -300,6 +300,136 @@ html.lenis body {
 }
 
 /* ============================================================
+   Floating ingredient illustrations
+   ------------------------------------------------------------
+   One keyframe, parameterised. Every tile sets its own travel,
+   rotation, peak scale, duration and delay through custom
+   properties, so four elements share one animation and none of
+   them move together. See `components/brand/FloatingIngredients`.
+
+   Peak-to-peak travel is exactly `--f-y` and peak rotation is
+   exactly `--f-rot` — the intermediate stops only shape the
+   curve, they never overshoot it. Nothing here bounces, spins or
+   travels sideways.
+
+   The stops are unevenly spaced (25 / 55 / 80) on purpose: an
+   even 0/50/100 ping-pong reads mechanical, an uneven rise and
+   fall reads organic.
+   ============================================================ */
+
+@keyframes ingredient-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translate3d(0, calc(var(--f-y) * -0.62), 0)
+      rotate(calc(var(--f-rot) * 0.55)) scale(1);
+  }
+  55% {
+    transform: translate3d(0, calc(var(--f-y) * -1), 0) rotate(var(--f-rot))
+      scale(var(--f-scale));
+  }
+  80% {
+    transform: translate3d(0, calc(var(--f-y) * -0.28), 0)
+      rotate(calc(var(--f-rot) * 0.2)) scale(1);
+  }
+}
+
+@utility ingredient-float {
+  animation: ingredient-float var(--f-dur, 6s) ease-in-out var(--f-delay, 0s)
+    infinite both;
+  /*
+   * Transform only, so the whole thing stays on the compositor: no layout,
+   * no paint, no filter. `backface-visibility` keeps the tile crisp while
+   * its parent tilts it in 3D for the pointer parallax.
+   */
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* ============================================================
+   Ingredient doodle field
+   ------------------------------------------------------------
+   `ingredient-doodle-field.svg`, generated from the delivered
+   line-art: the artwork is embedded ONCE and drawn 64 times by
+   `<use>`, with alternating mirroring, whole columns displaced
+   vertically and whole rows horizontally. One image, 0.92MB,
+   one <defs> payload — the copies are ~100 bytes each.
+
+   Neighbours overlap by 102 source px against a MEASURED 31px
+   worst-case margin in the artwork, so the join is covered and
+   nothing beyond it is double-drawn. An earlier version used
+   ~300px of overlap and the doodles were drawn through each
+   other with no ground left between them.
+
+   It is laid down whole and scaled to cover. Nothing repeats,
+   so there is nothing to align and no strength at which an
+   artefact appears.
+
+   Two earlier attempts are worth not repeating:
+     - one repeating tile: the artwork's margins do not wrap, so
+       `repeat` drew a cream gutter grid from about 0.10 up.
+     - two tiles offset by half: the gutters were covered but
+       the overlap was not uniform, so ink alternated between
+       one-layer and two-layer regions and the field went plaid.
+       Invisible at 0.07, obvious at 0.15 — raising the ink is
+       what exposed it.
+   The jittered field has neither failure because it has no grid
+   at any scale.
+   ============================================================ */
+
+@utility doodle-pattern {
+  background-image: url("/ingredient/ingredient-doodle-field.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+/*
+ * The whole pattern as one element. Held far below the floating
+ * spec — a repeating field is read as a texture, and a texture
+ * that visibly swims stops being a background.
+ */
+@keyframes doodle-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-0.75deg);
+  }
+  50% {
+    transform: translate3d(0, -4px, 0) rotate(0.75deg);
+  }
+}
+
+/*
+ * Lifted verbatim from the asset's own `doodle-usage.css`:
+ * 0 to -8px, -2deg to +2deg. Duration and delay are per-layer.
+ */
+@keyframes doodle-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-2deg);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0) rotate(2deg);
+  }
+}
+
+@utility doodle-drift {
+  animation: doodle-drift var(--d-dur, 22s) ease-in-out var(--d-delay, 0s)
+    infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+@utility doodle-float {
+  animation: doodle-float var(--d-dur, 6s) ease-in-out var(--d-delay, 0s)
+    infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+/* ============================================================
    Reduced motion — every scrub becomes a static state.
    No information may live only in motion.
    ============================================================ */
@@ -315,5 +445,16 @@ html.lenis body {
   }
   .grain-layer {
     display: none;
+  }
+  /*
+   * The blanket rule above already collapses this to a single 0.001ms pass,
+   * which lands on the 100% keyframe — rest. Stated outright anyway, because
+   * a decorative loop should read as switched off in the stylesheet, not as
+   * something that happens to settle in the right place.
+   */
+  .ingredient-float,
+  .doodle-drift,
+  .doodle-float {
+    animation: none !important;
   }
 }

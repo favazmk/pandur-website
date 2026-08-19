@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/layout/PageHero";
 import ProductSlot from "@/components/sections/ProductSlot";
-import IngredientMark from "@/components/brand/Ingredients";
+import IngredientPhoto from "@/components/brand/IngredientPhoto";
 import Bite from "@/components/sections/Bite";
 import Retail from "@/components/sections/Retail";
 import { Reveal, RevealGroup, RevealItem, SplitLine } from "@/components/motion/Text";
@@ -30,8 +30,6 @@ export default function ProductsPage() {
       <PageHero
         title="Four cookies. Four reasons to come back."
         lead="Developed to deliver a delicious, memorable taste — with a six-month shelf life built for modern retail."
-        cookie
-        seed={11}
       />
 
       {/* --- flavour grid --- */}
@@ -51,11 +49,17 @@ export default function ProductsPage() {
                   </Tilt3D>
                 </ClipReveal>
                 <div className="mt-6 flex items-start gap-4">
-                  <IngredientMark
+                  {/*
+                   * Wider than the 44px mark it replaces — a drawn glyph
+                   * survives being tiny, a rendered illustration does not,
+                   * and below about this size the ingredient stops being
+                   * identifiable at all.
+                   */}
+                  <IngredientPhoto
                     slug={f.slug}
-                    stroke={f.accent}
-                    strokeWidth={6}
-                    className="mt-1 h-11 w-11 shrink-0"
+                    index={i}
+                    rounded="rounded-2xl"
+                    className="mt-1 w-24 shrink-0"
                   />
                   <div>
                     <span className="text-eyebrow" style={{ color: f.accent }}>

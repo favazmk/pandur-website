@@ -49,8 +49,6 @@ export default function AboutPage() {
       <PageHero
         title="Our Taste. Our Experience. Our Future."
         lead="A signature cookie brand from Royal Quality Bakes LLC, based in Zubara, Khorfakkan."
-        cookie
-        seed={7}
       />
 
       {/* --- story --- */}

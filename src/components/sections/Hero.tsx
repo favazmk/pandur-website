@@ -1,27 +1,18 @@
 "use client";
 
 import { useRef } from "react";
-import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform } from "motion/react";
 import Marquee from "@/components/motion/Marquee";
 import { SplitLine } from "@/components/motion/Text";
 import { CookieDoodle } from "@/components/brand/Marks";
-import SceneFallback from "@/components/three/SceneFallback";
+import FloatingIngredients from "@/components/brand/FloatingIngredients";
 import { ease } from "@/lib/motion";
-import { useIsMobile, useIsTouch, usePrefersReducedMotion } from "@/lib/useMedia";
-
-/** three + R3F + drei stay out of the first load entirely. */
-const HeroScene = dynamic(() => import("@/components/three/scenes/HeroScene"), {
-  ssr: false,
-  loading: () => <SceneFallback />,
-});
+import { usePrefersReducedMotion } from "@/lib/useMedia";
 
 const TICKER = "MADE IN KHORFAKKAN · UAE · 45 YEARS · MADE TO GROW · ";
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
-  const touch = useIsTouch();
-  const mobile = useIsMobile();
   const reduced = usePrefersReducedMotion();
 
   // 0 at rest, 1 once the hero has fully scrolled away.
@@ -30,7 +21,8 @@ export default function Hero() {
     offset: ["start start", "end start"],
   });
 
-  // Copy lifts and dissolves ahead of the 3D, so the layers separate in depth.
+  // Copy lifts and dissolves faster than the drifting ingredients behind it,
+  // so the two layers still separate in depth on the way out.
   const copyY = useTransform(scrollYProgress, [0, 1], [0, -140]);
   const copyOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
   const copyBlur = useTransform(scrollYProgress, [0, 0.7], ["blur(0px)", "blur(10px)"]);
@@ -41,11 +33,13 @@ export default function Hero() {
       ref={ref}
       className="relative flex min-h-[100svh] flex-col overflow-hidden"
     >
-      <HeroScene
-        mobile={mobile}
-        interactive={!touch && !reduced}
-        progress={reduced ? undefined : scrollYProgress}
-      />
+      {/*
+       * The four ingredients, drifting in the corners. With the 3D cookie
+       * gone these are the hero's only subject, so they sit on `z-scene` —
+       * the layer the canvas used to occupy — and still under `z-content`,
+       * because the headline stays the thing you read first.
+       */}
+      <FloatingIngredients />
 
       {/* --- headline --- */}
       <motion.div

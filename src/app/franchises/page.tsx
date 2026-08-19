@@ -56,8 +56,6 @@ export default function FranchisesPage() {
       <PageHero
         title="Grow with Pandur."
         lead="We're building long-term relationships with distributors, retailers and food-service partners across the UAE and GCC."
-        cookie
-        seed={23}
       />
 
       {/* --- models --- */}

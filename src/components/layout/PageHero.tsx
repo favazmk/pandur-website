@@ -1,17 +1,10 @@
 "use client";
 
 import { ReactNode, useRef } from "react";
-import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform } from "motion/react";
 import { CookieDoodle } from "@/components/brand/Marks";
 import { SplitLine, Reveal } from "@/components/motion/Text";
-import SceneFallback from "@/components/three/SceneFallback";
-import { useIsTouch, usePrefersReducedMotion } from "@/lib/useMedia";
-
-const MarkScene = dynamic(() => import("@/components/three/scenes/MarkScene"), {
-  ssr: false,
-  loading: () => <SceneFallback />,
-});
+import { usePrefersReducedMotion } from "@/lib/useMedia";
 
 /** Three depths — each drifts and parallaxes at a different rate. */
 const DOODLES = [
@@ -21,8 +14,11 @@ const DOODLES = [
 ];
 
 /**
- * Shared header for interior pages. Lighter than the home hero, with an
- * optional 3D mark on the more brand-forward pages.
+ * Shared header for interior pages. Lighter than the home hero.
+ *
+ * Carried an optional 3D mark on the brand-forward pages; the drifting
+ * doodles below are what is left, and they were always the part doing the
+ * work at this size.
  */
 /*
  * No kicker above the title.
@@ -36,18 +32,13 @@ export default function PageHero({
   lead,
   children,
   ground = "bg-cream",
-  cookie = false,
-  seed = 7,
 }: {
   title: string;
   lead?: string;
   children?: ReactNode;
   ground?: string;
-  cookie?: boolean;
-  seed?: number;
 }) {
   const ref = useRef<HTMLElement>(null);
-  const touch = useIsTouch();
   const reduced = usePrefersReducedMotion();
 
   const { scrollYProgress } = useScroll({
@@ -67,7 +58,19 @@ export default function PageHero({
       ref={ref}
       className={`relative overflow-hidden ${ground} px-6 pt-36 pb-20 md:pt-48 md:pb-28`}
     >
-      {cookie && <MarkScene interactive={!touch && !reduced} seed={seed} />}
+      {/*
+       * A tonal wash, NOT the doodle field.
+       *
+       * The field is the home page's ground. Putting it here too meant it sat
+       * behind all five interior headers as well, which turned a signature
+       * into wallpaper — the same picture on every page reads as a template.
+       * So the interior pages get warmth from the palette instead, and keep
+       * the drifting cookie marks below as their own motif.
+       */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_85%_at_50%_0%,var(--color-cream-deep)_0%,transparent_62%)]"
+      />
 
       {DOODLES.map((d, i) => (
         <motion.span

@@ -99,8 +99,13 @@ export type Flavour = {
   name: string;
   /**
    * The one ingredient the flavour is built on. This drives the flavour's
-   * mark (see `components/brand/Ingredients.tsx`) as well as the label, so
-   * the four are told apart by a drawn object and a colour, not only a word.
+   * illustration (`public/ingredient/<slug>.svg`, placed by
+   * `components/brand/IngredientPhoto.tsx`) as well as the label, so the four
+   * are told apart by the ingredient itself and a colour, not only a word.
+   *
+   * The drawn line marks in `components/brand/Ingredients.tsx` are what this
+   * used to render and are now unused — kept, not deleted, because they are
+   * the only version that survives being shown at glyph size.
    */
   ingredient: string;
   /** one short line, never a paragraph */

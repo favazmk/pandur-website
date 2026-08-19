@@ -2,9 +2,8 @@
 
 import Image from "next/image";
 import { CookieDoodle } from "@/components/brand/Marks";
-import IngredientMark from "@/components/brand/Ingredients";
+import IngredientPhoto from "@/components/brand/IngredientPhoto";
 import { FLAVOURS, HAS_PACK_IMAGES, packImage } from "@/lib/assets";
-import { tiltAt } from "@/lib/motion";
 
 const ASPECT = {
   portrait: "aspect-[3/4]",
@@ -69,11 +68,15 @@ export default function ProductSlot({
             strokeWidth={4}
             stroke={f.line}
           />
-          <IngredientMark
+          {/*
+           * With the pack photography switched off this IS the product
+           * image, so it carries a real alt rather than being decorative.
+           */}
+          <IngredientPhoto
             slug={f.slug}
-            className={`h-1/2 w-1/2 ${tiltAt(index)}`}
-            strokeWidth={5}
-            stroke={f.accent}
+            index={index}
+            alt={`${f.ingredient} — the ingredient behind Pandur ${f.name} Cookies`}
+            className="w-[82%]"
           />
         </div>
       )}

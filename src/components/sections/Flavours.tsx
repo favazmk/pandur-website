@@ -1,19 +1,12 @@
 "use client";
 
 import { useRef } from "react";
-import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform } from "motion/react";
-import SceneFallback from "@/components/three/SceneFallback";
 import { CookieDoodle } from "@/components/brand/Marks";
-import IngredientMark from "@/components/brand/Ingredients";
+import IngredientPhoto from "@/components/brand/IngredientPhoto";
 import { SplitLine } from "@/components/motion/Text";
 import { FLAVOURS, MUTED } from "@/lib/assets";
 import { useIsMobile, usePrefersReducedMotion } from "@/lib/useMedia";
-
-const FlavourScene = dynamic(
-  () => import("@/components/three/scenes/FlavourScene"),
-  { ssr: false, loading: () => <SceneFallback className="absolute inset-0 z-10" /> }
-);
 
 const N = FLAVOURS.length;
 
@@ -52,19 +45,19 @@ export default function Flavours() {
           />
         </div>
         <div className="mt-14 space-y-14">
-          {FLAVOURS.map((f) => (
+          {FLAVOURS.map((f, i) => (
             <div key={f.id} className="mx-auto max-w-md px-6 text-center">
-              <div
-                className="mx-auto flex h-56 w-56 items-center justify-center rounded-full"
-                style={{ backgroundColor: f.ground }}
-              >
-                <IngredientMark
-                  slug={f.slug}
-                  className="h-28 w-28"
-                  strokeWidth={5}
-                  stroke={f.accent}
-                />
-              </div>
+              {/*
+               * The ingredient itself, not a drawing of it. The old disc was
+               * filled with the flavour ground and held a line mark; the
+               * delivered artwork has its own ground and its own 3:2, so it
+               * is shown whole on a card rather than cropped into a circle.
+               */}
+              <IngredientPhoto
+                slug={f.slug}
+                index={i}
+                className="mx-auto w-64 max-w-full"
+              />
               <span
                 className="text-eyebrow mt-6 block"
                 style={{ color: f.accent }}
@@ -111,9 +104,6 @@ export default function Flavours() {
           </motion.span>
         </div>
 
-        {/* the single continuous 3D subject */}
-        <FlavourScene progress={scrollYProgress} />
-
         {/* horizontal text track */}
         <motion.div className="relative z-20 flex h-full w-max" style={{ x }}>
           {FLAVOURS.map((f, i) => (
@@ -132,11 +122,16 @@ export default function Flavours() {
                 {/* The ingredient, drawn and in the flavour's own accent —
                     so each panel is told apart by an object and a colour
                     before the name is even read. */}
-                <IngredientMark
+                {/*
+                 * Shown at every desktop width now. This used to appear only
+                 * from `lg` because a continuous 3D cookie carried the panels
+                 * below that; with the 3D gone it is the panel's subject and
+                 * cannot be the first thing dropped.
+                 */}
+                <IngredientPhoto
                   slug={f.slug}
-                  stroke={f.accent}
-                  strokeWidth={5}
-                  className="hidden h-28 w-28 shrink-0 lg:block"
+                  index={i}
+                  className="w-36 shrink-0 lg:w-44"
                 />
                 <div>
                   <span className="text-eyebrow" style={{ color: f.accent }}>
