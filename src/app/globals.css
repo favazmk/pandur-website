@@ -244,6 +244,18 @@ html.lenis body {
   line-height: 1.02;
   letter-spacing: -0.02em;
 }
+/*
+ * The split hero's headline. `text-hero` is sized for a full-width centred
+ * headline and blows straight past a 50% column — at 1440 it renders 106px
+ * and wraps "Cookies worth the shelf space." onto four lines with an orphan.
+ * This sits between `display` and `title`, which is the size a half-width
+ * column actually wants.
+ */
+@utility text-hero-split {
+  font-size: clamp(2.4rem, 5vw, 4.75rem);
+  line-height: 1.03;
+  letter-spacing: -0.02em;
+}
 @utility text-display {
   font-size: clamp(2.35rem, 6.6vw, 6rem);
   line-height: 1.04;
