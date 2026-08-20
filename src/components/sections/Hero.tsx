@@ -84,12 +84,22 @@ export default function Hero() {
       style={scrub ? { height: "320vh" } : undefined}
     >
       <div
-        className={
+        className={`lg:bg-cream-deep ${
           scrub
             ? "sticky top-0 flex h-screen flex-col overflow-hidden"
             : "relative flex min-h-[100svh] flex-col overflow-hidden"
-        }
+        }`}
       >
+        {/*
+         * Warms the ground under the film's feather from the page's colour to
+         * the film's own, so the two fade between matching tones. Only under
+         * the film, and only from `lg` — it is the one place it can go that
+         * deep, because no copy sits on it.
+         */}
+        <div
+          aria-hidden
+          className="film-underlay pointer-events-none absolute inset-0 z-scene hidden lg:left-[52%] lg:block"
+        />
         {/*
          * --- the film ---
          *
@@ -109,7 +119,7 @@ export default function Hero() {
          */}
         <div
           aria-hidden
-          className="absolute inset-0 z-scene lg:left-[52%] lg:[mask-image:linear-gradient(to_right,transparent_0%,black_18%)]"
+          className="absolute inset-0 z-scene lg:film-feather lg:left-[52%]"
         >
           {scrub ? (
             <ScrubVideo
