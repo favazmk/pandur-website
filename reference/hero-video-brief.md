@@ -1,114 +1,151 @@
-# Hero scroll-video brief — round 3, camera-led
+# Hero film prompts — corrected after the last generation
 
-Two earlier rounds failed:
+Three fixes, applied to both aspects. Nothing else changed.
 
-- **Turntable** — technically fine, visually dead.
-- **Assembly / break** — both asked the model to invent structure that exists
-  in no input frame. That is the hardest thing these models do, and it is where
-  they produce mush and flicker.
+## What went wrong, and why
 
-So: the cookie stays whole and unchanged, and the **camera** carries the shot.
-Drama comes from scale, depth and things passing the lens. Both prompts below
-explicitly forbid breaking, crumbling and forming, because that is what the
-model keeps reaching for on its own.
+**The cup landed inside the plate.** "A white plate and a cup of tea come into
+frame below" describes them as one arriving thing. They are now two objects
+with table between them, and the cup gets its own saucer so it reads as a
+separate setting.
 
----
+**Five cookies instead of four.** The likely cause is the wording, not the
+model's arithmetic. The old step 3 named *two* objects — "gathers into its own
+round cookie silhouette **and settles into** one finished cookie" — so a
+silhouette and a cookie are both things in the scene, and a fifth falls out of
+that gap. It is now a single action: each group resolves directly into its
+flavour's cookie. The four are also enumerated by flavour at both formation and
+final frame, because a one-to-one mapping anchors a count far better than a
+number does. And the plate is stated as empty until they land — a cookie
+already sitting on it is the other easy way to end up with five.
 
-## The cookie — use this description verbatim
-
-The earlier brief said "deeply crackled and craggy" and that was wrong. It is
-what produced the over-cracked result.
-
-> a round domed golden butter cookie with a fine, even, shallow-relief surface
-> texture — small uniform raised ridges across the whole dome, like a pressed
-> lace pattern, divided by a few soft broad seams. Warm golden amber, matte,
-> smooth round silhouette
-
-**Not** cracked, fissured, craggy, broken, split or rustic. The texture is
-shallow, regular and all-over. Crop a real one from
-`public/products/hero-cardamom-scene.png` and attach it as the start frame.
+**The tea appeared after the fall.** "Come into frame" invited the model to
+create the scene at that moment. It is now established from the start and
+merely reached by the camera: poured and steaming before the cookies arrive,
+revealed by the descent rather than filled at the end.
 
 ---
 
-## Concept C — the descent
+## 16:9 — desktop
 
-Scroll goes down; the camera goes down. The motion axis matches the input axis,
-which is the most natural scroll hero there is.
-
-> Extreme slow motion. A [cookie description] falls slowly and steadily
-> downward through the air against a plain warm cream background. The camera
-> descends alongside it at the same speed, so the cookie stays roughly centred
-> while the background streaks upward past it. Butter curls, green cardamom
-> pods, coconut pieces and roasted peanuts drift upward past the lens at
-> different depths, some close and soft, some far and sharp.
+> Widescreen 16:9 cinematic food-product film for a scroll-controlled website
+> hero. One continuous shot, slow motion, premium commercial food photography,
+> photoreal.
 >
-> The camera moves continuously downward for the ENTIRE duration at a constant
-> speed, one unbroken shot. It never stops, never slows, never reverses. The
-> descent is still going on the very last frame.
+> **SET:** a warm cream room with a soft linen curtain and a pale table. On the
+> table, low in the scene, a white plate sits empty, and beside it — set clearly
+> apart on the table, on its own small saucer, with visible table between them —
+> a cup of tea, already poured and gently steaming from the start. The same
+> environment, lighting direction and colour hold from the first frame to the
+> last.
 >
-> The cookie stays completely whole and unchanged throughout — it does not
-> break, crumble, split, crack, spin or change shape. Soft diffused studio
-> light from the upper left, constant throughout. Photoreal, premium food
-> advertising photography, macro lens, very high frame rate.
-
-## Concept D — the dive
-
-The scale change is what makes a scroll feel powerful.
-
-> Extreme slow motion. The camera pushes slowly and continuously forward toward
-> a [cookie description] suspended in the air against a plain warm cream
-> background, starting wide with the whole cookie in shot and ending in extreme
-> macro on its surface texture. The camera drifts in a slight arc as it travels
-> so the move reads as real cinematography rather than a zoom. Crumbs, cardamom
-> pods and coconut pieces drift past the lens at different depths on the way
-> in, some passing very close and soft.
+> **FRAME:** the left 55% stays clean empty background for the entire film —
+> website text sits there. All action happens in the right 45%.
 >
-> The push happens gradually and continuously across the ENTIRE duration at a
-> constant speed, one unbroken shot. At the halfway point the camera is only
-> halfway in. It is still moving closer on the very last frame.
+> **SEQUENCE**
 >
-> The cookie stays completely whole and unchanged throughout — it does not
-> break, crumble, split, crack or change shape. Soft diffused studio light from
-> the upper left, constant throughout. Photoreal, premium food advertising
-> photography, macro lens, very high frame rate.
-
-## Avoid / negative
-
-    cracked, deeply cracked, fissured, craggy, broken, split, crumbling,
-    shattering, forming, assembling, morphing, camera cuts, shot changes,
-    speed ramps, action completing early, static hold, frozen frame, camera
-    shake, jitter, flicker, strobing, changing lighting, hands, people, text,
-    packaging, busy background
-
-## Settings
-
-- Aspect **16:9** for both tests. The 9:16 companion comes after we pick one.
-- **Longest duration available.**
-- **Audio off.**
-- Highest tier your plan offers — check whether Pro gives you something above
-  **Flash**, which is the fast default and may be part of why these are failing.
-- Attach the real-cookie crop as the start frame.
+> 1. Opens high in the room, above the table, held about one second. Empty.
+> 2. Four ingredient groups travel in from off-screen edges — top, right and
+>    bottom only — toward four separate convergence points inside the right
+>    45%: cardamom pods with a few loose seeds; small broken coconut chunks;
+>    small butter curls; peanuts, some shelled and some in shell. Each group
+>    keeps its own shape and stays clearly separate from the other three.
+> 3. Each group draws together and resolves into that flavour's finished
+>    cookie: the cardamom cookie, the coconut cookie, the butter cookie, the
+>    peanut cookie. Four groups, four cookies, one each, formed at the same
+>    time.
+> 4. The four cookies drift downward together, spaced apart, rotating slightly.
+>    The camera tracks smoothly down with them, and as it descends the plate and
+>    the steaming tea that were already set on the table come into view below —
+>    the camera reaches them; they are not poured or placed.
+> 5. The four cookies settle onto the empty plate, arranged so all four stay
+>    visible. The cup stays where it was on the table beside the plate,
+>    untouched, still steaming.
+> 6. Ends on the plate holding those four cookies — cardamom, coconut, butter,
+>    peanut, and nothing else on the plate — the cup of tea beside it on the
+>    table, fine steam rising, all in the right 45%, the left 55% still clear.
+>
+> **COOKIES:** thick, round, gently domed, warm golden-orange. The tops are
+> smooth and continuous with a fine, even bake texture, like a soft shortbread
+> dome. All four match in size, thickness, proportion and colour, and stay whole
+> throughout.
+>
+> **CAMERA:** vertical descent only, slow and constant, one unbroken take at one
+> constant speed so it can be scrubbed forward and backward by scroll.
+>
+> **LIGHT:** warm diffused key from the upper left, soft fill, natural highlights
+> on the cookies, soft plate shadow, subtle tea reflections.
+>
+> **AVOID:** any object entering the left 55%; the cup resting on the plate; the
+> four groups merging into one; a cookie on the plate before they land; cuts;
+> speed changes; camera shake; white flash; glow; sparkles; smoke.
 
 ---
 
-## Check before we use it
+## 9:16 — mobile
 
-1. **Scrub to the middle.** If the move is finished, the clip is unusable —
-   the whole hero would happen in the first few percent of the scroll.
-2. **Scrub back and forth over the same two seconds.** Drifting ingredients are
-   fine detail; the usual failure is them flickering or re-forming. Playing
-   forward once will not show it.
-3. **The cookie is still a cookie** at the end — same shape, same size, texture
-   not crawling.
-4. **The texture is shallow and even**, not cracked open.
-5. **Constant speed**, one shot, stable lighting.
-6. **Opening frames calm enough** for a headline to sit over. Copy only has to
-   be legible at the start — it lifts and fades as the scroll progresses.
+Identical film. Clean zone is the top 40% instead of the left 55%, the
+composition is centred, and entrances use left, right and bottom.
 
-## Send back
+> Vertical 9:16 cinematic food-product film for a scroll-controlled website
+> hero. One continuous shot, slow motion, premium commercial food photography,
+> photoreal.
+>
+> **SET:** a warm cream room with a soft linen curtain and a pale table. On the
+> table, low in the scene, a white plate sits empty, and beside it — set clearly
+> apart on the table, on its own small saucer, with visible table between them —
+> a cup of tea, already poured and gently steaming from the start. The same
+> environment, lighting direction and colour hold from the first frame to the
+> last.
+>
+> **FRAME:** centred composition, weighted low. The top 40% stays clean empty
+> background for the entire film — website text sits there. All action happens
+> in the middle and lower thirds, horizontally centred.
+>
+> **SEQUENCE**
+>
+> 1. Opens high in the room, above the table, held about one second. Empty.
+> 2. Four ingredient groups travel in from off-screen edges — left, right and
+>    bottom only — toward four separate convergence points near the centre:
+>    cardamom pods with a few loose seeds; small broken coconut chunks; small
+>    butter curls; peanuts, some shelled and some in shell. Each group keeps its
+>    own shape and stays clearly separate from the other three.
+> 3. Each group draws together and resolves into that flavour's finished
+>    cookie: the cardamom cookie, the coconut cookie, the butter cookie, the
+>    peanut cookie. Four groups, four cookies, one each, formed at the same
+>    time.
+> 4. The four cookies drift downward together, spaced apart, rotating slightly.
+>    The camera tracks smoothly down with them, and as it descends the plate and
+>    the steaming tea that were already set on the table come into view below —
+>    the camera reaches them; they are not poured or placed.
+> 5. The four cookies settle onto the empty plate, arranged so all four stay
+>    visible. The cup stays where it was on the table beside the plate,
+>    untouched, still steaming.
+> 6. Ends on the plate holding those four cookies — cardamom, coconut, butter,
+>    peanut, and nothing else on the plate — the cup of tea beside it on the
+>    table, fine steam rising, all in the lower centre, the top 40% still clear.
+>
+> **COOKIES:** thick, round, gently domed, warm golden-orange. The tops are
+> smooth and continuous with a fine, even bake texture, like a soft shortbread
+> dome. All four match in size, thickness, proportion and colour, and stay whole
+> throughout.
+>
+> **CAMERA:** vertical descent only, slow and constant, one unbroken take at one
+> constant speed so it can be scrubbed forward and backward by scroll.
+>
+> **LIGHT:** warm diffused key from the upper left, soft fill, natural highlights
+> on the cookies, soft plate shadow, subtle tea reflections.
+>
+> **AVOID:** any object entering the top 40%; the cup resting on the plate; the
+> four groups merging into one; a cookie on the plate before they land; cuts;
+> speed changes; camera shake; white flash; glow; sparkles; smoke.
 
-Both MP4s at the highest quality available.
+---
 
-ffmpeg is installed and verified here (9.0, with libx264 / libvpx-vp9 / libwebp
-/ png), so I can extract a frame sequence or re-encode with a keyframe on every
-frame. Whatever the export settings are, I can work with them.
+## If it still comes back with five
+
+Counting is the weakest thing these models do, and no wording makes it certain.
+If the next pass is still wrong, drop the transformation: open on four finished
+cookies already formed and have them fall into the waiting scene. The count
+stops being something the model derives and becomes something it copies from
+its own opening frames — and the four-flavour story survives either way.

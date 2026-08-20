@@ -8,13 +8,29 @@ import { SplitLine } from "@/components/motion/Text";
 import { CookieDoodle } from "@/components/brand/Marks";
 import ScrubVideo from "@/components/hero/ScrubVideo";
 import { ease } from "@/lib/motion";
-import { useIsMobile, usePrefersReducedMotion } from "@/lib/useMedia";
+import {
+  useClientValue,
+  useIsMobile,
+  usePrefersReducedMotion,
+} from "@/lib/useMedia";
 
 const TICKER = "MADE IN KHORFAKKAN · UAE · 45 YEARS · MADE TO GROW · ";
 
-const VIDEO = "/hero/cookie.mp4";
-const POSTER = "/hero/cookie-poster.jpg";
-const STILL = "/hero/cookie-still.jpg";
+/**
+ * Two cuts of the same film, framed for their own shape rather than one cut
+ * cropped to both. Each carries its own poster, taken from its own first
+ * frame, so nothing jumps when the video takes over from the still.
+ */
+const FILM = {
+  desktop: {
+    src: "/hero/hero-desktop.mp4",
+    poster: "/hero/hero-desktop-poster.jpg",
+  },
+  mobile: {
+    src: "/hero/hero-mobile.mp4",
+    poster: "/hero/hero-mobile-poster.jpg",
+  },
+} as const;
 
 /*
  * Three lines against the film's three beats: the cookie falls in, the
@@ -39,16 +55,27 @@ export default function Hero() {
   const reduced = usePrefersReducedMotion();
 
   /*
-   * 320vh. The film is ten seconds, and a shorter track makes a normal scroll
-   * tear through it — the ingredient beat would pass in a flick of the wheel.
-   * Two extra screens is roughly a second of footage per half-screen scrolled.
+   * The film is chosen by breakpoint, and `useIsMobile` only tells the truth
+   * after hydration — so the video is not rendered until then. Otherwise the
+   * server's guess (desktop) starts downloading on a phone and gets cancelled
+   * a moment later, which is 2MB of wasted request on the connection least
+   * able to afford it. The poster covers that gap and is what a reduced-motion
+   * visitor keeps.
    *
-   * Off on mobile and under reduced motion. Scrubbing needs the whole file
-   * decoded and seekable, which is a poor trade on a phone, and pinning for
-   * three screens is exactly what reduced motion asks us not to do.
+   * `useClientValue` rather than a setState-in-effect: it is the module's own
+   * helper over `useSyncExternalStore`, which gives React an explicit server
+   * snapshot instead of a cascading render after mount.
    */
-  const scrub = !mobile && !reduced;
+  const mounted = useClientValue(() => true, false);
 
+  const film = mobile ? FILM.mobile : FILM.desktop;
+  const scrub = mounted && !reduced;
+
+  /*
+   * 320vh. The film is nine and a half seconds, and a shorter track makes a
+   * normal scroll tear through it — the ingredient beat would pass in a flick
+   * of the wheel.
+   */
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
@@ -84,87 +111,52 @@ export default function Hero() {
       style={scrub ? { height: "320vh" } : undefined}
     >
       <div
-        className={`lg:bg-cream-deep ${
+        className={
           scrub
             ? "sticky top-0 flex h-screen flex-col overflow-hidden"
             : "relative flex min-h-[100svh] flex-col overflow-hidden"
-        }`}
+        }
       >
-        {/*
-         * Warms the ground under the film's feather from the page's colour to
-         * the film's own, so the two fade between matching tones. Only under
-         * the film, and only from `lg` — it is the one place it can go that
-         * deep, because no copy sits on it.
-         */}
-        <div
-          aria-hidden
-          className="film-underlay pointer-events-none absolute inset-0 z-scene hidden lg:left-[52%] lg:block"
-        />
-        {/*
-         * --- the film ---
-         *
-         * Full-bleed below `lg`, where the copy sits under it. From `lg` it
-         * takes the right column only, because the cookie is centred in its
-         * own frame and a full-bleed centre subject lands squarely on
-         * left-aligned type.
-         *
-         * Pushing a full-bleed frame rightward instead would mean scaling a
-         * 1280px source past 2100px to keep the edges covered — a 3x upscale
-         * on footage that is already soft at this size. Confined to the right
-         * column it renders around 800px wide, which is a DOWNSCALE of the
-         * source and therefore sharper than what is on the page now.
-         *
-         * The left edge is feathered rather than cut. The film's own ground is
-         * cream, so it dissolves into the page instead of reading as a panel.
-         */}
-        <div
-          aria-hidden
-          className="absolute inset-0 z-scene lg:film-feather lg:left-[52%]"
-        >
+        {/* --- the film, full bleed --- */}
+        <div aria-hidden className="absolute inset-0 z-scene">
           {scrub ? (
             <ScrubVideo
               targetRef={ref}
-              src={VIDEO}
-              poster={POSTER}
+              src={film.src}
+              poster={film.poster}
               className="h-full w-full object-cover"
             />
           ) : (
-            /*
-             * No video at all where it cannot be scrubbed — downloading 2.6MB
-             * to hold on a single frame is not a trade worth making. The still
-             * is the cookie whole and centred, so it reads as a finished image
-             * rather than a paused one.
-             */
             <Image
-              src={STILL}
+              src={film.poster}
               alt=""
               fill
               priority
-              sizes="(min-width: 1024px) 50vw, 100vw"
+              sizes="100vw"
               className="object-cover"
             />
           )}
         </div>
 
         {/*
-         * Cream scrim. The copy sits over footage that changes under it for
-         * ten seconds — at the ingredient beat the middle of the frame fills
-         * with pods and butter curls. Legibility cannot depend on what the
-         * film happens to be doing. Because the film's own ground is cream
-         * this reads as light rather than as a panel.
+         * Top-down scrim.
          *
-         * Small screens only. From `lg` the film is in the right column and
-         * the copy sits on plain cream, so a scrim would have nothing to
-         * protect and would only dull the film's edge.
+         * The copy is centred now, and so is the film — the cookie travels
+         * straight through the middle of the frame and the ingredients open
+         * out around it. There is no still corner to hide the type in, so
+         * legibility cannot depend on what the film is doing at that moment.
+         *
+         * It runs to cream at the very top and clears by 58%, which keeps the
+         * plate and tea at the end of the film untouched.
          */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-scene bg-[linear-gradient(to_top,var(--color-cream)_0%,rgba(251,245,236,0.82)_26%,transparent_62%)] lg:bg-none"
+          className="pointer-events-none absolute inset-0 z-scene bg-[linear-gradient(to_bottom,var(--color-cream)_0%,rgba(251,245,236,0.88)_18%,rgba(251,245,236,0.6)_34%,rgba(251,245,236,0.24)_46%,transparent_58%)]"
         />
 
         {/* --- copy --- */}
         <motion.div
-          className="relative z-content mx-auto flex w-full max-w-7xl flex-1 flex-col justify-end px-6 pb-6 text-center lg:justify-center lg:pb-0 lg:text-left"
+          className="relative z-content mx-auto w-full max-w-7xl px-6 pt-[15vh] text-center md:pt-[13vh]"
           style={scrub ? { y: copyY, opacity: copyOpacity } : undefined}
         >
           <motion.p
@@ -182,7 +174,7 @@ export default function Hero() {
            * mid-scroll would make the accessible name of the page depend on
            * scroll position. The line below is what carries the film.
            */}
-          <h1 className="text-hero-split max-w-[13ch] font-display font-black text-balance text-ink lg:max-w-[16ch]">
+          <h1 className="text-hero-split mx-auto max-w-[13ch] font-display font-black text-balance text-ink">
             <SplitLine
               text="Cookies worth"
               className="block"
@@ -202,14 +194,14 @@ export default function Hero() {
 
           {/*
            * Fixed-height box with the three lines stacked and cross-faded.
-           * Swapping them in the flow would reflow the copy column on every
-           * scroll frame.
+           * Swapping them in the flow would reflow the copy on every scroll
+           * frame.
            */}
-          <div className="relative mt-7 h-[4.5rem] sm:h-[3.5rem]">
+          <div className="relative mx-auto mt-7 h-[4.5rem] max-w-md sm:h-[3.5rem]">
             {BEATS.map((b, i) => (
               <motion.p
                 key={b.at}
-                className="text-lead absolute inset-x-0 max-w-md text-ash lg:mx-0"
+                className="text-lead absolute inset-x-0 text-ash"
                 style={
                   scrub
                     ? { opacity: beatOpacity[i] }
@@ -225,7 +217,7 @@ export default function Hero() {
 
         {/* --- scroll cue --- */}
         <motion.div
-          className="relative z-content flex justify-center pb-4"
+          className="relative z-content mt-auto flex justify-center pb-4"
           style={scrub ? { opacity: copyOpacity } : undefined}
         >
           <motion.div
@@ -245,7 +237,7 @@ export default function Hero() {
         >
           <Marquee
             speed={80}
-            className="border-y border-ink/12 bg-cream/70 py-3"
+            className="border-y border-ink/12 py-3"
             itemClassName="text-eyebrow whitespace-pre text-ink/65"
             repeat={3}
           >

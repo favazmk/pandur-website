@@ -251,58 +251,6 @@ html.lenis body {
  * This sits between `display` and `title`, which is the size a half-width
  * column actually wants.
  */
-/* ============================================================
-   Hero film edge
-   ------------------------------------------------------------
-   The film's own ground is a warm linen, not cream — sampled at
-   its left edge it averages #C8BAA2 across the clip, against the
-   page's #FBF5EC. Butting one against the other put a visible
-   seam down the middle of the hero.
-
-   Two parts close it:
-
-   `film-feather` dissolves the film over half its width on an
-   eased ramp. A straight two-stop gradient still reads as an
-   edge, because the ramp itself starts and stops abruptly; the
-   stops below ease in and out of it.
-
-   `film-underlay` sits BEHIND the feather and warms the ground
-   from the page's colour to the film's, so the fade is between
-   two matching tones rather than film-over-cream. It lives
-   entirely under the film, where no copy sits, which is why it
-   can go to the film's real colour — the ground the text sits on
-   cannot, since `--color-ash` measures 2.87:1 on #C8BAA2 and
-   needs 4.5.
-   ============================================================ */
-
-@utility film-feather {
-  --feather: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(0, 0, 0, 0.04) 10%,
-    rgba(0, 0, 0, 0.14) 18%,
-    rgba(0, 0, 0, 0.32) 26%,
-    rgba(0, 0, 0, 0.55) 34%,
-    rgba(0, 0, 0, 0.78) 42%,
-    rgba(0, 0, 0, 0.93) 50%,
-    #000 58%
-  );
-  -webkit-mask-image: var(--feather);
-  mask-image: var(--feather);
-}
-
-@utility film-underlay {
-  background-image: linear-gradient(
-    to right,
-    rgba(200, 186, 162, 0) 0%,
-    rgba(200, 186, 162, 0.12) 18%,
-    rgba(200, 186, 162, 0.34) 30%,
-    rgba(200, 186, 162, 0.58) 42%,
-    rgba(200, 186, 162, 0.78) 54%,
-    rgba(200, 186, 162, 0.88) 70%
-  );
-}
-
 @utility text-hero-split {
   /*
    * Sized against the column, not the viewport. At 5vw the longest line
