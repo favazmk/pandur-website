@@ -139,19 +139,32 @@ export default function Hero() {
         </div>
 
         {/*
-         * Top-down scrim.
+         * Top-down scrim, and much lighter on desktop than on mobile.
          *
-         * The copy is centred now, and so is the film — the cookie travels
-         * straight through the middle of the frame and the ingredients open
-         * out around it. There is no still corner to hide the type in, so
-         * legibility cannot depend on what the film is doing at that moment.
+         * Measured against the film itself rather than guessed. Sampling the
+         * bands the copy sits in, across the clip:
          *
-         * It runs to cream at the very top and clears by 58%, which keeps the
-         * plate and tea at the end of the film untouched.
+         *   headline (ink, display size, needs 3.0)   6.92 with NO scrim
+         *   beat line (ash, small text, needs 4.5)    1.89 with no scrim
+         *
+         * So the headline never needed covering — the wash was there to rescue
+         * the beat line, and it cannot: even 80% cream only lifts `ash` to
+         * 4.25. That is why the old ramp read as smoke over the whole frame on
+         * a wide short viewport. It was doing nothing for the headline and
+         * failing at the only job it had.
+         *
+         * From `lg` the beat line goes darker instead and the scrim drops to a
+         * whisper — roughly 0.2 cream where the beats sit, which puts them
+         * near 5:1. Mobile keeps the heavier ramp: the frame is tall, the
+         * scrim covers mostly empty background there, and it already reads
+         * well.
+         *
+         * Clears by 56% either way, so the plate and tea at the end of the
+         * film are untouched.
          */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-scene bg-[linear-gradient(to_bottom,var(--color-cream)_0%,rgba(251,245,236,0.88)_18%,rgba(251,245,236,0.6)_34%,rgba(251,245,236,0.24)_46%,transparent_58%)]"
+          className="pointer-events-none absolute inset-0 z-scene bg-[linear-gradient(to_bottom,var(--color-cream)_0%,rgba(251,245,236,0.88)_18%,rgba(251,245,236,0.6)_34%,rgba(251,245,236,0.24)_46%,transparent_58%)] lg:bg-[linear-gradient(to_bottom,rgba(251,245,236,0.42)_0%,rgba(251,245,236,0.3)_16%,rgba(251,245,236,0.2)_32%,rgba(251,245,236,0.1)_44%,transparent_56%)]"
         />
 
         {/* --- copy --- */}
@@ -201,7 +214,7 @@ export default function Hero() {
             {BEATS.map((b, i) => (
               <motion.p
                 key={b.at}
-                className="text-lead absolute inset-x-0 text-ash"
+                className="text-lead absolute inset-x-0 text-ash lg:text-ink/85"
                 style={
                   scrub
                     ? { opacity: beatOpacity[i] }
