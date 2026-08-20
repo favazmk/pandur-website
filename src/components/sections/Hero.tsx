@@ -5,8 +5,8 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { CookieDoodle } from "@/components/brand/Marks";
 import ScrubVideo from "@/components/hero/ScrubVideo";
+import HeroBeats, { type Beat } from "@/components/hero/HeroBeats";
 import { ease } from "@/lib/motion";
-import { CHANNELS, COMPANY } from "@/lib/nav";
 import { PACK } from "@/lib/assets";
 import {
   useClientValue,
@@ -50,29 +50,16 @@ const FILM = {
  * bakery, the pack, the channels. All three come from `lib/nav` and
  * `lib/assets` rather than being written here, so they cannot drift.
  */
-const BEATS = [
-  {
-    text: "It starts with one cookie.",
-    note: `Forty-five years in one bakery in ${COMPANY.address}.`,
-    in: 0,
-    out: 0.26,
-  },
-  {
-    text: "Butter, coconut, peanut, green cardamom.",
-    note: `Four signature flavours, ${PACK.pieces} pieces to a box.`,
-    in: 0.34,
-    out: 0.62,
-  },
-  {
-    text: "It always ends up beside the tea.",
-    note: CHANNELS.slice(0, 4).join(" · "),
-    in: 0.7,
-    out: 1,
-  },
-];
-
-/** How long a line takes to arrive and to leave, in scroll progress. */
-const FADE = 0.07;
+const BEATS: Beat[] = [
+  { text: "It starts with one cookie.", in: 0, out: 0.26 },
+  { text: "Butter, coconut, peanut, green cardamom.", in: 0.34, out: 0.62 },
+  { text: "It always ends up beside the tea.", in: 0.7, out: 1 },
+].map((b) => ({
+  ...b,
+  // the same note under every line: it is the one fact a trade visitor needs
+  // held in front of them, and rotating it made it read as decoration
+  note: `Four signature flavours, ${PACK.pieces} pieces to a box.`,
+}));
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -109,28 +96,6 @@ export default function Hero() {
   // Copy holds through the film, then lifts away as the hero releases.
   const copyY = useTransform(scrollYProgress, [0.86, 1], [0, -90]);
   const copyOpacity = useTransform(scrollYProgress, [0.88, 0.99], [1, 0]);
-
-  /*
-   * Hooks cannot run inside a loop, so the three are written out. The first
-   * starts already visible and the last never leaves; the middle one does
-   * both. Every window is closed before the next opens.
-   */
-  const b0 = useTransform(
-    scrollYProgress,
-    [BEATS[0].out - FADE, BEATS[0].out],
-    [1, 0]
-  );
-  const b1 = useTransform(
-    scrollYProgress,
-    [BEATS[1].in, BEATS[1].in + FADE, BEATS[1].out - FADE, BEATS[1].out],
-    [0, 1, 1, 0]
-  );
-  const b2 = useTransform(
-    scrollYProgress,
-    [BEATS[2].in, BEATS[2].in + FADE],
-    [0, 1]
-  );
-  const beatOpacity = [b0, b1, b2];
 
   return (
     <section
@@ -211,35 +176,22 @@ export default function Hero() {
           <h1 className="sr-only">Cookies worth the shelf space.</h1>
 
           {/*
-           * Fixed-height box with the three beats stacked and swapped. Putting
-           * them in the flow would reflow the hero on every scroll frame.
+           * Fixed-height box with the three beats stacked, sized to the
+           * tallest of them so the CTA underneath does not sit in a pocket of
+           * dead space. Putting the beats in the flow would reflow the hero on
+           * every scroll frame.
            *
            * Widths are in rem, not ch: `ch` resolves against the CONTAINER's
            * font size, which is the 16px body text, not the 62px display type
            * inside it — a `ch` width here came out 202px wide and wrapped the
-           * headline eight lines deep. Sized instead so the longest line lands
-           * on two at each breakpoint, with the note allowed for underneath.
+           * headline eight lines deep.
            */}
-          <div className="relative mx-auto h-[15rem] max-w-[20rem] sm:h-[13rem] sm:max-w-[30rem] lg:h-[13.5rem] lg:max-w-[46rem]">
-            {BEATS.map((b, i) => (
-              <motion.div
-                key={b.in}
-                className="absolute inset-x-0 top-0"
-                style={
-                  scrub
-                    ? { opacity: beatOpacity[i] }
-                    : { opacity: i === 0 ? 1 : 0 }
-                }
-              >
-                <p className="text-hero-split font-display font-black text-balance text-ink">
-                  {b.text}
-                </p>
-                <p className="text-eyebrow mt-5 text-ash lg:text-ink/70">
-                  {b.note}
-                </p>
-              </motion.div>
-            ))}
-          </div>
+          <HeroBeats
+            targetRef={ref}
+            beats={BEATS}
+            active={scrub}
+            className="relative mx-auto h-[11rem] max-w-[20rem] sm:h-[11rem] sm:max-w-[30rem] lg:h-[10.5rem] lg:max-w-[46rem]"
+          />
 
           {/*
            * The one thing a trade visitor is here to do, and it does not move
@@ -248,7 +200,7 @@ export default function Hero() {
            */}
           <a
             href="#partner"
-            className="mt-10 inline-flex items-center gap-3 rounded-full bg-red-deep px-9 py-4 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition-colors hover:bg-ink"
+            className="mt-4 inline-flex items-center gap-3 rounded-full bg-red-deep px-9 py-4 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition-colors hover:bg-ink"
           >
             Become a stockist
           </a>
