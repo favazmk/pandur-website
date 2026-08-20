@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useRef, type ReactNode, type RefObject } from "react";
 
 /* ------------------------------------------------------------------
-   The hero's three lines, one on screen at a time.
+   The hero's three lines, one on screen at a time, plus whatever
+   should come and go with them as a group.
 
    This does NOT go through a motion value. The windows below are
    disjoint arithmetic — a line is fully gone before the next begins —
@@ -16,7 +17,13 @@ import { useEffect, useRef, type RefObject } from "react";
    `visibility` is set as well as `opacity`. A fully transparent
    element still occupies its stacking position, and these three are
    stacked on top of each other — hiding it outright is what makes
-   "one at a time" a guarantee rather than a hope.
+   "one at a time" a guarantee rather than a hope. It also takes the
+   CTA out of the tab order while it is invisible, which a bare
+   opacity of 0 would not.
+
+   `footer` is rendered here rather than taken as a ref because the
+   effect writes to it, and reaching through a prop to mutate a node
+   the component does not own is exactly what it sounds like.
    ------------------------------------------------------------------ */
 
 export type Beat = {
@@ -37,15 +44,25 @@ export default function HeroBeats({
   targetRef,
   beats,
   active,
+  footer,
   className = "",
+  footerClassName = "",
 }: {
   targetRef: RefObject<HTMLElement | null>;
   beats: Beat[];
   /** false when the hero is not pinned — the first line simply stays up */
   active: boolean;
+  /**
+   * Rides the loudest line rather than a window of its own: up whenever any
+   * line is up, gone through the gaps between them, so the copy block arrives
+   * and leaves as one piece.
+   */
+  footer?: ReactNode;
   className?: string;
+  footerClassName?: string;
 }) {
   const wrap = useRef<HTMLDivElement>(null);
+  const foot = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const box = wrap.current;
@@ -54,11 +71,15 @@ export default function HeroBeats({
 
     const items = Array.from(box.children) as HTMLElement[];
 
+    const paint = (node: HTMLElement | null, o: number) => {
+      if (!node) return;
+      node.style.opacity = String(o);
+      node.style.visibility = o < GONE ? "hidden" : "visible";
+    };
+
     if (!active) {
-      items.forEach((node, i) => {
-        node.style.opacity = i === 0 ? "1" : "0";
-        node.style.visibility = i === 0 ? "visible" : "hidden";
-      });
+      items.forEach((node, i) => paint(node, i === 0 ? 1 : 0));
+      paint(foot.current, 1);
       return;
     }
 
@@ -71,6 +92,7 @@ export default function HeroBeats({
       if (travel <= 0) return;
       const p = Math.min(1, Math.max(0, -r.top / travel));
 
+      let envelope = 0;
       items.forEach((node, i) => {
         const b = beats[i];
         let o = 0;
@@ -80,9 +102,11 @@ export default function HeroBeats({
           const falling = i === beats.length - 1 ? 1 : (b.out - p) / FADE;
           o = Math.max(0, Math.min(1, rising, falling));
         }
-        node.style.opacity = String(o);
-        node.style.visibility = o < GONE ? "hidden" : "visible";
+        if (o > envelope) envelope = o;
+        paint(node, o);
       });
+
+      paint(foot.current, envelope);
     };
 
     const schedule = () => {
@@ -101,20 +125,32 @@ export default function HeroBeats({
   }, [targetRef, beats, active]);
 
   return (
-    <div ref={wrap} className={className}>
-      {beats.map((b) => (
+    <>
+      <div ref={wrap} className={className}>
+        {beats.map((b) => (
+          <div
+            key={b.in}
+            className="absolute inset-x-0 top-0"
+            // hidden until the effect runs, so nothing flashes stacked on load
+            style={{ opacity: 0, visibility: "hidden" }}
+          >
+            <p className="text-hero-split font-display font-black text-balance text-ink">
+              {b.text}
+            </p>
+            <p className="text-eyebrow mt-4 text-ash lg:text-ink/70">{b.note}</p>
+          </div>
+        ))}
+      </div>
+
+      {footer ? (
         <div
-          key={b.in}
-          className="absolute inset-x-0 top-0"
-          // hidden until the effect runs, so nothing flashes stacked on load
+          ref={foot}
+          className={footerClassName}
           style={{ opacity: 0, visibility: "hidden" }}
         >
-          <p className="text-hero-split font-display font-black text-balance text-ink">
-            {b.text}
-          </p>
-          <p className="text-eyebrow mt-4 text-ash lg:text-ink/70">{b.note}</p>
+          {footer}
         </div>
-      ))}
-    </div>
+      ) : null}
+    </>
   );
 }

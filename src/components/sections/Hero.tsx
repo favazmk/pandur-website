@@ -191,19 +191,22 @@ export default function Hero() {
             beats={BEATS}
             active={scrub}
             className="relative mx-auto h-[11rem] max-w-[20rem] sm:h-[11rem] sm:max-w-[30rem] lg:h-[10.5rem] lg:max-w-[46rem]"
+            footerClassName="mt-4"
+            footer={
+              /*
+               * The one thing a trade visitor is here to do. It rides the
+               * beats as a group — up whenever a line is up, gone through the
+               * two gaps — so the copy block arrives and leaves as one piece
+               * instead of leaving a button under an empty space.
+               */
+              <a
+                href="#partner"
+                className="inline-flex items-center gap-3 rounded-full bg-red-deep px-9 py-4 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition-colors hover:bg-ink"
+              >
+                Become a stockist
+              </a>
+            }
           />
-
-          {/*
-           * The one thing a trade visitor is here to do, and it does not move
-           * with the beats — a CTA that appeared and vanished three times on
-           * the way down would be worse than no CTA.
-           */}
-          <a
-            href="#partner"
-            className="mt-4 inline-flex items-center gap-3 rounded-full bg-red-deep px-9 py-4 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition-colors hover:bg-ink"
-          >
-            Become a stockist
-          </a>
         </motion.div>
 
         {/* --- scroll cue --- */}
