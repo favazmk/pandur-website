@@ -1,0 +1,17 @@
+.doodle-pattern {
+  background-image: url("/ingredients/ingredient-doodle-tile.svg");
+  background-repeat: repeat;
+  background-size: 420px auto;
+}
+.doodle-float {
+  animation: doodleFloat 6s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+@keyframes doodleFloat {
+  0%, 100% { transform: translate3d(0,0,0) rotate(-2deg); }
+  50% { transform: translate3d(0,-8px,0) rotate(2deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .doodle-float { animation: none; }
+}

@@ -1,0 +1,22 @@
+Use the provided asset:
+public/ingredients/ingredient-doodle-pattern.svg
+
+Use it directly as a decorative doodle layer/background on the website.
+Do NOT convert it to PNG/JPG or redraw it.
+Keep the original monochrome line-art appearance.
+
+For decorative floating use:
+- subtle translateY: 0 to -8px
+- subtle rotation: -2deg to +2deg
+- duration 5–7s
+- stagger timing between multiple layers/elements
+- ease-in-out
+- infinite
+- respect prefers-reduced-motion
+
+For a full section background, use:
+background-image: url("/ingredients/ingredient-doodle-tile.svg");
+background-repeat: repeat;
+background-size: 420px auto;
+
+If using the full pattern as one element, animate only very subtly (no more than 1–2deg rotation and 4px translation) so the pattern stays visually stable.
