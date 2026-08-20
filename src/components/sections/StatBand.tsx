@@ -13,8 +13,14 @@ const STATS = [
 ];
 
 export default function StatBand() {
+  /*
+   * `border-y`, not just `border-b`. The hero's ticker used to carry a ruled
+   * edge and that was what separated the film from this section; with the
+   * ticker gone the film ran straight into cream with nothing marking the
+   * change.
+   */
   return (
-    <section className="relative border-b border-ink/12 bg-cream py-20 md:py-28">
+    <section className="relative border-y border-ink/12 bg-cream py-20 md:py-28">
       <ScrollTilt angle={22}>
         <RevealGroup
           className="mx-auto grid max-w-7xl grid-cols-2 gap-y-14 px-6 md:grid-cols-4 md:gap-y-0"

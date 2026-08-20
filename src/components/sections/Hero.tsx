@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
-import Marquee from "@/components/motion/Marquee";
 import { SplitLine } from "@/components/motion/Text";
 import { CookieDoodle } from "@/components/brand/Marks";
 import ScrubVideo from "@/components/hero/ScrubVideo";
@@ -13,8 +12,6 @@ import {
   useIsMobile,
   usePrefersReducedMotion,
 } from "@/lib/useMedia";
-
-const TICKER = "MADE IN KHORFAKKAN · UAE · 45 YEARS · MADE TO GROW · ";
 
 /**
  * Two cuts of the same film, framed for their own shape rather than one cut
@@ -33,17 +30,31 @@ const FILM = {
 } as const;
 
 /*
- * Three lines against the film's three beats: the cookie falls in, the
- * ingredients arrive around it, it lands beside the tea. Each line is about
- * what is on screen while it is up, which is the only reason to sync copy to
- * footage at all.
+ * Three lines against the film's three beats, each about what is on screen
+ * while it is up — which is the only reason to sync copy to footage at all.
  *
- * `at` is where the line reaches full strength; they cross-fade between.
+ *   the cookie alone      p 0 - 0.19    the maker
+ *   ingredients open out  p 0.19 - 0.60 the range
+ *   it lands beside tea   p 0.70 - 1    the channel
+ *
+ * The last one names a channel rather than an occasion because this site
+ * sells to distributors, not to whoever drinks the tea. The final shot reads
+ * as a cafe or hotel table, so the line takes what is on screen and says what
+ * it means to a buyer. Channels match the list in Partner.
+ *
+ * Those spans are read off the cut, not guessed: the ingredients arrive
+ * around frame 44 of 228 and the plate is in shot by frame 160.
+ *
+ * The shelf-life claim is deliberately not one of them. Bite already carries
+ * "Six months on shelf" as its whole reason for existing, and saying it twice
+ * on one page spends it twice.
+ *
+ * `at` is where a line reaches full strength; they cross-fade between.
  */
 const BEATS = [
-  { at: 0.06, text: "Four signature flavours, baked in Khorfakkan." },
+  { at: 0.06, text: "Forty-five years of getting this one right." },
   { at: 0.46, text: "Butter, coconut, peanut and green cardamom." },
-  { at: 0.86, text: "Six months on shelf, without trading away taste." },
+  { at: 0.86, text: "Built for cafés, hotels and food service." },
 ];
 
 /** How long a beat takes to hand over to the next. */
@@ -84,7 +95,6 @@ export default function Hero() {
   // Copy holds through the film, then lifts away as the hero releases.
   const copyY = useTransform(scrollYProgress, [0.86, 1], [0, -90]);
   const copyOpacity = useTransform(scrollYProgress, [0.88, 0.99], [1, 0]);
-  const tickerX = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
   // Hooks cannot run inside a loop, so the three are written out.
   const b0 = useTransform(
@@ -172,15 +182,6 @@ export default function Hero() {
           className="relative z-content mx-auto w-full max-w-7xl px-6 pt-[15vh] text-center md:pt-[13vh]"
           style={scrub ? { y: copyY, opacity: copyOpacity } : undefined}
         >
-          <motion.p
-            className="text-eyebrow mb-6 text-ash"
-            initial={{ opacity: 0, letterSpacing: "0.6em" }}
-            animate={{ opacity: 1, letterSpacing: "0.28em" }}
-            transition={{ delay: 0.5, duration: 1.2, ease: ease.expo }}
-          >
-            Royal Quality Bakes · Khorfakkan
-          </motion.p>
-
           {/*
            * Fixed across every beat. It is the page's one heading and its text
            * is what a crawler and a screen reader are given; rewriting it
@@ -209,8 +210,13 @@ export default function Hero() {
            * Fixed-height box with the three lines stacked and cross-faded.
            * Swapping them in the flow would reflow the copy on every scroll
            * frame.
+           *
+           * `max-w-lg` so the longest line sits on ONE line from `sm` up — at
+           * `max-w-md` the ingredient line wrapped to 69px inside a 56px box
+           * and spilled out of it. Taller on small screens, where every line
+           * wraps whatever the width.
            */}
-          <div className="relative mx-auto mt-7 h-[4.5rem] max-w-md sm:h-[3.5rem]">
+          <div className="relative mx-auto mt-7 h-[5rem] max-w-lg sm:h-[3.5rem]">
             {BEATS.map((b, i) => (
               <motion.p
                 key={b.at}
@@ -230,7 +236,7 @@ export default function Hero() {
 
         {/* --- scroll cue --- */}
         <motion.div
-          className="relative z-content mt-auto flex justify-center pb-4"
+          className="relative z-content mt-auto flex justify-center pb-10"
           style={scrub ? { opacity: copyOpacity } : undefined}
         >
           <motion.div
@@ -243,20 +249,6 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* --- ticker --- */}
-        <motion.div
-          className="relative z-content"
-          style={scrub ? { x: tickerX } : undefined}
-        >
-          <Marquee
-            speed={80}
-            className="border-y border-ink/12 py-3"
-            itemClassName="text-eyebrow whitespace-pre text-ink/65"
-            repeat={3}
-          >
-            {TICKER}
-          </Marquee>
-        </motion.div>
       </div>
     </section>
   );
