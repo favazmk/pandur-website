@@ -37,10 +37,10 @@ const FILM = {
  *   ingredients open out  p 0.19 - 0.60 the range
  *   it lands beside tea   p 0.70 - 1    the channel
  *
- * The last one names a channel rather than an occasion because this site
- * sells to distributors, not to whoever drinks the tea. The final shot reads
- * as a cafe or hotel table, so the line takes what is on screen and says what
- * it means to a buyer. Channels match the list in Partner.
+ * The last one is observational rather than a channel list. Naming the trade
+ * outright read like a slide from a deck — a buyer already knows what they
+ * are; what sells to them is the product moving, and a line about where it
+ * ends up says that without saying it. Partner lists the channels properly.
  *
  * Those spans are read off the cut, not guessed: the ingredients arrive
  * around frame 44 of 228 and the plate is in shot by frame 160.
@@ -54,7 +54,7 @@ const FILM = {
 const BEATS = [
   { at: 0.06, text: "Forty-five years of getting this one right." },
   { at: 0.46, text: "Butter, coconut, peanut and green cardamom." },
-  { at: 0.86, text: "Built for cafés, hotels and food service." },
+  { at: 0.86, text: "It always ends up beside the tea." },
 ];
 
 /** How long a beat takes to hand over to the next. */
