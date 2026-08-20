@@ -90,8 +90,27 @@ export default function Hero() {
             : "relative flex min-h-[100svh] flex-col overflow-hidden"
         }
       >
-        {/* --- the film --- */}
-        <div aria-hidden className="absolute inset-0 z-scene">
+        {/*
+         * --- the film ---
+         *
+         * Full-bleed below `lg`, where the copy sits under it. From `lg` it
+         * takes the right column only, because the cookie is centred in its
+         * own frame and a full-bleed centre subject lands squarely on
+         * left-aligned type.
+         *
+         * Pushing a full-bleed frame rightward instead would mean scaling a
+         * 1280px source past 2100px to keep the edges covered — a 3x upscale
+         * on footage that is already soft at this size. Confined to the right
+         * column it renders around 800px wide, which is a DOWNSCALE of the
+         * source and therefore sharper than what is on the page now.
+         *
+         * The left edge is feathered rather than cut. The film's own ground is
+         * cream, so it dissolves into the page instead of reading as a panel.
+         */}
+        <div
+          aria-hidden
+          className="absolute inset-0 z-scene lg:left-[52%] lg:[mask-image:linear-gradient(to_right,transparent_0%,black_18%)]"
+        >
           {scrub ? (
             <ScrubVideo
               targetRef={ref}
@@ -111,7 +130,7 @@ export default function Hero() {
               alt=""
               fill
               priority
-              sizes="100vw"
+              sizes="(min-width: 1024px) 50vw, 100vw"
               className="object-cover"
             />
           )}
@@ -122,13 +141,15 @@ export default function Hero() {
          * ten seconds — at the ingredient beat the middle of the frame fills
          * with pods and butter curls. Legibility cannot depend on what the
          * film happens to be doing. Because the film's own ground is cream
-         * this reads as light rather than as a panel: up from the bottom on
-         * small screens where the copy sits low, in from the left on large
-         * ones where it sits in the left column.
+         * this reads as light rather than as a panel.
+         *
+         * Small screens only. From `lg` the film is in the right column and
+         * the copy sits on plain cream, so a scrim would have nothing to
+         * protect and would only dull the film's edge.
          */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-scene bg-[linear-gradient(to_top,var(--color-cream)_0%,rgba(251,245,236,0.82)_26%,transparent_62%)] lg:bg-[linear-gradient(to_right,var(--color-cream)_0%,rgba(251,245,236,0.78)_34%,transparent_66%)]"
+          className="pointer-events-none absolute inset-0 z-scene bg-[linear-gradient(to_top,var(--color-cream)_0%,rgba(251,245,236,0.82)_26%,transparent_62%)] lg:bg-none"
         />
 
         {/* --- copy --- */}

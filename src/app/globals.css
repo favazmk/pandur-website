@@ -252,7 +252,13 @@ html.lenis body {
  * column actually wants.
  */
 @utility text-hero-split {
-  font-size: clamp(2.4rem, 5vw, 4.75rem);
+  /*
+   * Sized against the column, not the viewport. At 5vw the longest line
+   * measured 710px and ran 151px into the film beside it; the copy column is
+   * about 650px at 1440. Anything set for a full-width headline overshoots a
+   * half-width one, which is what this token exists to avoid.
+   */
+  font-size: clamp(2.4rem, 4.4vw, 3.9rem);
   line-height: 1.03;
   letter-spacing: -0.02em;
 }
