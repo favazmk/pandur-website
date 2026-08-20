@@ -6,6 +6,8 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { CookieDoodle } from "@/components/brand/Marks";
 import ScrubVideo from "@/components/hero/ScrubVideo";
 import { ease } from "@/lib/motion";
+import { CHANNELS, COMPANY } from "@/lib/nav";
+import { PACK } from "@/lib/assets";
 import {
   useClientValue,
   useIsMobile,
@@ -29,35 +31,48 @@ const FILM = {
 } as const;
 
 /*
- * Three lines against the film's three beats, each about what is on screen
- * while it is up — which is the only reason to sync copy to footage at all.
+ * Three beats against the film's three, each about what is on screen while it
+ * is up — which is the only reason to sync copy to footage at all.
  *
- *   the cookie alone      p 0 - 0.19    the maker
- *   ingredients open out  p 0.19 - 0.60 the range
- *   it lands beside tea   p 0.70 - 1    the channel
- *
- * The last one is observational rather than a channel list. Naming the trade
- * outright read like a slide from a deck — a buyer already knows what they
- * are; what sells to them is the product moving, and a line about where it
- * ends up says that without saying it. Partner lists the channels properly.
+ *   the cookie alone      p 0 - 0.19    it starts
+ *   ingredients open out  p 0.19 - 0.60 what is in it
+ *   it lands beside tea   p 0.70 - 1    where it goes
  *
  * Those spans are read off the cut, not guessed: the ingredients arrive
  * around frame 44 of 228 and the plate is in shot by frame 160.
  *
- * The shelf-life claim is deliberately not one of them. Bite already carries
- * "Six months on shelf" as its whole reason for existing, and saying it twice
- * on one page spends it twice.
+ * `in` and `out` are the window a beat owns, and the windows DO NOT TOUCH.
+ * Each line is fully gone before the next begins, with a short empty gap
+ * between — cross-fading them meant two headlines on screen at once, which at
+ * display size reads as a mistake rather than a transition.
  *
- * `at` is where a line reaches full strength; they cross-fade between.
+ * The note under each line carries the fact the headline does not: the
+ * bakery, the pack, the channels. All three come from `lib/nav` and
+ * `lib/assets` rather than being written here, so they cannot drift.
  */
 const BEATS = [
-  { at: 0.06, text: "Forty-five years of getting this one right." },
-  { at: 0.46, text: "Butter, coconut, peanut and green cardamom." },
-  { at: 0.86, text: "It always ends up beside the tea." },
+  {
+    text: "It starts with one cookie.",
+    note: `Forty-five years in one bakery in ${COMPANY.address}.`,
+    in: 0,
+    out: 0.26,
+  },
+  {
+    text: "Butter, coconut, peanut, green cardamom.",
+    note: `Four signature flavours, ${PACK.pieces} pieces to a box.`,
+    in: 0.34,
+    out: 0.62,
+  },
+  {
+    text: "It always ends up beside the tea.",
+    note: CHANNELS.slice(0, 4).join(" · "),
+    in: 0.7,
+    out: 1,
+  },
 ];
 
-/** How long a beat takes to hand over to the next. */
-const FADE = 0.16;
+/** How long a line takes to arrive and to leave, in scroll progress. */
+const FADE = 0.07;
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -95,20 +110,24 @@ export default function Hero() {
   const copyY = useTransform(scrollYProgress, [0.86, 1], [0, -90]);
   const copyOpacity = useTransform(scrollYProgress, [0.88, 0.99], [1, 0]);
 
-  // Hooks cannot run inside a loop, so the three are written out.
+  /*
+   * Hooks cannot run inside a loop, so the three are written out. The first
+   * starts already visible and the last never leaves; the middle one does
+   * both. Every window is closed before the next opens.
+   */
   const b0 = useTransform(
     scrollYProgress,
-    [BEATS[0].at, BEATS[0].at + FADE],
+    [BEATS[0].out - FADE, BEATS[0].out],
     [1, 0]
   );
   const b1 = useTransform(
     scrollYProgress,
-    [BEATS[1].at - FADE, BEATS[1].at, BEATS[1].at + FADE],
-    [0, 1, 0]
+    [BEATS[1].in, BEATS[1].in + FADE, BEATS[1].out - FADE, BEATS[1].out],
+    [0, 1, 1, 0]
   );
   const b2 = useTransform(
     scrollYProgress,
-    [BEATS[2].at - FADE, BEATS[2].at],
+    [BEATS[2].in, BEATS[2].in + FADE],
     [0, 1]
   );
   const beatOpacity = [b0, b1, b2];
@@ -192,29 +211,47 @@ export default function Hero() {
           <h1 className="sr-only">Cookies worth the shelf space.</h1>
 
           {/*
-           * Fixed-height box with the three lines stacked and cross-faded.
-           * Swapping them in the flow would reflow the hero on every scroll
-           * frame. Widths are in rem, not ch: `ch` resolves against the
-           * CONTAINER's font size, which is the 16px body text, so a `ch`
-           * width here came out at 202px and wrapped the display type eight
-           * lines deep. Sized instead so the longest of the three lands on
-           * two lines at each breakpoint.
+           * Fixed-height box with the three beats stacked and swapped. Putting
+           * them in the flow would reflow the hero on every scroll frame.
+           *
+           * Widths are in rem, not ch: `ch` resolves against the CONTAINER's
+           * font size, which is the 16px body text, not the 62px display type
+           * inside it — a `ch` width here came out 202px wide and wrapped the
+           * headline eight lines deep. Sized instead so the longest line lands
+           * on two at each breakpoint, with the note allowed for underneath.
            */}
-          <div className="relative mx-auto h-[11rem] max-w-[20rem] sm:h-[9rem] sm:max-w-[30rem] lg:h-[9rem] lg:max-w-[46rem]">
+          <div className="relative mx-auto h-[15rem] max-w-[20rem] sm:h-[13rem] sm:max-w-[30rem] lg:h-[13.5rem] lg:max-w-[46rem]">
             {BEATS.map((b, i) => (
-              <motion.p
-                key={b.at}
-                className="text-hero-split absolute inset-x-0 font-display font-black text-balance text-ink"
+              <motion.div
+                key={b.in}
+                className="absolute inset-x-0 top-0"
                 style={
                   scrub
                     ? { opacity: beatOpacity[i] }
                     : { opacity: i === 0 ? 1 : 0 }
                 }
               >
-                {b.text}
-              </motion.p>
+                <p className="text-hero-split font-display font-black text-balance text-ink">
+                  {b.text}
+                </p>
+                <p className="text-eyebrow mt-5 text-ash lg:text-ink/70">
+                  {b.note}
+                </p>
+              </motion.div>
             ))}
           </div>
+
+          {/*
+           * The one thing a trade visitor is here to do, and it does not move
+           * with the beats — a CTA that appeared and vanished three times on
+           * the way down would be worse than no CTA.
+           */}
+          <a
+            href="#partner"
+            className="mt-10 inline-flex items-center gap-3 rounded-full bg-red-deep px-9 py-4 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition-colors hover:bg-ink"
+          >
+            Become a stockist
+          </a>
         </motion.div>
 
         {/* --- scroll cue --- */}
