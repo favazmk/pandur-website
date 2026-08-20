@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
-import { SplitLine } from "@/components/motion/Text";
 import { CookieDoodle } from "@/components/brand/Marks";
 import ScrubVideo from "@/components/hero/ScrubVideo";
 import { ease } from "@/lib/motion";
@@ -183,50 +182,34 @@ export default function Hero() {
           style={scrub ? { y: copyY, opacity: copyOpacity } : undefined}
         >
           {/*
-           * Fixed across every beat. It is the page's one heading and its text
-           * is what a crawler and a screen reader are given; rewriting it
-           * mid-scroll would make the accessible name of the page depend on
-           * scroll position. The line below is what carries the film.
+           * The heading a crawler and a screen reader are given, and it does
+           * not move. The three display lines below are what a visitor reads,
+           * and they change with the film — but an `h1` whose text depends on
+           * scroll position would mean the accessible name of the page depends
+           * on how far down you are, so the stable one is kept and hidden.
+           * It matches the `<title>` in layout.
            */}
-          <h1 className="text-hero-split mx-auto max-w-[13ch] font-display font-black text-balance text-ink">
-            <SplitLine
-              text="Cookies worth"
-              className="block"
-              delay={0.35}
-              stagger={0.05}
-              once
-            />
-            <SplitLine
-              text="the shelf space."
-              className="block"
-              delay={0.55}
-              stagger={0.05}
-              accentLast
-              once
-            />
-          </h1>
+          <h1 className="sr-only">Cookies worth the shelf space.</h1>
 
           {/*
            * Fixed-height box with the three lines stacked and cross-faded.
-           * Swapping them in the flow would reflow the copy on every scroll
-           * frame.
-           *
-           * `max-w-lg` so the longest line sits on ONE line from `sm` up — at
-           * `max-w-md` the ingredient line wrapped to 69px inside a 56px box
-           * and spilled out of it. Taller on small screens, where every line
-           * wraps whatever the width.
+           * Swapping them in the flow would reflow the hero on every scroll
+           * frame. Widths are in rem, not ch: `ch` resolves against the
+           * CONTAINER's font size, which is the 16px body text, so a `ch`
+           * width here came out at 202px and wrapped the display type eight
+           * lines deep. Sized instead so the longest of the three lands on
+           * two lines at each breakpoint.
            */}
-          <div className="relative mx-auto mt-7 h-[5rem] max-w-lg sm:h-[3.5rem]">
+          <div className="relative mx-auto h-[11rem] max-w-[20rem] sm:h-[9rem] sm:max-w-[30rem] lg:h-[9rem] lg:max-w-[46rem]">
             {BEATS.map((b, i) => (
               <motion.p
                 key={b.at}
-                className="text-lead absolute inset-x-0 text-ash lg:text-ink/85"
+                className="text-hero-split absolute inset-x-0 font-display font-black text-balance text-ink"
                 style={
                   scrub
                     ? { opacity: beatOpacity[i] }
                     : { opacity: i === 0 ? 1 : 0 }
                 }
-                aria-hidden={i === 0 ? undefined : true}
               >
                 {b.text}
               </motion.p>
