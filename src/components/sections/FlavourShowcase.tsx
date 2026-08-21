@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef } from "react";
 import {
   motion,
@@ -104,9 +105,39 @@ function SceneCopy({
       >
         {scene.ingredient}
       </motion.span>
-      <span className="text-title mt-2 block font-display font-black text-ink">
-        {scene.name}
-      </span>
+
+      {/*
+       * The flavour's beauty shot, set to the right of its name.
+       *
+       * A CUT-OUT, NOT A CARD. It carries its own alpha, so it sits straight
+       * on whichever ground the scene is painting — no frame, no fill, no
+       * hairline. `drop-shadow` for the same reason `ProductPackage` uses it:
+       * the shadow has to follow two cookies and a scatter of loose
+       * ingredients, and a `box-shadow` would draw the rectangle they sit in.
+       *
+       * WIDTHS ARE BOUND BY THE NAME, NOT BY TASTE. The copy column is
+       * `24rem`, capped at `32vw`, and the flavour name takes the rest of it —
+       * "Cardamom" at the top of the type scale runs about 232px. 5.5rem holds
+       * from `md`, where the column is at its narrowest relative to the type;
+       * 7.5rem is what is left over at `lg` and above.
+       *
+       * The row is `items-end`: the shots are cropped to their own artwork and
+       * so differ in height, and hanging them from a shared top edge leaves
+       * each one floating a different distance above the name's baseline.
+       */}
+      <div className="mt-2 flex items-end justify-center gap-3 md:justify-start md:gap-4">
+        <span className="text-title block font-display font-black text-ink">
+          {scene.name}
+        </span>
+        <Image
+          src={scene.shot.src}
+          alt=""
+          width={scene.shot.width}
+          height={scene.shot.height}
+          sizes="(max-width: 1023px) 88px, 120px"
+          className="h-auto w-[5.5rem] shrink-0 drop-shadow-[0_10px_16px_rgba(58,35,24,0.18)] lg:w-[7.5rem]"
+        />
+      </div>
     </>
   );
 
@@ -189,6 +220,7 @@ function Scene({
       <IngredientLayer
         scene={scene}
         plane="back"
+        progress={progress}
         presence={presence}
         spread={spread}
         animate={animate}
@@ -206,6 +238,7 @@ function Scene({
       <IngredientLayer
         scene={scene}
         plane="front"
+        progress={progress}
         presence={presence}
         spread={spread}
         animate={animate}

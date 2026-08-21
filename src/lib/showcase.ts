@@ -2,10 +2,12 @@
  * PANDUR — the flavour showcase's scene table.
  *
  * One pinned section, four scenes, each owning a quarter of the scroll. This
- * module is the whole of what a scene IS: its pack shot, its ground, its
- * palette, and where every loose ingredient sits around the pack. The
- * components under `components/showcase/` know how to animate a scene; they
- * know nothing about which flavours exist.
+ * module is the whole of what a scene IS: its pack shot, its beauty shot, its
+ * ground and its palette. The loose ingredients scattered around the pack are
+ * their own table, in `lib/showcaseProps.ts`, because they are windows onto a
+ * delivered artwork sheet and carry a dozen fields each. The components under
+ * `components/showcase/` know how to animate a scene; they know nothing about
+ * which flavours exist.
  *
  * Swapping artwork or recolouring a flavour is an edit here and nowhere else.
  *
@@ -15,10 +17,7 @@
  * than the data itself.
  */
 
-import type {
-  SpriteId,
-  SpritePalette,
-} from "@/components/brand/IngredientSprites";
+import type { SpritePalette } from "@/components/brand/IngredientSprites";
 import { FLAVOURS, type FlavourSlug } from "@/lib/assets";
 
 /* ------------------------------------------------------------------ *
@@ -111,92 +110,8 @@ export const CADENCE = [
 ] as const;
 
 /* ------------------------------------------------------------------ *
- * Placement slots
- * ------------------------------------------------------------------ */
-
-/**
- * Seven placements, shared by all four flavours.
- *
- * Slots rather than per-ingredient coordinates, because the composition has
- * hard no-go areas and repeating them four times is four chances to get one
- * wrong — which is exactly what happened first time round: coconut's palm
- * frond and peanut's shell were both parked behind the flavour headline.
- *
- * What the slots have to keep clear:
- *
- *   desktop   the copy column, x < 34% and y > 62%, and the progress rail in
- *             the bottom-right corner
- *   mobile    the two centred text blocks, roughly y 6-24% and y 70-88%, and
- *             the rail centred at the very bottom
- *
- * `lowLeft` is the slot that carries the whole point: on a phone it sits in
- * the bottom-left corner UNDER the note, and on desktop it climbs to mid-left
- * instead, because on desktop that corner is where the copy lives. A slot is
- * allowed to be a different place at each size — that is the job.
- *
- * Mobile-first, exactly as `lib/heroLayers.ts` writes it: bare classes are the
- * 9:16 phone composition, `md:` is the wide one. Widths are percentages of the
- * stage, so a piece keeps its share of the frame at every size.
- */
-export const SLOT_PLACE = {
-  upperLeft: "left-[3%] top-[10%] w-[23%] md:left-[8%] md:top-[16%] md:w-[10.5%]",
-  upperRight:
-    "right-[3%] top-[9%] w-[25%] md:right-[11%] md:top-[13%] md:w-[11.5%]",
-  midLeft: "left-[-2%] top-[36%] w-[20%] md:left-[15%] md:top-[38%] md:w-[8.5%]",
-  midRight:
-    "right-[-2%] top-[44%] w-[22%] md:right-[14%] md:top-[46%] md:w-[9.5%]",
-  lowRight:
-    "right-[6%] bottom-[4%] w-[17%] md:right-[8%] md:bottom-[20%] md:w-[8.5%]",
-  lowLeft: "left-[4%] bottom-[3%] w-[15%] md:left-[5%] md:top-[47%] md:w-[7%]",
-  /* the seventh piece, desktop only — seven loose objects is too many for a
-     9:16 frame that also has to hold two blocks of copy */
-  extra: "hidden md:block md:right-[25%] md:bottom-[12%] md:w-[6%]",
-} as const;
-
-export type Slot = keyof typeof SLOT_PLACE;
-
-/**
- * Where a slot's piece travels to as its flavour hands over, in percent of its
- * own box. Always away from the pack: on the way out the scene opens up and
- * lets the next one through, on the way in it closes back around the pack.
- *
- * Paired with the slot rather than set per ingredient, because "outward" is a
- * property of where a thing IS, not of what it is.
- */
-export const SLOT_DRIFT: Record<Slot, [number, number]> = {
-  upperLeft: [-70, -58],
-  upperRight: [72, -60],
-  midLeft: [-82, -10],
-  midRight: [86, 12],
-  lowRight: [60, 68],
-  lowLeft: [-76, -14],
-  extra: [62, 52],
-};
-
-/* ------------------------------------------------------------------ *
  * Scene shape
  * ------------------------------------------------------------------ */
-
-export type ShowcaseIngredient = {
-  sprite: SpriteId;
-  slot: Slot;
-  /** `front` paints over the pack, `back` behind it */
-  plane: "back" | "front";
-  /** 0 = far plane, 1 = nearest. Drives ink and scale together. */
-  depth: number;
-  /** degrees of rotation across the handover. Small; nothing here spins. */
-  spin: number;
-  /** index into `CADENCE` */
-  cadence: number;
-  /**
-   * Optional focus blur in px, for the one or two pieces meant to sit
-   * furthest back. The house rule for DEPTH is scale and ink, never blur (see
-   * `HeroIngredients`); this is the deliberate exception, and it is kept UNDER
-   * 2px — at the 2.2 this started at, a blurred sprite on a pale ground stops
-   * reading as "far away" and starts reading as a smudge on the screen.
-   */
-  blur?: number;
-};
 
 export type ShowcaseScene = {
   id: FlavourSlug;
@@ -212,6 +127,21 @@ export type ShowcaseScene = {
    * change; keep the aspect near 1:1.05 so the composition does not shift.
    */
   pack: { src: string; width: number; height: number; alt: string } | null;
+  /**
+   * The flavour's beauty shot — its two cookies and its own ingredients,
+   * mid-air. Set beside the name in the copy block.
+   *
+   * Cut out of `reference/flavour-cookie-sheet.png`, a 2x2 of 768x512 shots
+   * that arrived already masked; the four files under `public/products/` are
+   * that mask taken in a couple of pixels, cropped to the artwork and resized.
+   * Unlike `pack`, all four exist — there is no stand-in and no null case.
+   *
+   * The height differs per flavour because each was cropped to its own
+   * artwork rather than padded to a shared frame: padding would hand the
+   * layout four boxes of identical size holding four subjects of different
+   * size, which is the thing that makes a row of cut-outs look mismatched.
+   */
+  shot: { src: string; width: number; height: number };
   /** ground colour at this scene's centre; the section interpolates between them */
   ground: string;
   /** the two radial washes laid over the ground, inner then outer */
@@ -224,7 +154,6 @@ export type ShowcaseScene = {
   /** the giant word behind the pack */
   ink: string;
   palette: SpritePalette;
-  ingredients: ShowcaseIngredient[];
 };
 
 /** Pulls the shared truth for a flavour so nothing is written twice. */
@@ -256,6 +185,7 @@ export const SCENES: ShowcaseScene[] = [
     id: "coconut",
     word: "COCONUT",
     ...base("coconut"),
+    shot: { src: "/products/flavour-coconut.png", width: 480, height: 334 },
     /*
      * No cut-out for coconut yet. `components/showcase/PackPlaceholder.tsx`
      * stands in until one exists — the flat `pack-coconut.jpg` is not a
@@ -272,21 +202,13 @@ export const SCENES: ShowcaseScene[] = [
       light: "#FBF4E8",
       line: "#4A2A17",
     },
-    ingredients: [
-      { sprite: "coconut-half", slot: "upperLeft", plane: "back", depth: 0.35, spin: -12, cadence: 0, blur: 1.4 },
-      { sprite: "coconut-flake", slot: "upperRight", plane: "back", depth: 0.45, spin: 16, cadence: 2 },
-      { sprite: "palm-leaf", slot: "midLeft", plane: "back", depth: 0.28, spin: 14, cadence: 4, blur: 1.8 },
-      { sprite: "coconut-chunk", slot: "midRight", plane: "front", depth: 0.95, spin: -14, cadence: 6 },
-      { sprite: "coconut-flake", slot: "lowRight", plane: "front", depth: 0.8, spin: -18, cadence: 7 },
-      { sprite: "crumb", slot: "lowLeft", plane: "front", depth: 1, spin: 20, cadence: 5 },
-      { sprite: "coconut-chunk", slot: "extra", plane: "back", depth: 0.55, spin: 10, cadence: 8 },
-    ],
   },
 
   {
     id: "peanut",
     word: "PEANUT",
     ...base("peanut"),
+    shot: { src: "/products/flavour-peanut.png", width: 480, height: 341 },
     /* Same as coconut — no alpha cut-out delivered yet. */
     pack: null,
     ground: "#F7E9C9",
@@ -298,21 +220,13 @@ export const SCENES: ShowcaseScene[] = [
       light: "#EFD3A2",
       line: "#5E3411",
     },
-    ingredients: [
-      { sprite: "peanut-shell", slot: "upperLeft", plane: "back", depth: 0.4, spin: -16, cadence: 1, blur: 1.4 },
-      { sprite: "peanut-kernel", slot: "upperRight", plane: "back", depth: 0.5, spin: 18, cadence: 3 },
-      { sprite: "peanut-shell", slot: "midLeft", plane: "back", depth: 0.3, spin: 12, cadence: 5, blur: 1.8 },
-      { sprite: "peanut-kernel", slot: "midRight", plane: "front", depth: 0.95, spin: -20, cadence: 7 },
-      { sprite: "peanut-piece", slot: "lowRight", plane: "front", depth: 0.85, spin: -12, cadence: 8 },
-      { sprite: "peanut-piece", slot: "lowLeft", plane: "front", depth: 1, spin: 22, cadence: 0 },
-      { sprite: "crumb", slot: "extra", plane: "back", depth: 0.6, spin: 16, cadence: 6 },
-    ],
   },
 
   {
     id: "cardamom",
     word: "CARDAMOM",
     ...base("cardamom"),
+    shot: { src: "/products/flavour-cardamom.png", width: 480, height: 350 },
     pack: {
       src: "/products/hero-cardamom-box-sachet.png",
       width: 1224,
@@ -328,21 +242,13 @@ export const SCENES: ShowcaseScene[] = [
       light: "#D3E4BC",
       line: "#28401A",
     },
-    ingredients: [
-      { sprite: "cardamom-leaf", slot: "upperLeft", plane: "back", depth: 0.3, spin: 14, cadence: 2, blur: 1.8 },
-      { sprite: "cardamom-pod", slot: "upperRight", plane: "back", depth: 0.5, spin: -16, cadence: 4 },
-      { sprite: "cardamom-pod", slot: "midLeft", plane: "front", depth: 0.95, spin: 18, cadence: 1 },
-      { sprite: "cardamom-leaf", slot: "midRight", plane: "back", depth: 0.28, spin: -12, cadence: 6, blur: 1.4 },
-      { sprite: "cardamom-seed", slot: "lowRight", plane: "front", depth: 1, spin: -24, cadence: 8 },
-      { sprite: "cardamom-seed", slot: "lowLeft", plane: "front", depth: 0.9, spin: 20, cadence: 5 },
-      { sprite: "cardamom-pod", slot: "extra", plane: "back", depth: 0.6, spin: 12, cadence: 0 },
-    ],
   },
 
   {
     id: "butter",
     word: "BUTTER",
     ...base("butter"),
+    shot: { src: "/products/flavour-butter.png", width: 480, height: 341 },
     pack: {
       src: "/products/hero-butter-box-sachet.png",
       width: 1230,
@@ -358,15 +264,6 @@ export const SCENES: ShowcaseScene[] = [
       light: "#F9E9A8",
       line: "#7C5C17",
     },
-    ingredients: [
-      { sprite: "butter-pat", slot: "upperLeft", plane: "back", depth: 0.38, spin: -10, cadence: 3, blur: 1.4 },
-      { sprite: "butter-curl", slot: "upperRight", plane: "back", depth: 0.45, spin: 16, cadence: 5 },
-      { sprite: "butter-curl", slot: "midLeft", plane: "back", depth: 0.3, spin: -14, cadence: 7, blur: 1.8 },
-      { sprite: "butter-pat", slot: "midRight", plane: "front", depth: 0.95, spin: 12, cadence: 1 },
-      { sprite: "crumb", slot: "lowRight", plane: "front", depth: 0.85, spin: -18, cadence: 2 },
-      { sprite: "crumb", slot: "lowLeft", plane: "front", depth: 1, spin: 22, cadence: 8 },
-      { sprite: "butter-curl", slot: "extra", plane: "back", depth: 0.6, spin: 10, cadence: 6 },
-    ],
   },
 ];
 

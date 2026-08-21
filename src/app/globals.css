@@ -504,6 +504,33 @@ html.lenis body {
   }
 }
 
+/*
+ * Showcase ingredient props.
+ * ------------------------------------------------------------
+ * Placement is DATA — `lib/showcaseProps.ts` gives every prop a
+ * position and a width twice over, once for a phone and once from
+ * `md` up, and hands them here as custom properties. It has to be
+ * a media query rather than Tailwind's responsive variants: the
+ * values are arbitrary per-prop percentages that arrive at runtime
+ * in the style attribute, and an inline style cannot carry a
+ * breakpoint.
+ *
+ * The values are the prop's CENTRE; the half-shift that makes that
+ * true lives on the element as a utility class, not here.
+ */
+.showcase-prop {
+  left: var(--p-x);
+  top: var(--p-y);
+  width: var(--p-w);
+}
+@media (min-width: 768px) {
+  .showcase-prop {
+    left: var(--p-x-md);
+    top: var(--p-y-md);
+    width: var(--p-w-md);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   /* `!important` because the `min-width: 768px` rule above is later in the
      cascade and equally specific — without it, reduced motion would be

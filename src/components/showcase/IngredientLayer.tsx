@@ -2,118 +2,191 @@
 
 import type { CSSProperties } from "react";
 import { motion, useTransform, type MotionValue } from "motion/react";
-import IngredientSprite from "@/components/brand/IngredientSprites";
+import { CADENCE, PLANE, type ShowcaseScene } from "@/lib/showcase";
 import {
-  CADENCE,
-  PLANE,
-  SLOT_DRIFT,
-  SLOT_PLACE,
-  type ShowcaseIngredient,
-  type ShowcaseScene,
-} from "@/lib/showcase";
+  FLAVOUR_PROPS,
+  cropStyle,
+  type ShowcaseProp,
+} from "@/lib/showcaseProps";
 
 /* ------------------------------------------------------------------
    The loose ingredients, on two planes around the pack.
 
-   TWO TRANSFORMS, TWO ELEMENTS. This is the same split
-   `HeroIngredients` documents and it is not stylistic: the idle float
-   is a CSS keyframe and the scroll drift is a Motion value, `transform`
-   is one property, and putting both on one element means each
-   overwrites the other every frame. Outer div takes the scroll, inner
-   div takes the float.
+   Every piece is a window onto one delivered sheet — see
+   `lib/showcaseProps.ts` for the boxes and the whole layout table.
+   This file knows how a prop MOVES and nothing about which props
+   exist or where they sit.
 
-   The scroll drift is OUTWARD. As a flavour hands over, its pieces
-   open away from the pack and let the next flavour through; on the way
-   in they close back around it. That is one continuous gesture read
-   forwards and backwards, which is why scrolling up looks as
-   deliberate as scrolling down.
+   FOUR ELEMENTS, FOUR TRANSFORMS, and that is not one div too many.
+   `transform` is a single property: two animations writing it on one
+   element means each overwrites the other every frame. So the nesting
+   splits the four jobs that all want it —
 
-   Every piece carries its own direction, distance, rotation, depth and
-   float cadence from `lib/showcase.ts`, so no two ever move alike. The
-   nine cadences share no small factors — a scene of seven pieces will
-   not visibly re-sync inside a minute.
+     place    left/top/width from the data, and the half-shift that
+              makes those coordinates the prop's CENTRE rather than
+              its top-left corner
+     parallax one slow drift across the whole section, scroll-driven
+     handover the outward opening and closing as flavours change,
+              plus the fade
+     float    the idle breathing, a CSS keyframe on its own timeline
+
+   — and the innermost element carries the artwork and its resting
+   angle. Only `place` ever causes layout; the other three are
+   transform and opacity, which is to say the compositor.
+
+   THE DRIFT DIRECTION IS NOT IN THE DATA. It is computed from where
+   the prop sits: away from the centre of the stage, which is where
+   the pack is. That way a prop cannot be given a drift that sends it
+   across the pack instead of away from it, and moving a prop in the
+   table moves its exit with it.
    ------------------------------------------------------------------ */
 
+/**
+ * The corner dissolves, for the few windows that keep a soft sliver of the
+ * piece next door. A gradient run diagonally OUT of the offending corner, so
+ * the sliver goes and the prop's own silhouette — which never reaches that
+ * corner, or the window would not have been chosen — is untouched.
+ */
+const FADE = {
+  tr: "linear-gradient(to bottom left, transparent 0 14%, #000 31%)",
+  tl: "linear-gradient(to bottom right, transparent 0 14%, #000 31%)",
+  br: "linear-gradient(to top left, transparent 0 14%, #000 31%)",
+  bl: "linear-gradient(to top right, transparent 0 14%, #000 31%)",
+} as const;
+
+/**
+ * Unit vector from the stage's centre to the prop, times its own drift
+ * strength — how far, and which way, it opens on a handover.
+ *
+ * The `|| 1` guards a prop placed exactly at the centre: nothing in the table
+ * is, but a zero-length vector would produce `NaN` percentages rather than a
+ * visibly wrong position, and a silent NaN is the harder bug.
+ */
+function outward({ place, drift }: ShowcaseProp): [number, number] {
+  const dx = place.x - 50;
+  const dy = place.y - 50;
+  const len = Math.hypot(dx, dy) || 1;
+  const reach = 78 * drift;
+  return [(dx / len) * reach, (dy / len) * reach];
+}
+
 function Piece({
-  item,
-  scene,
+  prop,
+  progress,
   presence,
   spread,
   animate,
 }: {
-  item: ShowcaseIngredient;
-  scene: ShowcaseScene;
+  prop: ShowcaseProp;
+  /** whole-section scroll, 0-1 — the parallax runs off this, not off the scene */
+  progress: MotionValue<number>;
   presence: MotionValue<number>;
   /** 1 away → 0 settled → 1 away. Unsigned: a piece leaves the way it came. */
   spread: MotionValue<number>;
   animate: boolean;
 }) {
-  const [dx, dy] = SLOT_DRIFT[item.slot];
+  const [dx, dy] = outward(prop);
 
   const x = useTransform(spread, [0, 1], ["0%", `${dx}%`]);
   const y = useTransform(spread, [0, 1], ["0%", `${dy}%`]);
-  const rotate = useTransform(spread, [0, 1], [0, item.spin]);
-  const scale = useTransform(spread, [0, 1], [1, 0.62]);
+  const rotate = useTransform(spread, [0, 1], [0, prop.spin]);
+  const scale = useTransform(spread, [0, 1], [1, 0.64]);
 
   /*
-   * Depth sets the resting ink. Near pieces are close to solid, far ones sit
-   * back at around half — which is what distance actually looks like on a flat
-   * page. `presence` then multiplies that in and out with the scene.
-   *
-   * The curve is front-loaded, and that is the point: the ingredients are the
+   * The fade is front-loaded, and that is the point: the ingredients are the
    * only thing left carrying the frame through a handover. The pack hands over
-   * with its ramps pulled apart (see `useSceneMotion`) and the giant word
-   * fades hard, both so that neither ever double-exposes — which leaves a
-   * short window at the boundary with nothing in it unless something fills it.
-   * Holding the pieces near full ink from about a third of the way in means
-   * both flavours' ingredients are on screen through that window, one set
-   * drifting outward and the other closing in. Which is the transition the
-   * brief actually describes.
+   * with its ramps pulled apart (see `useSceneMotion`) and the giant word fades
+   * hard, both so that neither ever double-exposes — which leaves a short
+   * window at the boundary with nothing in it unless something fills it.
+   * Holding the props near full ink from about a third of the way in means both
+   * flavours' ingredients are on screen through that window, one set drifting
+   * outward and the other closing in.
    */
-  const rest = 0.5 + item.depth * 0.5;
-  const opacity = useTransform(presence, [0, 0.35, 1], [0, rest * 0.8, rest]);
+  const opacity = useTransform(
+    presence,
+    [0, 0.35, 1],
+    [0, prop.opacity * 0.8, prop.opacity],
+  );
 
-  const c = CADENCE[item.cadence % CADENCE.length];
+  /* The parallax: one slow pass up the frame across the entire section,
+     independent of which flavour is showing. Signed, so it reads as the layer
+     sitting behind the page rather than as the prop moving on its own. */
+  const parallax = useTransform(
+    progress,
+    [0, 1],
+    [`${prop.parallax}%`, `${-prop.parallax}%`],
+  );
+
+  const c = CADENCE[prop.cadence % CADENCE.length];
+  const m = prop.mobile ?? prop.place;
 
   return (
-    <motion.div
-      className={`absolute ${SLOT_PLACE[item.slot]}`}
+    <div
+      className={`showcase-prop absolute -translate-x-1/2 -translate-y-1/2 ${
+        prop.mobile ? "" : "hidden md:block"
+      }`}
       style={
-        animate
-          ? { x, y, rotate, scale, opacity, willChange: "transform, opacity" }
-          : { opacity }
+        {
+          "--p-x": `${m.x}%`,
+          "--p-y": `${m.y}%`,
+          "--p-w": `${m.size}%`,
+          "--p-x-md": `${prop.place.x}%`,
+          "--p-y-md": `${prop.place.y}%`,
+          "--p-w-md": `${prop.place.size}%`,
+        } as CSSProperties
       }
     >
-      <div
-        className="ingredient-float"
-        style={
-          {
-            /* the one place blur is used for depth — see the note on
-               `ShowcaseIngredient.blur` in lib/showcase.ts */
-            filter: item.blur ? `blur(${item.blur}px)` : undefined,
-            "--f-y": `${c.y}px`,
-            "--f-rot": `${c.rot}deg`,
-            "--f-scale": c.scale,
-            "--f-dur": `${c.duration}s`,
-            "--f-delay": `${c.delay}s`,
-          } as CSSProperties
-        }
-      >
-        <IngredientSprite id={item.sprite} palette={scene.palette} />
-      </div>
-    </motion.div>
+      <motion.div style={animate ? { y: parallax } : undefined}>
+        <motion.div
+          style={
+            animate
+              ? { x, y, rotate, scale, opacity, willChange: "transform, opacity" }
+              : { opacity: prop.opacity }
+          }
+        >
+          <div
+            className="ingredient-float"
+            style={
+              {
+                filter: prop.blur ? `blur(${prop.blur}px)` : undefined,
+                "--f-y": `${c.y}px`,
+                "--f-rot": `${c.rot}deg`,
+                "--f-scale": c.scale,
+                "--f-dur": `${c.duration}s`,
+                "--f-delay": `${c.delay}s`,
+              } as CSSProperties
+            }
+          >
+            <div
+              style={{
+                ...cropStyle(prop.crop),
+                transform: `rotate(${prop.rotate}deg)`,
+                ...(prop.fade
+                  ? {
+                      maskImage: FADE[prop.fade],
+                      WebkitMaskImage: FADE[prop.fade],
+                    }
+                  : null),
+              }}
+            />
+          </div>
+        </motion.div>
+      </motion.div>
+    </div>
   );
 }
 
 export default function IngredientLayer({
   scene,
   plane,
+  progress,
   presence,
   spread,
   animate,
 }: {
   scene: ShowcaseScene;
   plane: "back" | "front";
+  progress: MotionValue<number>;
   presence: MotionValue<number>;
   spread: MotionValue<number>;
   animate: boolean;
@@ -124,13 +197,13 @@ export default function IngredientLayer({
       className="pointer-events-none absolute inset-0"
       style={{ zIndex: plane === "back" ? PLANE.back : PLANE.front }}
     >
-      {scene.ingredients
-        .filter((i) => i.plane === plane)
-        .map((item) => (
+      {FLAVOUR_PROPS[scene.id]
+        .filter((p) => p.plane === plane)
+        .map((prop) => (
           <Piece
-            key={`${item.sprite}-${item.slot}`}
-            item={item}
-            scene={scene}
+            key={prop.name}
+            prop={prop}
+            progress={progress}
             presence={presence}
             spread={spread}
             animate={animate}
