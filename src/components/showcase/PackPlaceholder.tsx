@@ -40,10 +40,14 @@ export default function PackPlaceholder({
       /* the real shots' ratio, to four figures, so nothing reflows on swap */
       className="relative aspect-[1224/1285] w-full"
     >
-      {/* contact shadow — the same soft ellipse the cut-outs cast */}
+      {/* contact shadow — soft realistic double ellipse */}
       <div
-        className="absolute bottom-[5%] left-[10%] h-[6%] w-[74%] rounded-[50%] blur-xl"
-        style={{ backgroundColor: palette.deep, opacity: 0.2 }}
+        className="absolute bottom-[2%] left-[8%] h-[8%] w-[80%] rounded-[50%] blur-xl"
+        style={{ backgroundColor: palette.deep, opacity: 0.32 }}
+      />
+      <div
+        className="absolute bottom-[4%] left-[14%] h-[4%] w-[62%] rounded-[50%] blur-md"
+        style={{ backgroundColor: palette.deep, opacity: 0.4 }}
       />
 
       {/* ================= the box ================= */}
@@ -51,7 +55,7 @@ export default function PackPlaceholder({
         className="absolute bottom-[8%] left-[1%] h-[76%] w-[63%] overflow-hidden rounded-[3%] border border-dashed bg-white"
         style={{
           borderColor: `${accent}66`,
-          boxShadow: `0 26px 44px -20px ${palette.deep}80`,
+          boxShadow: `0 30px 56px -16px ${palette.deep}90, 0 12px 24px -8px ${palette.deep}60`,
         }}
       >
         {/* the coloured spine down the left, as on the real pack */}

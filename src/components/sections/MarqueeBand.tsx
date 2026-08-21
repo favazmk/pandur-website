@@ -44,9 +44,9 @@ export default function MarqueeBand() {
         <Marquee
           speed={40}
           itemClassName="text-band whitespace-pre font-display font-black"
-          repeat={3}
+          repeat={4}
         >
-          {"MADE TO GROW · "}
+          {"OUR SIGNATURE TASTE · MADE TO GROW · "}
         </Marquee>
 
         <Marquee
@@ -54,9 +54,9 @@ export default function MarqueeBand() {
           reverse
           className="mt-4"
           itemClassName="text-eyebrow whitespace-pre text-white"
-          repeat={6}
+          repeat={5}
         >
-          {"OUR SIGNATURE TASTE · "}
+          {"CREATE GREAT PRODUCTS · BUILD TRUST · GROW TOGETHER · "}
         </Marquee>
       </motion.div>
     </section>

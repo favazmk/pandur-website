@@ -38,7 +38,7 @@ import { PLANE, type ShowcaseScene } from "@/lib/showcase";
    ------------------------------------------------------------------ */
 
 const SHADOW =
-  "drop-shadow-[0_30px_44px_rgba(58,35,24,0.18)] drop-shadow-[0_8px_12px_rgba(58,35,24,0.10)]";
+  "drop-shadow-[0_8px_14px_rgba(42,24,16,0.18)] drop-shadow-[0_24px_36px_rgba(42,24,16,0.24)] drop-shadow-[0_50px_70px_rgba(42,24,16,0.20)]";
 
 /**
  * The pack's own idle float, through the shared `ingredient-float`
@@ -141,7 +141,17 @@ export default function ProductPackage({
       >
         {/* inner element carries the CSS float, so the two transforms never
             overwrite each other — see IngredientLayer for the full note */}
-        <div className="ingredient-float" style={IDLE}>
+        <div className="ingredient-float relative" style={IDLE}>
+          {/* Ground contact shadow */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -bottom-[4%] left-1/2 h-[7%] w-[84%] -translate-x-1/2 rounded-[50%] bg-[#2a1810]/28 blur-xl md:-bottom-[5%] md:h-[8%] md:w-[88%] md:blur-2xl"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -bottom-[1%] left-1/2 h-[3.5%] w-[62%] -translate-x-1/2 rounded-[50%] bg-[#1a0e08]/35 blur-md"
+          />
+
           {scene.pack ? (
             <Image
               src={scene.pack.src}
@@ -150,7 +160,7 @@ export default function ProductPackage({
               height={scene.pack.height}
               loading={eager ? "eager" : "lazy"}
               sizes="(max-width: 767px) 72vw, 34vw"
-              className={`h-auto w-full ${SHADOW}`}
+              className={`relative h-auto w-full ${SHADOW}`}
             />
           ) : (
             <PackPlaceholder scene={scene} />
