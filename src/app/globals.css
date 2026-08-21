@@ -282,6 +282,36 @@ html.lenis body {
   text-transform: uppercase;
   font-weight: 700;
 }
+/*
+ * The flavour showcase's giant ingredient word — a graphic, not a heading,
+ * and always exactly one line.
+ *
+ * Sized against the LONGEST of the four. "CARDAMOM" is eight caps, which
+ * Bricolage at 800 sets in roughly 5.2em; at 15.5vw that is about 81% of the
+ * viewport, and the word scales to 1.14 through a handover, so it comes within
+ * a whisker of the edges and the stage clips the rest. Anything larger and the
+ * longest flavour is the one that breaks.
+ *
+ * Line height is exactly 1 and letter-spacing is negative: this never wraps,
+ * so none of the two-line collision the other display tokens guard against
+ * can happen here.
+ */
+@utility text-word {
+  /*
+   * Bigger, proportionally, on a phone. At the desktop rate a 390px screen
+   * sets this at 60px, which makes the word about 285px wide — narrower than
+   * the pack in front of it, so on mobile the giant background word was
+   * hidden completely by the thing it sits behind. At 19vw it is wider than
+   * the pack and reads past both its edges, which is the whole point of it.
+   */
+  font-size: clamp(2.9rem, 19vw, 13rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+
+  @media (min-width: 768px) {
+    font-size: clamp(2.9rem, 15.5vw, 13rem);
+  }
+}
 @utility text-band {
   font-size: clamp(2.5rem, 7.6vw, 7.5rem);
   line-height: 1.06;
@@ -452,7 +482,35 @@ html.lenis body {
    No information may live only in motion.
    ============================================================ */
 
+/*
+ * The flavour showcase's scroll track.
+ *
+ * Full length it is 520vh, which buys each flavour about 105vh of scrolling —
+ * the room the handovers need to be readable. Under reduced motion there are
+ * no handovers to read, only a crossfade, and asking someone who has switched
+ * motion OFF to scroll five screens through a section that no longer moves is
+ * the opposite of an accommodation. The track collapses to roughly a screen
+ * per flavour.
+ *
+ * Done in CSS rather than from the `reduced` hook on purpose: a JS-driven
+ * height would change after hydration and take the scroll position with it.
+ */
+.showcase-track {
+  height: 460vh;
+}
+@media (min-width: 768px) {
+  .showcase-track {
+    height: 520vh;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  /* `!important` because the `min-width: 768px` rule above is later in the
+     cascade and equally specific — without it, reduced motion would be
+     honoured on phones and silently ignored on every desktop. */
+  .showcase-track {
+    height: 240vh !important;
+  }
   *,
   *::before,
   *::after {

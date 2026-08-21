@@ -2,6 +2,7 @@ import { PanelOver } from "@/components/motion/Scroll";
 import Preloader from "@/components/sections/Preloader";
 import Hero from "@/components/sections/Hero";
 import StatBand from "@/components/sections/StatBand";
+import FlavourShowcase from "@/components/sections/FlavourShowcase";
 import Flavours from "@/components/sections/Flavours";
 import Bite from "@/components/sections/Bite";
 import Craft from "@/components/sections/Craft";
@@ -18,6 +19,7 @@ export default function Home() {
       <main id="main">
         <Hero />
         <StatBand />
+        <FlavourShowcase />
         <Flavours />
         {/* dark panels ride up over the light section before them */}
         <PanelOver z={20}>
