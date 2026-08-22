@@ -505,6 +505,47 @@ html.lenis body {
 }
 
 /*
+ * The consistency journey's scroll track.
+ *
+ * Full length it is 1500vh — four stages, each with the room its beat needs.
+ * Under reduced motion nothing travels any more; the stages only crossfade,
+ * and asking someone who switched motion off to scroll fifteen screens
+ * through a section that no longer moves is the opposite of an
+ * accommodation. It collapses to two screens.
+ *
+ * In CSS rather than from the `reduced` hook for exactly the reason
+ * `.showcase-track` is: a JS-driven height would change after hydration and
+ * take the scroll position with it.
+ */
+.consistency-track {
+  height: 1500vh;
+}
+
+/*
+ * The breakpoint as a number, so an inline style can branch on it.
+ *
+ * The consistency journey places clones, destinations and dial marks at
+ * arbitrary per-item pixel offsets worked out in JS, which have to arrive in
+ * a style attribute — and a style attribute cannot carry a media query.
+ * These two flags let a `calc()` pick the phone figure or the desktop one.
+ * Exactly one of them is 1 at any width.
+ *
+ * They live here rather than in a `<style>` tag inside a component because
+ * three separate stages read them; defining them in one of those stages
+ * makes the other two silently depend on it still being mounted.
+ */
+:root {
+  --is-desktop: 0;
+  --is-mobile: 1;
+}
+@media (min-width: 768px) {
+  :root {
+    --is-desktop: 1;
+    --is-mobile: 0;
+  }
+}
+
+/*
  * Showcase ingredient props.
  * ------------------------------------------------------------
  * Placement is DATA — `lib/showcaseProps.ts` gives every prop a
@@ -537,6 +578,10 @@ html.lenis body {
      honoured on phones and silently ignored on every desktop. */
   .showcase-track {
     height: 240vh !important;
+  }
+  /* No `!important` needed: nothing later in the cascade sets this one. */
+  .consistency-track {
+    height: 200vh;
   }
   *,
   *::before,
