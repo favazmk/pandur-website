@@ -129,18 +129,18 @@ export const DESKTOP_WAYPOINTS: JourneyWaypoint[] = [
   { progress: 0.79, x: 65, y: 46, rotation: 1840, scaleX: 0.99, scaleY: 1.01, tilt: -10, shadowSpread: 0.35 },
 
   // 0.86: Approach tea plate
-  { progress: 0.86, x: 48, y: 46, rotation: 1980, scaleX: 0.98, scaleY: 1.02, tilt: 6, shadowSpread: 0.5 },
+  { progress: 0.86, x: 46, y: 46, rotation: 1980, scaleX: 0.98, scaleY: 1.02, tilt: 6, shadowSpread: 0.5 },
   // 0.92: Touchdown on fine ceramic plate (Soft bounce)
-  { progress: 0.92, x: 38, y: 54, rotation: 2100, scaleX: 1.03, scaleY: 0.97, tilt: -2, shadowSpread: 0.95 },
+  { progress: 0.92, x: 36.0, y: 54, rotation: 2100, scaleX: 1.03, scaleY: 0.97, tilt: -2, shadowSpread: 0.95 },
   // 0.96: Tiny settle rock
-  { progress: 0.96, x: 36.3, y: 54, rotation: 2145, scaleX: 1.01, scaleY: 0.99, tilt: 1, shadowSpread: 0.98 },
+  { progress: 0.96, x: 34.6, y: 54, rotation: 2145, scaleX: 1.01, scaleY: 0.99, tilt: 1, shadowSpread: 0.98 },
   // 1.00: Perfectly centered in the middle of the empty plate!
-  { progress: 1.00, x: 36.0, y: 54.0, rotation: 2160, scaleX: 1.0, scaleY: 1.0, tilt: 0, shadowSpread: 1.0 },
+  { progress: 1.00, x: 34.3, y: 54.0, rotation: 2160, scaleX: 1.0, scaleY: 1.0, tilt: 0, shadowSpread: 1.0 },
 ];
 
 /**
  * Mobile-specific high-dynamic-range trajectory with sweeping curves across width:
- * Settles dead-center on the mobile plate at (x: 50.0, y: 44.0)!
+ * Settles dead-center on the mobile plate at (x: 48.0, y: 44.0)!
  */
 export const MOBILE_WAYPOINTS: JourneyWaypoint[] = [
   // 0.00: Top left start
@@ -162,11 +162,11 @@ export const MOBILE_WAYPOINTS: JourneyWaypoint[] = [
   // 0.78: Long smooth swoop toward tea plate
   { progress: 0.78, x: 32, y: 50, rotation: 1460, scaleX: 0.99, scaleY: 1.01, tilt: -8, shadowSpread: 0.4 },
   // 0.88: Approach ceramic plate
-  { progress: 0.88, x: 50, y: 36, rotation: 1620, scaleX: 0.98, scaleY: 1.02, tilt: 4, shadowSpread: 0.5 },
+  { progress: 0.88, x: 48.8, y: 36, rotation: 1620, scaleX: 0.98, scaleY: 1.02, tilt: 4, shadowSpread: 0.5 },
   // 0.94: Soft touchdown on plate
-  { progress: 0.94, x: 50, y: 44, rotation: 1740, scaleX: 1.03, scaleY: 0.97, tilt: -1, shadowSpread: 0.95 },
+  { progress: 0.94, x: 48.2, y: 44, rotation: 1740, scaleX: 1.03, scaleY: 0.97, tilt: -1, shadowSpread: 0.95 },
   // 1.00: Perfectly dead-center on mobile plate
-  { progress: 1.00, x: 50.0, y: 44.0, rotation: 1760, scaleX: 1.0, scaleY: 1.0, tilt: 0, shadowSpread: 1.0 },
+  { progress: 1.00, x: 48.0, y: 44.0, rotation: 1760, scaleX: 1.0, scaleY: 1.0, tilt: 0, shadowSpread: 1.0 },
 ];
 
 /**
@@ -183,7 +183,7 @@ export const CRUMB_BURSTS: CrumbBurst[] = [
   { trigger: 0.10, x: 28, y: 64, count: 5 },
   { trigger: 0.31, x: 74, y: 68, count: 4 },
   { trigger: 0.66, x: 66, y: 62, count: 5 },
-  { trigger: 0.92, x: 38, y: 54, count: 3 },
+  { trigger: 0.92, x: 36.0, y: 54, count: 3 },
 ];
 
 /**

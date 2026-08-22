@@ -67,11 +67,12 @@ export default function JourneyWorldLayer({
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_65%_at_50%_40%,rgba(255,255,255,0.25),transparent_75%)]"
       />
 
-      {/* Only render the finale typography for "THE PERFECT PAIR" */}
-      {FLAVOUR_WORLDS.filter((w) => w.id === "tea").map((world) => (
-        <FinaleTextItem
+      {/* Render all flavour world typography as cookie journeys through them */}
+      {FLAVOUR_WORLDS.map((world, index) => (
+        <WorldTextItem
           key={world.id}
           world={world}
+          index={index}
           progress={progress}
           reduced={reduced}
         />
@@ -80,59 +81,62 @@ export default function JourneyWorldLayer({
   );
 }
 
-function FinaleTextItem({
+function WorldTextItem({
   world,
+  index,
   progress,
   reduced,
 }: {
   world: FlavourWorld;
+  index: number;
   progress: MotionValue<number>;
   reduced?: boolean;
 }) {
   const { start, end } = world;
+  const isFirst = index === 0;
+  const isLast = index === FLAVOUR_WORLDS.length - 1;
 
-  // Fade in during the finale phase (0.80 -> 1.0)
+  // Fade in at the start of the world, hold at 1 (full opacity), fade out at end (or hold for finale)
   const opacity = useTransform(
     progress,
-    [start - 0.02, start + 0.05, end],
-    [0, 1, 1]
+    isFirst
+      ? [0.0, end - 0.03, end]
+      : isLast
+      ? [start - 0.02, start + 0.02, 1.0]
+      : [start - 0.02, start + 0.02, end - 0.03, end],
+    isFirst
+      ? [1, 1, 0]
+      : isLast
+      ? [0, 1, 1]
+      : [0, 1, 1, 0]
   );
 
   const yParallax = useTransform(
     progress,
     [start, end],
-    [14, -6]
+    [10, -6]
   );
 
-  if (reduced) return null;
+  const eyebrow = isLast ? "The Finale" : `Flavour 0${index + 1}`;
 
   return (
     <motion.div
-      style={reduced ? undefined : { opacity, y: yParallax }}
-      className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-between p-6 md:p-12 lg:p-16 select-none"
+      style={reduced ? (isFirst ? { opacity: 1 } : { opacity: 0 }) : { opacity, y: yParallax }}
+      className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col items-center p-6 pt-24 sm:pt-28 md:pt-30 lg:pt-32 select-none"
     >
-      {/* Top Finale Tagline */}
-      <div className="max-w-md">
+      {/* Centered Top Flavour Information Card */}
+      <div className="max-w-lg mx-auto flex flex-col items-center text-center">
         <span
-          className="text-[0.65rem] md:text-xs font-black uppercase tracking-[0.24em] text-red-deep block mb-1 drop-shadow-sm"
+          className="text-[0.65rem] sm:text-xs font-black uppercase tracking-[0.24em] text-red-deep block mb-1 drop-shadow-sm"
         >
-          The Finale
+          {eyebrow}
         </span>
-        <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-ink drop-shadow-sm">
+        <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-ink drop-shadow-sm text-balance">
           {world.subtitle}
         </h3>
-        <p className="mt-1 text-xs md:text-sm font-medium text-ink/80 max-w-sm">
+        <p className="mt-1.5 text-xs sm:text-sm font-medium text-ink/85 max-w-md drop-shadow-sm leading-relaxed text-balance">
           {world.tagline}
         </p>
-      </div>
-
-      {/* Massive Background Watermark Typography for THE PERFECT PAIR */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center overflow-hidden pointer-events-none">
-        <span
-          className="font-display font-black tracking-tighter text-[11vw] leading-none opacity-[0.06] block uppercase select-none text-ink"
-        >
-          {world.name}
-        </span>
       </div>
     </motion.div>
   );

@@ -51,9 +51,9 @@ const FILM = {
  * `lib/assets` rather than being written here, so they cannot drift.
  */
 const BEATS: Beat[] = [
-  { text: "It starts with one cookie.", in: 0, out: 0.26 },
-  { text: "Butter, coconut, peanut, green cardamom.", in: 0.34, out: 0.62 },
-  { text: "It always ends up beside the tea.", in: 0.7, out: 1 },
+  { text: "It starts with one cookie.", in: 0, out: 0.34 },
+  { text: "Butter, coconut, peanut, green cardamom.", in: 0.33, out: 0.67 },
+  { text: "It always ends up beside the tea.", in: 0.66, out: 1 },
 ].map((b) => ({
   ...b,
   // the same note under every line: it is the one fact a trade visitor needs

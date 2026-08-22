@@ -43,6 +43,11 @@ export default function JourneyCookie({
   const scaleY = useTransform(progress, pIn, syOut as number[]);
   const tilt = useTransform(progress, pIn, tiltOut as number[]);
 
+  // Settle scale: cookie subtly decreases in size as it descends and settles onto the plate (gravity landing effect)
+  const landingScale = useTransform(progress, [0, 0.78, 0.90, 0.96, 1.0], [1.0, 1.0, 0.88, 0.86, 0.85]);
+  const finalScaleX = useTransform([scaleX, landingScale], ([sx, ls]) => (sx as number) * (ls as number));
+  const finalScaleY = useTransform([scaleY, landingScale], ([sy, ls]) => (sy as number) * (ls as number));
+
   // Floor shadow: active along ramps and physics leaps, fades to 0 completely when touching down on the ceramic plate
   const shadowLandingFade = useTransform(progress, [0, 0.82, 0.88, 1.0], [1, 1, 0, 0]);
   const rawShadowOpacity = useTransform(progress, pIn, shadowOut.map((val) => (val as number) * 0.45));
@@ -84,9 +89,9 @@ export default function JourneyCookie({
 
       {/* Aerodynamic Tilt / Orientation Group */}
       <motion.div style={{ rotate: tilt }} className="will-change-transform">
-        {/* Squash & Stretch Impact Deform Group */}
+        {/* Squash & Stretch Impact Deform Group with Gravity Landing Scale */}
         <motion.div
-          style={{ scaleX, scaleY }}
+          style={{ scaleX: finalScaleX, scaleY: finalScaleY }}
           className="relative w-24 sm:w-32 md:w-44 lg:w-48 will-change-transform"
         >
           {/* Continuous Roll Rotation */}

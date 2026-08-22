@@ -35,7 +35,7 @@ export type Beat = {
 };
 
 /** How long a line takes to arrive and to leave, in scroll progress. */
-export const FADE = 0.07;
+export const FADE = 0.035;
 
 /** Below this a line is treated as gone and taken out of the stack. */
 const GONE = 0.01;
@@ -92,7 +92,6 @@ export default function HeroBeats({
       if (travel <= 0) return;
       const p = Math.min(1, Math.max(0, -r.top / travel));
 
-      let envelope = 0;
       items.forEach((node, i) => {
         const b = beats[i];
         let o = 0;
@@ -102,11 +101,11 @@ export default function HeroBeats({
           const falling = i === beats.length - 1 ? 1 : (b.out - p) / FADE;
           o = Math.max(0, Math.min(1, rising, falling));
         }
-        if (o > envelope) envelope = o;
         paint(node, o);
       });
 
-      paint(foot.current, envelope);
+      // Keep CTA footer at full opacity while in hero section
+      paint(foot.current, 1);
     };
 
     const schedule = () => {
@@ -134,10 +133,12 @@ export default function HeroBeats({
             // hidden until the effect runs, so nothing flashes stacked on load
             style={{ opacity: 0, visibility: "hidden" }}
           >
-            <p className="text-hero-split font-display font-black text-balance text-ink">
+            <p className="text-hero-split font-display font-black text-balance text-ink drop-shadow-sm">
               {b.text}
             </p>
-            <p className="text-eyebrow mt-4 text-ash lg:text-ink/70">{b.note}</p>
+            <p className="text-eyebrow mt-4 font-bold tracking-[0.24em] text-ink drop-shadow-sm">
+              {b.note}
+            </p>
           </div>
         ))}
       </div>
