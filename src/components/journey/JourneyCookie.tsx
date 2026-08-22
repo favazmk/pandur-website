@@ -53,6 +53,17 @@ export default function JourneyCookie({
   const rawShadowOpacity = useTransform(progress, pIn, shadowOut.map((val) => (val as number) * 0.45));
   const shadowOpacity = useTransform([rawShadowOpacity, shadowLandingFade], ([raw, fade]) => (raw as number) * (fade as number));
 
+  // Dynamic CSS drop shadow for the cookie itself. 
+  // In air (shadowSpread = 0): floaty and wide. On plate (shadowSpread = 1): tight and dark contact shadow.
+  const shadowSpread = useTransform(progress, pIn, shadowOut as number[]);
+  const cookieShadowY = useTransform(shadowSpread, [0, 1], [12, 3]);
+  const cookieShadowBlur = useTransform(shadowSpread, [0, 1], [28, 6]);
+  const cookieShadowAlpha = useTransform(shadowSpread, [0, 1], [0.28, 0.5]);
+  const cookieFilter = useTransform(
+    [cookieShadowY, cookieShadowBlur, cookieShadowAlpha], 
+    ([y, blur, a]) => `drop-shadow(0 ${y}px ${blur}px rgba(58,35,24,${a}))`
+  );
+
   const shadowScale = useTransform(progress, pIn, shadowOut.map((val) => 0.6 + (val as number) * 0.4));
   const shadowBlur = useTransform(progress, pIn, shadowOut.map((val) => `${(1 - (val as number)) * 14 + 4}px`));
   const shadowFilter = useTransform(shadowBlur, (b) => `blur(${b})`);
@@ -95,13 +106,13 @@ export default function JourneyCookie({
           className="relative w-24 sm:w-32 md:w-44 lg:w-48 will-change-transform"
         >
           {/* Continuous Roll Rotation */}
-          <motion.div style={{ rotate }} className="h-full w-full">
+          <motion.div style={{ rotate, filter: cookieFilter }} className="h-full w-full">
             <Image
               src="/products/gcc-cookie.png"
               alt="Pandur Golden Cookie"
               width={480}
               height={480}
-              className="h-auto w-full drop-shadow-[0_12px_28px_rgba(58,35,24,0.28)]"
+              className="h-auto w-full"
               priority
             />
           </motion.div>

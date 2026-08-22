@@ -4,9 +4,8 @@ import Hero from "@/components/sections/Hero";
 import StatBand from "@/components/sections/StatBand";
 import FlavourShowcase from "@/components/sections/FlavourShowcase";
 
-import Bite from "@/components/sections/Bite";
 import CookieJourney from "@/components/journey/CookieJourney";
-import Craft from "@/components/sections/Craft";
+import ConsistencyJourney from "@/components/consistency/ConsistencyJourney";
 
 import Markets from "@/components/sections/Markets";
 import MarqueeBand from "@/components/sections/MarqueeBand";
@@ -22,15 +21,12 @@ export default function Home() {
         <StatBand />
         <FlavourShowcase />
 
-        {/* dark panels ride up over the light section before them */}
-        <PanelOver z={20}>
-          <Bite />
-        </PanelOver>
-
         {/* Signature physical interactive cookie journey */}
         <CookieJourney />
 
-        <Craft />
+        {/* Production & Shelf Life Storyline */}
+        <ConsistencyJourney />
+
         <Markets />
         <MarqueeBand />
         <PanelOver z={30}>

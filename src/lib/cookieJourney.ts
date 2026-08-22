@@ -134,13 +134,13 @@ export const DESKTOP_WAYPOINTS: JourneyWaypoint[] = [
   { progress: 0.92, x: 36.0, y: 54, rotation: 2100, scaleX: 1.03, scaleY: 0.97, tilt: -2, shadowSpread: 0.95 },
   // 0.96: Tiny settle rock
   { progress: 0.96, x: 34.6, y: 54, rotation: 2145, scaleX: 1.01, scaleY: 0.99, tilt: 1, shadowSpread: 0.98 },
-  // 1.00: Perfectly centered in the middle of the empty plate!
-  { progress: 1.00, x: 34.3, y: 54.0, rotation: 2160, scaleX: 1.0, scaleY: 1.0, tilt: 0, shadowSpread: 1.0 },
+  // 1.00: Final resting position on the tea plate (Center: x=36, y=54)
+  { progress: 1.00, x: 36.0, y: 54.0, rotation: 2160, scaleX: 1.0, scaleY: 1.0, tilt: 0, shadowSpread: 1.0 },
 ];
 
 /**
  * Mobile-specific high-dynamic-range trajectory with sweeping curves across width:
- * Settles dead-center on the mobile plate at (x: 48.0, y: 44.0)!
+ * Settles dead-center on the mobile plate at (x: 50.0, y: 44.0)!
  */
 export const MOBILE_WAYPOINTS: JourneyWaypoint[] = [
   // 0.00: Top left start
@@ -165,8 +165,8 @@ export const MOBILE_WAYPOINTS: JourneyWaypoint[] = [
   { progress: 0.88, x: 48.8, y: 36, rotation: 1620, scaleX: 0.98, scaleY: 1.02, tilt: 4, shadowSpread: 0.5 },
   // 0.94: Soft touchdown on plate
   { progress: 0.94, x: 48.2, y: 44, rotation: 1740, scaleX: 1.03, scaleY: 0.97, tilt: -1, shadowSpread: 0.95 },
-  // 1.00: Perfectly dead-center on mobile plate
-  { progress: 1.00, x: 48.0, y: 44.0, rotation: 1760, scaleX: 1.0, scaleY: 1.0, tilt: 0, shadowSpread: 1.0 },
+  // 1.00: Final resting position on the tea plate (Center: x=50, y=44)
+  { progress: 1.00, x: 50.0, y: 44.0, rotation: 1760, scaleX: 1.0, scaleY: 1.0, tilt: 0, shadowSpread: 1.0 },
 ];
 
 /**

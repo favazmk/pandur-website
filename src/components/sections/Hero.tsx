@@ -51,7 +51,7 @@ const FILM = {
  * `lib/assets` rather than being written here, so they cannot drift.
  */
 const BEATS: Beat[] = [
-  { text: "It starts with one cookie.", in: 0, out: 0.34 },
+  { text: "It starts with\none cookie.", in: 0, out: 0.34 },
   { text: "Butter, coconut, peanut, green cardamom.", in: 0.33, out: 0.67 },
   { text: "It always ends up beside the tea.", in: 0.66, out: 1 },
 ].map((b) => ({
@@ -162,46 +162,21 @@ export default function Hero() {
 
         {/* --- copy --- */}
         <motion.div
-          className="relative z-content mx-auto w-full max-w-7xl px-6 pt-[15vh] text-center md:pt-[13vh]"
-          style={scrub ? { y: copyY, opacity: copyOpacity } : undefined}
+          className="relative z-20 mx-auto w-full max-w-7xl px-6 pt-[15vh] text-center md:pt-[13vh]"
+          style={scrub ? { y: copyY } : undefined}
         >
-          {/*
-           * The heading a crawler and a screen reader are given, and it does
-           * not move. The three display lines below are what a visitor reads,
-           * and they change with the film — but an `h1` whose text depends on
-           * scroll position would mean the accessible name of the page depends
-           * on how far down you are, so the stable one is kept and hidden.
-           * It matches the `<title>` in layout.
-           */}
           <h1 className="sr-only">Cookies worth the shelf space.</h1>
 
-          {/*
-           * Fixed-height box with the three beats stacked, sized to the
-           * tallest of them so the CTA underneath does not sit in a pocket of
-           * dead space. Putting the beats in the flow would reflow the hero on
-           * every scroll frame.
-           *
-           * Widths are in rem, not ch: `ch` resolves against the CONTAINER's
-           * font size, which is the 16px body text, not the 62px display type
-           * inside it — a `ch` width here came out 202px wide and wrapped the
-           * headline eight lines deep.
-           */}
           <HeroBeats
-            targetRef={ref}
+            progress={scrollYProgress}
             beats={BEATS}
             active={scrub}
             className="relative mx-auto h-[11rem] max-w-[20rem] sm:h-[11rem] sm:max-w-[30rem] lg:h-[10.5rem] lg:max-w-[46rem]"
             footerClassName="mt-4"
             footer={
-              /*
-               * The one thing a trade visitor is here to do. It rides the
-               * beats as a group — up whenever a line is up, gone through the
-               * two gaps — so the copy block arrives and leaves as one piece
-               * instead of leaving a button under an empty space.
-               */
               <a
                 href="#partner"
-                className="inline-flex items-center gap-3 rounded-full bg-red-deep px-9 py-4 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition-colors hover:bg-ink"
+                className="inline-flex items-center gap-3 rounded-full bg-red-deep px-9 py-4 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition-colors hover:bg-ink shadow-md"
               >
                 Become a stockist
               </a>
