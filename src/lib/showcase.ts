@@ -186,13 +186,12 @@ export const SCENES: ShowcaseScene[] = [
     word: "COCONUT",
     ...base("coconut"),
     shot: { src: "/products/flavour-coconut.png", width: 480, height: 334 },
-    /*
-     * No cut-out for coconut yet. `components/showcase/PackPlaceholder.tsx`
-     * stands in until one exists — the flat `pack-coconut.jpg` is not a
-     * candidate: it has no alpha, so it would arrive on this tinted stage as
-     * a rectangle of somebody else's kitchen.
-     */
-    pack: null,
+    pack: {
+      src: "/products/hero-coconut-box-sachet.png",
+      width: 1393,
+      height: 1129,
+      alt: "Pandur Coconut Cookies — the 16-piece box beside a single sachet",
+    },
     ground: "#F4E7D3",
     wash: ["#E3C296", "#FAF3E8"],
     ink: "#6B4A32",
@@ -209,8 +208,12 @@ export const SCENES: ShowcaseScene[] = [
     word: "PEANUT",
     ...base("peanut"),
     shot: { src: "/products/flavour-peanut.png", width: 480, height: 341 },
-    /* Same as coconut — no alpha cut-out delivered yet. */
-    pack: null,
+    pack: {
+      src: "/products/hero-peanut-box-sachet.png",
+      width: 1240,
+      height: 1269,
+      alt: "Pandur Peanut Cookies — the 16-piece box beside a single sachet",
+    },
     ground: "#F7E9C9",
     wash: ["#DDB166", "#FCF6E4"],
     ink: "#8A5A2B",
