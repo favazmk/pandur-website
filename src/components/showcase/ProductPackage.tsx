@@ -160,7 +160,7 @@ export default function ProductPackage({
               height={scene.pack.height}
               loading={eager ? "eager" : "lazy"}
               sizes="(max-width: 767px) 72vw, 34vw"
-              className={`relative h-auto w-full ${SHADOW}`}
+              className={`relative h-auto w-full mix-blend-multiply ${SHADOW}`}
             />
           ) : (
             <PackPlaceholder scene={scene} />
