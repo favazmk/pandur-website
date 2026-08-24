@@ -12,21 +12,14 @@ import { CONSISTENCY_STAGES, SHELF_TIMELINE } from "@/lib/consistencyJourney";
 function TimelineMark({
   progress,
   mark,
-  start,
-  end,
 }: {
   progress: MotionValue<number>;
   mark: (typeof SHELF_TIMELINE)[number];
-  start: number;
-  end: number;
 }) {
   /*
-   * Position on the circle. The dial maps progress [start+0.02, end-0.05] to
-   * [0, 1], i.e. a full 360°, so a mark's fraction of that window is its angle.
+   * Position on the circle uses the explicit angle provided in SHELF_TIMELINE.
    */
-  const fraction = (mark.progress - (start + 0.02)) / ((end - 0.05) - (start + 0.02));
-  const angle = fraction * 360 - 90; // -90 to start at top
-  const rad = angle * (Math.PI / 180);
+  const rad = mark.angle * (Math.PI / 180);
 
   // Radius matching the SVG (scaled for CSS layout)
   const radiusDesktop = 240;
@@ -72,8 +65,8 @@ export default function ShelfLifeStage({
   const dashOffset = useTransform(dialProgress, [0, 1], [1005.3, 0]);
 
   // Final text reveal: appears earlier to give user time to read before section ends
-  const textOpacity = useTransform(progress, [end - 0.1, end - 0.05], [0, 1]);
-  const textY = useTransform(progress, [end - 0.1, end - 0.05], [20, 0]);
+  const textOpacity = useTransform(progress, [start + 0.05, start + 0.08], [0, 1]);
+  const textY = useTransform(progress, [start + 0.05, start + 0.08], [20, 0]);
 
   return (
     <motion.div style={{ opacity: stageOpacity }} className="absolute inset-0 pointer-events-none flex items-center justify-center bg-cocoa">
@@ -91,9 +84,8 @@ export default function ShelfLifeStage({
             strokeWidth="3"
             strokeLinecap="round"
             strokeDasharray="1005.3"
-            /* Reduced motion shows the dial complete rather than drawing it. */
             style={animate ? { strokeDashoffset: dashOffset } : { strokeDashoffset: 0 }}
-            className="-rotate-90" // Start at 12 o'clock
+            className="rotate-180" // Start at 9 o'clock (left)
           />
         </svg>
       </div>
@@ -104,8 +96,6 @@ export default function ShelfLifeStage({
           key={mark.label}
           progress={progress}
           mark={mark}
-          start={start}
-          end={end}
         />
       ))}
 

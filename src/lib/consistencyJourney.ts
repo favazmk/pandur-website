@@ -13,20 +13,18 @@ export const CONSISTENCY_STAGES = {
 };
 
 export const OVEN_TIMELINE = [
-  { progress: 0.02, value: "05" },
-  { progress: 0.05, value: "10" },
-  { progress: 0.08, value: "20" },
-  { progress: 0.11, value: "30" },
-  { progress: 0.14, value: "40" },
-  { progress: 0.17, value: "45" },
+  { progress: 0.03, value: "10" },
+  { progress: 0.06, value: "20" },
+  { progress: 0.09, value: "30" },
+  { progress: 0.12, value: "45" },
 ];
 
 export const QUALITY_CHECKPOINTS = [
-  { id: "mix", label: "MIX", p: 0.52 },
-  { id: "bake", label: "BAKE", p: 0.56 },
-  { id: "cool", label: "COOL", p: 0.60 },
-  { id: "check", label: "CHECK", p: 0.64 },
-  { id: "pack", label: "PACK", p: 0.68 },
+  { id: "mix", label: "MIX", p: 0.51 },
+  { id: "bake", label: "BAKE", p: 0.53 },
+  { id: "cool", label: "COOL", p: 0.55 },
+  { id: "check", label: "CHECK", p: 0.57 },
+  { id: "pack", label: "PACK", p: 0.59 },
 ];
 
 export const DESTINATIONS = [
@@ -41,8 +39,8 @@ export const DESTINATIONS = [
 ];
 
 export const SHELF_TIMELINE = [
-  { progress: 0.82, label: "DAY 01" },
-  { progress: 0.87, label: "MONTH 01" },
-  { progress: 0.92, label: "MONTH 03" },
-  { progress: 0.97, label: "MONTH 06" },
+  { progress: 0.82, label: "DAY 01", angle: 180 }, // Left
+  { progress: 0.84, label: "MONTH 01", angle: 240 }, // Top-Left
+  { progress: 0.86, label: "MONTH 03", angle: 300 }, // Top-Right
+  { progress: 0.88, label: "MONTH 06", angle: 0 }, // Right
 ];

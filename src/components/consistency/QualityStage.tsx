@@ -128,15 +128,15 @@ export default function QualityStage({
 }) {
   const { start, end } = CONSISTENCY_STAGES.QUALITY;
 
-  // Fade in over the clones, fade out before shelf
-  const stageOpacity = useTransform(progress, [start, start + 0.05, end - 0.05, end], [0, 1, 1, 0]);
+  // Fade in over the clones, fade out before shelf (delayed slightly to show spread cookies longer)
+  const stageOpacity = useTransform(progress, [start, start + 0.05, end - 0.03, end], [0, 1, 1, 0]);
 
-  // Text reveal: appears early, holds, fades out right before spreading
-  const textOpacity = useTransform(progress, [start + 0.02, start + 0.06, end - 0.12, end - 0.08], [0, 1, 1, 0]);
-  const textY = useTransform(progress, [start + 0.02, start + 0.06], [20, 0]);
+  // Cookie Spread for Destinations: happens first, as soon as the stage starts
+  const spreadProgress = useTransform(progress, [start + 0.02, start + 0.08], [0, 1]);
 
-  // Cookie Spread for Destinations: happens earlier so it holds for a moment
-  const spreadProgress = useTransform(progress, [end - 0.12, end - 0.04], [0, 1]);
+  // Text reveal: appears SECOND, after the cookies have finished spreading
+  const textOpacity = useTransform(progress, [start + 0.09, start + 0.12, end - 0.02, end], [0, 1, 1, 0]);
+  const textY = useTransform(progress, [start + 0.09, start + 0.12], [20, 0]);
 
   /* Every checkpoint fades in together, so this is one value shared by all
      five rather than five identical ones. */

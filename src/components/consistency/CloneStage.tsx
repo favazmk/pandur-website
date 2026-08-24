@@ -68,25 +68,24 @@ export default function CloneStage({
   const railScaleX = useTransform(progress, [start, start + 0.1], [0, 1]);
   const railOpacity = useTransform(progress, [start, start + 0.05], [0, 1]);
 
-  // Clone configurations (12 total cookies, clustered)
+  // Clone configurations: 10 cookies + 1 central cookie tracing a perfectly spaced sideways "8" (infinity symbol)
   const clones: Clone[] = [
-    { id: 1, trigger: start + 0.02, dx: -240, dy: -120 },
-    { id: 2, trigger: start + 0.04, dx: 240, dy: 120 },
-    { id: 3, trigger: start + 0.06, dx: -120, dy: 120 },
-    { id: 4, trigger: start + 0.08, dx: 120, dy: -120 },
-    { id: 5, trigger: start + 0.10, dx: -360, dy: 0 },
-    { id: 6, trigger: start + 0.12, dx: 360, dy: 0 },
-    { id: 7, trigger: start + 0.13, dx: -240, dy: 120 },
-    { id: 8, trigger: start + 0.14, dx: 240, dy: -120 },
-    { id: 9, trigger: start + 0.15, dx: -120, dy: -120 },
-    { id: 10, trigger: start + 0.16, dx: 120, dy: 120 },
-    { id: 11, trigger: start + 0.17, dx: -360, dy: -120 },
-    { id: 12, trigger: start + 0.18, dx: 360, dy: 120 },
+    { id: 1, trigger: start + 0.01, dx: 90, dy: -150 },     // Right lobe, top inner
+    { id: 2, trigger: start + 0.015, dx: 260, dy: -150 },   // Right lobe, top outer
+    { id: 3, trigger: start + 0.02, dx: 350, dy: 0 },       // Right lobe, far right
+    { id: 4, trigger: start + 0.025, dx: 260, dy: 150 },    // Right lobe, bottom outer
+    { id: 5, trigger: start + 0.03, dx: 90, dy: 150 },      // Right lobe, bottom inner
+    // Crosses through the pre-existing central cookie at (0,0)
+    { id: 6, trigger: start + 0.04, dx: -90, dy: -150 },    // Left lobe, top inner
+    { id: 7, trigger: start + 0.045, dx: -260, dy: -150 },  // Left lobe, top outer
+    { id: 8, trigger: start + 0.05, dx: -350, dy: 0 },      // Left lobe, far left
+    { id: 9, trigger: start + 0.055, dx: -260, dy: 150 },   // Left lobe, bottom outer
+    { id: 10, trigger: start + 0.06, dx: -90, dy: 150 },    // Left lobe, bottom inner
   ];
 
-  // Text reveal: fade in, hold steady, then fade out
-  const textOpacity = useTransform(progress, [start + 0.1, start + 0.15, end - 0.05, end], [0, 1, 1, 0]);
-  const textY = useTransform(progress, [start + 0.1, start + 0.15], [20, 0]);
+  // Text reveal: wait for clones to pop into place, then fade in
+  const textOpacity = useTransform(progress, [start + 0.09, start + 0.12, end - 0.02, end], [0, 1, 1, 0]);
+  const textY = useTransform(progress, [start + 0.09, start + 0.12], [20, 0]);
 
   return (
     <motion.div style={{ opacity: stageOpacity }} className="absolute inset-0 pointer-events-none flex items-center justify-center">
