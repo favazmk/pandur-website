@@ -188,8 +188,8 @@ export const SCENES: ShowcaseScene[] = [
     shot: { src: "/products/flavour-coconut.png", width: 480, height: 334 },
     pack: {
       src: "/products/hero-coconut-box-sachet.png",
-      width: 1240,
-      height: 1269,
+      width: 1242,
+      height: 1266,
       alt: "Pandur Coconut Cookies — the 16-piece box beside a single sachet",
     },
     ground: "#F4E7D3",
