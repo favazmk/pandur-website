@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useTransform, motion, type MotionValue } from "motion/react";
 import { CONSISTENCY_STAGES, QUALITY_CHECKPOINTS, DESTINATIONS } from "@/lib/consistencyJourney";
+import { polar } from "@/lib/motion";
 
 /*
  * One checkpoint on the line, stamped as the scroll passes it.
@@ -59,10 +60,18 @@ function Destination({
   dest: (typeof DESTINATIONS)[number];
   animate: boolean;
 }) {
-  // Calculate radial drift
-  const rad = dest.angle * (Math.PI / 180);
-  const dx = Math.cos(rad) * dest.radius;
-  const dy = Math.sin(rad) * dest.radius;
+  /*
+   * Calculate radial drift.
+   *
+   * `polar` rather than raw `Math.cos`/`Math.sin`: these figures are serialised
+   * into an SSR'd style string, and the two engines disagree in the last bit.
+   * Everything downstream of here is plain IEEE-754 arithmetic, which IS
+   * exactly specified, so rounding once at the trig call is enough to make the
+   * whole cluster hydrate identically. See the note on `polar` in lib/motion.
+   */
+  const { cos, sin } = polar(dest.angle);
+  const dx = cos * dest.radius;
+  const dy = sin * dest.radius;
 
   const x = useTransform(spreadProgress, [0, 1], [0, dx], { clamp: false });
   const y = useTransform(spreadProgress, [0, 1], [0, dy], { clamp: false });
@@ -70,18 +79,39 @@ function Destination({
   const labelOpacity = useTransform(spreadProgress, [0.4, 0.8], [0, 1]);
 
   /*
-   * The label sits further along the same radius as the cookie: 50px out on a
-   * phone, 80px from `md`. The trigonometry is done HERE, in JS, and only the
-   * finished pixel figures go into the calc — `calc()` has no `Math.cos()`,
-   * and a calc it cannot parse is dropped silently, which lands every label
-   * back on top of its own cookie.
+   * The whole cluster is placed as a fraction of `--dest-reach` — the distance
+   * the furthest label may sit from the centre, defined on `.quality-stage` in
+   * globals.css. 240 is the denominator because that is the reach the stage was
+   * drawn to: a 160px spread plus an 80px label push.
    *
-   * `--is-mobile` / `--is-desktop` are defined on `:root` in globals.css;
-   * exactly one of them is 1 at any width.
+   * The trigonometry is done HERE, in JS, and only the finished unitless ratio
+   * goes into the calc — `calc()` has no `Math.cos()`, and a calc it cannot
+   * parse is dropped silently, which lands every label back on top of its own
+   * cookie.
+   *
+   * The reach has to be a CSS length rather than a pixel figure worked out
+   * here: it depends on the viewport width, and only CSS can re-evaluate that
+   * on resize without a re-render.
    */
+  const REACH_BASIS = 240;
+
+  /*
+   * The spread transform above travels the full desktop `dx`/`dy`, because an
+   * animated value cannot be a `calc()` string. This static wrapper carries the
+   * DIFFERENCE between that and where the cookie should actually land, so the
+   * two compose to `cos * radius * (reach / 240)`. On desktop `--dest-reach` is
+   * 240px and this resolves to exactly zero.
+   */
+  const clusterShift = {
+    x: `calc(${dx / REACH_BASIS} * var(--dest-reach) - ${dx}px)`,
+    y: `calc(${dy / REACH_BASIS} * var(--dest-reach) - ${dy}px)`,
+  };
+
+  /* The label sits further out along the same radius, by the remaining
+     80/240 of the reach, so it clears the cookie rather than sitting on it. */
   const labelShift = {
-    x: `calc(${Math.cos(rad) * 50}px * var(--is-mobile) + ${Math.cos(rad) * 80}px * var(--is-desktop))`,
-    y: `calc(${Math.sin(rad) * 50}px * var(--is-mobile) + ${Math.sin(rad) * 80}px * var(--is-desktop))`,
+    x: `calc(${(cos * 80) / REACH_BASIS} * var(--dest-reach))`,
+    y: `calc(${(sin * 80) / REACH_BASIS} * var(--dest-reach))`,
   };
 
   return (
@@ -91,11 +121,7 @@ function Destination({
       className="absolute inset-0 flex items-center justify-center z-10"
     >
       <motion.div
-        style={{
-          // Pull the cluster in on mobile so it stays on screen.
-          x: `calc(var(--is-mobile) * ${-dx * 0.3}px)`,
-          y: `calc(var(--is-mobile) * ${-dy * 0.3}px)`,
-        }}
+        style={clusterShift}
         className="relative flex items-center justify-center"
       >
         <Image
@@ -110,7 +136,11 @@ function Destination({
           style={{ opacity: labelOpacity, ...labelShift }}
           className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
         >
-          <span className="whitespace-nowrap text-[8px] md:text-[10px] font-black uppercase tracking-widest text-cocoa bg-cream/90 backdrop-blur-sm px-2 py-1 rounded-full border border-ink/10 shadow-sm">
+          {/* 10px, not 8px. Uppercase at wide tracking is the hardest case to
+              read small, and 8px sat below any legibility floor — the emirate
+              names are content, not texture. The extra width this costs is
+              accounted for in `--dest-reach`; see globals.css. */}
+          <span className="whitespace-nowrap text-[10px] md:text-xs font-black uppercase tracking-widest text-cocoa bg-cream/90 backdrop-blur-sm px-2 py-1 rounded-full border border-ink/10 shadow-sm">
             {dest.name}
           </span>
         </motion.div>
@@ -143,7 +173,7 @@ export default function QualityStage({
   const checkpointOpacity = useTransform(progress, [start + 0.02, start + 0.06], [0, 1]);
 
   return (
-    <motion.div style={{ opacity: stageOpacity }} className="absolute inset-0 pointer-events-none flex items-center justify-center">
+    <motion.div style={{ opacity: stageOpacity }} className="quality-stage absolute inset-0 pointer-events-none flex items-center justify-center">
 
       {/* Typography */}
       <motion.div

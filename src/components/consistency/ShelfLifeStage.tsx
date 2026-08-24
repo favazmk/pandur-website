@@ -2,6 +2,7 @@
 
 import { useTransform, motion, type MotionValue } from "motion/react";
 import { CONSISTENCY_STAGES, SHELF_TIMELINE } from "@/lib/consistencyJourney";
+import { polar } from "@/lib/motion";
 
 /*
  * One mark on the shelf-life dial.
@@ -18,12 +19,20 @@ function TimelineMark({
 }) {
   /*
    * Position on the circle uses the explicit angle provided in SHELF_TIMELINE.
+   *
+   * The radius is `--dial-label-r`, defined on `.shelf-dial` in globals.css and
+   * derived from the same `--dial-r` the ring is sized from — so the marks
+   * cannot drift off the circle again. It has to be a CSS length rather than a
+   * pixel figure worked out here: the value depends on the viewport width, and
+   * only CSS can re-evaluate that on resize without a re-render.
+   *
+   * The trigonometry stays in JS — `calc()` has no `Math.cos()` — and only the
+   * finished unitless ratio goes into the calc, where it multiplies the length.
+   * `polar` rather than raw `Math.cos`/`Math.sin`: the result is serialised into
+   * an SSR'd style string, and the two engines disagree in the last bit. See
+   * the note on `polar` in lib/motion.
    */
-  const rad = mark.angle * (Math.PI / 180);
-
-  // Radius matching the SVG (scaled for CSS layout)
-  const radiusDesktop = 240;
-  const radiusMobile = 160;
+  const { cos, sin } = polar(mark.angle);
 
   const markOpacity = useTransform(progress, [mark.progress - 0.02, mark.progress], [0, 1]);
 
@@ -31,8 +40,8 @@ function TimelineMark({
     <motion.div
       style={{
         opacity: markOpacity,
-        x: `calc(${Math.cos(rad) * radiusDesktop}px * var(--is-desktop) + ${Math.cos(rad) * radiusMobile}px * var(--is-mobile))`,
-        y: `calc(${Math.sin(rad) * radiusDesktop}px * var(--is-desktop) + ${Math.sin(rad) * radiusMobile}px * var(--is-mobile))`,
+        x: `calc(${cos} * var(--dial-label-r))`,
+        y: `calc(${sin} * var(--dial-label-r))`,
       }}
       className="absolute inset-0 flex items-center justify-center z-0"
     >
@@ -69,11 +78,18 @@ export default function ShelfLifeStage({
   const textY = useTransform(progress, [start + 0.05, start + 0.08], [20, 0]);
 
   return (
-    <motion.div style={{ opacity: stageOpacity }} className="absolute inset-0 pointer-events-none flex items-center justify-center bg-cocoa">
+    <motion.div style={{ opacity: stageOpacity }} className="shelf-dial absolute inset-0 pointer-events-none flex items-center justify-center bg-cocoa">
 
       {/* Timeline Dial SVG */}
       <div className="absolute inset-0 flex items-center justify-center opacity-60">
-        <svg width="400" height="400" viewBox="0 0 400 400" className="w-[320px] h-[320px] md:w-[480px] md:h-[480px]">
+        <svg
+          width="400"
+          height="400"
+          viewBox="0 0 400 400"
+          /* 2.5x `--dial-r`, because the circle is drawn at r=160 on a
+             400-unit viewBox. See `.shelf-dial` in globals.css. */
+          style={{ width: "var(--dial-size)", height: "var(--dial-size)" }}
+        >
           {/* Background track */}
           <circle cx="200" cy="200" r="160" fill="none" stroke="#E8C89A" strokeWidth="2" strokeOpacity="0.15" />
           {/* Active drawing track */}

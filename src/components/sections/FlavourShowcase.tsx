@@ -409,7 +409,9 @@ export default function FlavourShowcase() {
 
           <motion.a
             href="/products"
-            className="pointer-events-auto inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[clamp(0.6rem,0.8vw,0.7rem)] font-bold uppercase tracking-[0.2em] transition-colors hover:bg-ink hover:text-cream"
+            /* `min-h-11` is the 44px touch minimum; `py-2` alone left it 32px
+               tall, and this is the section's only outbound link. */
+            className="pointer-events-auto inline-flex min-h-11 items-center gap-2 rounded-full border px-4 py-2 text-[clamp(0.6rem,0.8vw,0.7rem)] font-bold uppercase tracking-[0.2em] transition-colors hover:bg-ink hover:text-cream"
             style={{ color: chrome, borderColor: chrome }}
           >
             All four

@@ -58,6 +58,24 @@ These are not style preferences. Each one was arrived at by hitting the failure.
   height changes under `prefers-reduced-motion` in `globals.css`. Deciding it
   from JS would resize the section after hydration and drag the scroll position
   with it.
+- **Trig that reaches a style attribute goes through `polar()`.** `Math.sin`
+  and `Math.cos` are not required to be correctly rounded, and Node and Chrome
+  really do differ in the last bit — `sin(240°)` served `-0.8660254037844385`
+  and hydrated `-0.8660254037844384`. Interpolated into an SSR'd `style`
+  string that is a hydration mismatch on every page load. `polar()` in
+  `lib/motion.ts` rounds to 6dp, which is identical on both engines and far
+  below a device pixel. Plain arithmetic downstream is safe: IEEE-754 `*`, `/`
+  and `Number→String` are exactly specified. Only the trig call needs fixing.
+- **Radial layouts size from a CSS length, not a pixel constant.** The
+  shelf-life dial (`--dial-r`) and the quality-stage destinations
+  (`--dest-reach`) both place labels on a circle around the centred cookie.
+  Both used fixed px radii for the phone case, and a fixed radius cannot know
+  how wide the phone is: the labels at 0° and 180° reach furthest sideways and
+  ran off every handset under ~400px. The radii are now viewport-aware lengths
+  capped at the figure the design was drawn to — the cap keeps wide phones and
+  desktop pixel-identical, the `vw` term rescues the narrow ones. Everything
+  else is expressed as a fraction of them, so the geometry scales as one piece.
+  Do not reintroduce a bare pixel radius.
 - **`HAS_PACK_IMAGES` is `false` by decision, not by omission.** The four pack
   files exist and are wired; they read as AI mockups and two carry visible
   errors, so procedural stand-ins render instead. README has the detail. Flip it

@@ -572,6 +572,72 @@ html.lenis body {
   }
 }
 
+/*
+ * Radial layouts in the consistency journey.
+ * ------------------------------------------------------------
+ * Two stages place labels on a circle around the centred cookie:
+ * the shelf-life dial and the quality-stage destinations. Both
+ * used FIXED pixel radii for the phone case, and a fixed radius
+ * cannot know how wide the phone is — so the labels on the
+ * horizontal axis (the ones at 0deg and 180deg, which reach
+ * furthest sideways) ran off the screen on every handset narrower
+ * than about 400px. Measured: "MONTH 06" was cut by 40px and
+ * "KHORFAKKAN" by 34px at 320, and both were still clipped at 375.
+ *
+ * The radius is now a length that knows the viewport, capped at the
+ * figure the design was drawn to. The cap is what keeps wide phones
+ * looking exactly as before; the `50vw`/`40vw` term is what rescues
+ * the narrow ones. Everything downstream is expressed as a fraction
+ * of these, so the geometry scales as one piece and the labels stay
+ * on their circle at every width.
+ *
+ * The subtracted pixels are the half-width of the widest label plus
+ * a small margin — i.e. the room the text itself needs once its
+ * anchor point has been placed.
+ */
+
+/*
+ * Shelf-life dial. `--dial-r` is the RING radius; the labels sit at
+ * 1.25x that, which is the 160/128 and 240/192 relationship the
+ * stage was already built to — preserved exactly, now as a ratio
+ * rather than as two pairs of unrelated constants.
+ *
+ * The SVG is drawn on a 400-unit viewBox with its circle at r=160,
+ * so the element must be 2.5x the radius for the stroke to land
+ * where `--dial-r` says it does. That factor was previously implicit
+ * in `w-[320px]`/`w-[480px]` and had drifted: the labels were placed
+ * at 160/240 while the ring actually rendered at 128/192.
+ */
+.shelf-dial {
+  --dial-r: min(128px, calc(40vw - 38.4px));
+  --dial-label-r: calc(var(--dial-r) * 1.25);
+  --dial-size: calc(var(--dial-r) * 2.5);
+}
+@media (min-width: 768px) {
+  .shelf-dial {
+    --dial-r: 192px;
+  }
+}
+
+/*
+ * Quality-stage destinations. `--dest-reach` is how far the FURTHEST
+ * label may sit from the centre; the cookie and its label are both
+ * placed as fractions of it, so one number governs the whole cluster.
+ *
+ * 240px is the desktop figure the stage was drawn to (a 160px spread
+ * plus an 80px label push). The phone case used to be a separate
+ * hand-tuned pair — a 0.7 multiplier and a flat 50px push — which is
+ * what put the horizontal labels off-screen.
+ */
+.quality-stage {
+  --dest-reach: min(162px, calc(50vw - 52px));
+}
+@media (min-width: 768px) {
+  .quality-stage {
+    --dest-reach: 240px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   /* `!important` because the `min-width: 768px` rule above is later in the
      cascade and equally specific — without it, reduced motion would be

@@ -64,7 +64,12 @@ export default function SiteHeader() {
               aria-label="Pandur — home"
               data-cursor="grow"
               onClick={() => setOpen(false)}
-              className="relative z-10"
+              /*
+               * `min-h-11` is the 44px touch minimum. It costs no layout: the
+               * row is already 44px tall because the menu toggle beside it is
+               * `h-11`, and the 36px logo was simply sitting short inside it.
+               */
+              className="relative z-10 flex min-h-11 items-center"
             >
               <Logo className="h-9 w-auto md:h-12" />
             </Link>
@@ -143,51 +148,85 @@ export default function SiteHeader() {
         {open && (
           <motion.div
             id="mobile-menu"
-            className="fixed inset-0 z-menu flex flex-col justify-center bg-cream px-8 lg:hidden"
+            /*
+             * Scrollable, and the scroll is not decoration.
+             *
+             * The links are sized in `vw`, so on a LANDSCAPE phone they get
+             * enormous while the viewport gets short: at 812x375 the six items
+             * stood 674px tall inside a 375px overlay, which put "Home" fully
+             * above the screen and "Contact" fully below it with no way to
+             * reach either. Two of six destinations were simply gone.
+             *
+             * `data-lenis-prevent` is required, not optional: Lenis owns the
+             * wheel globally, and without it a wheel over this overlay scrolls
+             * the page behind instead of the menu.
+             */
+            className="fixed inset-0 z-menu overflow-y-auto overscroll-contain bg-cream lg:hidden"
+            data-lenis-prevent
             initial={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
             animate={{ opacity: 1, clipPath: "inset(0 0 0% 0)" }}
             exit={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
             transition={{ duration: 0.6, ease: ease.expo }}
           >
-            <nav aria-label="Mobile">
-              <ul className="space-y-1">
-                {NAV.map((l, i) => (
-                  <li key={l.href} className="line-mask">
-                    <motion.div
-                      initial={{ y: "110%" }}
-                      animate={{ y: "0%" }}
-                      exit={{ y: "110%" }}
-                      transition={{
-                        duration: 0.7,
-                        ease: ease.expo,
-                        delay: 0.1 + i * 0.05,
-                      }}
-                    >
-                      <Link
-                        href={l.href}
-                        onClick={() => setOpen(false)}
-                        aria-current={isActive(l.href) ? "page" : undefined}
-                        className="block py-1.5 font-display text-[13vw] font-black leading-[0.95] text-ink"
+            {/*
+             * `min-h-full` + `justify-center` is the pairing that centres short
+             * content and scrolls tall content from its TOP. Centring on the
+             * scroll container itself instead would push the overflow above the
+             * scrollable area, where it cannot be reached — which is the bug
+             * this markup exists to avoid.
+             *
+             * `pt-24` clears the header: it sits at `z-header`, ABOVE this
+             * overlay, so the close button stays reachable and the first link
+             * must not run underneath it.
+             */}
+            <div className="flex min-h-full flex-col justify-center px-8 pt-24 pb-12">
+              <nav aria-label="Mobile">
+                <ul className="space-y-1">
+                  {NAV.map((l, i) => (
+                    <li key={l.href} className="line-mask">
+                      <motion.div
+                        initial={{ y: "110%" }}
+                        animate={{ y: "0%" }}
+                        exit={{ y: "110%" }}
+                        transition={{
+                          duration: 0.7,
+                          ease: ease.expo,
+                          delay: 0.1 + i * 0.05,
+                        }}
                       >
-                        <span className={isActive(l.href) ? "text-red-deep" : ""}>
-                          {l.label}
-                        </span>
-                      </Link>
-                    </motion.div>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+                        <Link
+                          href={l.href}
+                          onClick={() => setOpen(false)}
+                          aria-current={isActive(l.href) ? "page" : undefined}
+                          /*
+                           * Capped against the viewport HEIGHT as well as its
+                           * width. `13vw` alone only knows how wide the screen
+                           * is, which is the wrong axis for a stack of six
+                           * items. On every portrait phone 13vw is still the
+                           * smaller of the two and the size is unchanged.
+                           */
+                          className="block py-1.5 font-display text-[min(13vw,9vh)] font-black leading-[0.95] text-ink"
+                        >
+                          <span className={isActive(l.href) ? "text-red-deep" : ""}>
+                            {l.label}
+                          </span>
+                        </Link>
+                      </motion.div>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
 
-            <motion.p
-              className="text-eyebrow mt-14 text-ash"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              Zubara, Khorfakkan · UAE
-            </motion.p>
+              <motion.p
+                className="text-eyebrow mt-14 text-ash"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                Zubara, Khorfakkan · UAE
+              </motion.p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

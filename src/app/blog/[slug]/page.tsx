@@ -152,7 +152,9 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
               <Link
                 href="/blog"
                 data-cursor="grow"
-                className="text-eyebrow text-ink underline underline-offset-8 hover:text-red-deep"
+                /* `min-h-11` is the 44px touch minimum — the bare eyebrow
+                   text box was 15px tall, which is a hard link to hit. */
+                className="text-eyebrow inline-flex min-h-11 items-center text-ink underline underline-offset-8 hover:text-red-deep"
               >
                 ← All articles
               </Link>

@@ -68,3 +68,25 @@ export const fadeUp = {
     transition: { duration: dur.slow, ease: ease.expo, delay: i * 0.08 },
   }),
 };
+
+/**
+ * Polar placement for anything positioned on a circle, rounded so the server
+ * and the browser agree.
+ *
+ * `Math.sin`/`Math.cos` are NOT required to be correctly rounded, and Node and
+ * Chrome genuinely disagree in the last bit: `Math.sin(240deg)` served
+ * `-0.8660254037844385` and hydrated `-0.8660254037844384`. Both were being
+ * interpolated straight into an SSR'd `style` string, so React saw two
+ * different strings and reported a hydration mismatch on every page load.
+ *
+ * Six decimals is far below one device pixel at any radius this site uses
+ * (1e-6 x 240px = 0.00024px) and is identical on both sides. It also disposes
+ * of the `1.2246467991473532e-16` that `sin(180deg)` produces instead of 0.
+ *
+ * Use this for any trig value that ends up in a style attribute.
+ */
+export const polar = (deg: number) => {
+  const rad = (deg * Math.PI) / 180;
+  const round = (n: number) => Number(n.toFixed(6));
+  return { cos: round(Math.cos(rad)), sin: round(Math.sin(rad)) };
+};
