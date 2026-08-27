@@ -40,7 +40,7 @@ export default function ContactPage() {
               </address>
             </Reveal>
 
-            {(COMPANY.email || COMPANY.phone) && (
+            {(COMPANY.email || COMPANY.phone || ("phone2" in COMPANY && COMPANY.phone2)) && (
               <Reveal delay={0.14}>
                 <div className="mt-8 space-y-2">
                   {COMPANY.email && (
@@ -60,6 +60,16 @@ export default function ContactPage() {
                         className="text-lead text-ink underline underline-offset-4 hover:text-red-deep"
                       >
                         {COMPANY.phone}
+                      </a>
+                    </p>
+                  )}
+                  {"phone2" in COMPANY && COMPANY.phone2 && (
+                    <p>
+                      <a
+                        href={`tel:${(COMPANY as any).phone2.replace(/\s/g, "")}`}
+                        className="text-lead text-ink underline underline-offset-4 hover:text-red-deep"
+                      >
+                        {(COMPANY as any).phone2}
                       </a>
                     </p>
                   )}

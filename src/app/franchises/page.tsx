@@ -5,13 +5,9 @@ import { HoverSpotlight, HoverOutline } from "@/components/motion/Hover";
 import { CookieDoodle } from "@/components/brand/Marks";
 import { tiltAt } from "@/lib/motion";
 
-import FranchiseHero from "@/components/franchise-v2/FranchiseHero";
-import FranchiseWhy from "@/components/franchise-v2/FranchiseWhy";
-import FranchiseFlow from "@/components/franchise-v2/FranchiseFlow";
-import FranchiseEcosystem from "@/components/franchise-v2/FranchiseEcosystem";
-import FranchiseGrowth from "@/components/franchise-v2/FranchiseGrowth";
-import FranchiseJourney from "@/components/franchise-v2/FranchiseJourney";
-import FranchiseCTA from "@/components/franchise-v2/FranchiseCTA";
+import FranchiseExperience from "@/components/franchise-v3/FranchiseExperience";
+import EnquiryForm from "@/components/forms/EnquiryForm";
+import { SplitLine } from "@/components/motion/Text";
 
 export const metadata: Metadata = {
   title: "Franchises & Partnerships",
@@ -41,10 +37,8 @@ const MODELS = [
 export default function FranchisesPage() {
   return (
     <main id="main">
-      <FranchiseHero />
-
-      {/* --- models (LOCKED - DO NOT TOUCH) --- */}
-      <section className="relative bg-cream px-6 pb-24 md:pb-32">
+      <FranchiseExperience>
+        {/* --- models (LOCKED - DO NOT TOUCH) --- */}
         <RevealGroup
           className="mx-auto grid max-w-6xl grid-cols-1 gap-8 sm:grid-cols-2"
           stagger={0.1}
@@ -65,14 +59,40 @@ export default function FranchisesPage() {
             </RevealItem>
           ))}
         </RevealGroup>
-      </section>
+      </FranchiseExperience>
 
-      <FranchiseWhy />
-      <FranchiseFlow />
-      <FranchiseEcosystem />
-      <FranchiseGrowth />
-      <FranchiseJourney />
-      <FranchiseCTA />
+      {/* Static Enquiry Form Section */}
+      <section id="enquire" className="relative bg-cream-deep px-6 py-24 md:py-32 z-20">
+        <div className="mx-auto max-w-5xl">
+          <div className="text-center">
+            <SplitLine
+              as="h2"
+              text="Let's grow together."
+              className="text-display font-display font-black text-ink"
+            />
+          </div>
+
+          <div className="mt-14">
+            <EnquiryForm
+              topic="franchise"
+              interestOptions={[
+                "Distribution",
+                "Retail Stockist",
+                "Food Service",
+                "Territory Partner"
+              ]}
+              submitLabel="Submit Enquiry"
+            />
+          </div>
+
+          <div className="mx-auto mt-10 max-w-2xl text-center text-sm text-ash">
+            <p>
+              Commercial terms — investment, territory rights, minimum volumes and
+              margins — are agreed case by case and are not published here.
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

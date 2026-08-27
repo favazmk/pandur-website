@@ -30,10 +30,7 @@ export const COMPANY = {
   legal: "Royal Quality Bakes LLC",
   address: "Zubara, Khorfakkan",
   country: "United Arab Emirates",
-  /**
-   * NOT SUPPLIED BY CLIENT — placeholders. Replace before launch.
-   * Nothing on the site should present these as real contact details.
-   */
-  email: null as string | null,
-  phone: null as string | null,
+  email: "pandurcookies@gmail.com",
+  phone: "+971 565048823",
+  phone2: "+971 567103008",
 } as const;
