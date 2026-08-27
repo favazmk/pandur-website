@@ -47,7 +47,7 @@ export default function MarketMiniMap({
           fill="none"
         />
 
-        {/* 8 Market Mini Radar Nodes */}
+        {/* 7 Market Mini Radar Nodes */}
         {UAE_JOURNEY_MARKETS.map((m) => (
           <MiniMapNode key={m.id} market={m} progress={progress} />
         ))}
@@ -65,14 +65,13 @@ function MiniMapNode({
 }) {
   // Approximate UAE map coordinates
   const mapCoords: Record<string, { cx: number; cy: number }> = {
+    "abu-dhabi": { cx: 130, cy: 500 },
+    dubai: { cx: 200, cy: 430 },
     sharjah: { cx: 250, cy: 395 },
     ajman: { cx: 288, cy: 355 },
+    "umm-al-quwain": { cx: 330, cy: 280 },
     "ras-al-khaimah": { cx: 375, cy: 195 },
-    masafi: { cx: 435, cy: 320 },
-    dibba: { cx: 505, cy: 165 },
-    khorfakkan: { cx: 540, cy: 295 },
     fujairah: { cx: 546, cy: 380 },
-    kalba: { cx: 536, cy: 460 },
   };
 
   const { cx, cy } = mapCoords[market.id] ?? { cx: 300, cy: 300 };

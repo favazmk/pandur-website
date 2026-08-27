@@ -68,8 +68,8 @@ export const POSTS: Post[] = [
     ],
   },
   {
-    slug: "eight-markets-one-taste",
-    title: "Eight markets, one taste",
+    slug: "seven-emirates-one-taste",
+    title: "Seven emirates, one taste",
     excerpt:
       "Consistency across a growing footprint is a manufacturing problem before it is a brand one.",
     date: "2026-06-15",
@@ -78,7 +78,7 @@ export const POSTS: Post[] = [
     body: [
       {
         type: "p",
-        text: "Pandur is already moving across Sharjah, Ajman, Ras Al Khaimah, Masafi, Dibba, Khorfakkan, Fujairah and Kalba.",
+        text: "Pandur is already moving across Abu Dhabi, Dubai, Sharjah, Ajman, Umm Al Quwain, Ras Al Khaimah, and Fujairah.",
       },
       {
         type: "h2",
@@ -86,7 +86,7 @@ export const POSTS: Post[] = [
       },
       {
         type: "p",
-        text: "A single bakery serving a single town can absorb variation between batches. A brand on eight sets of shelves cannot — the customer who buys in Fujairah expects exactly what they bought in Sharjah.",
+        text: "A single bakery serving a single town can absorb variation between batches. A brand on seven sets of shelves cannot — the customer who buys in Fujairah expects exactly what they bought in Abu Dhabi.",
       },
       {
         type: "p",

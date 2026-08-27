@@ -28,14 +28,13 @@ export const QUALITY_CHECKPOINTS = [
 ];
 
 export const DESTINATIONS = [
-  { name: "SHARJAH", angle: -45, radius: 140 },
-  { name: "AJMAN", angle: 0, radius: 150 },
-  { name: "RAS AL KHAIMAH", angle: 45, radius: 160 },
-  { name: "MASAFI", angle: 90, radius: 140 },
-  { name: "DIBBA", angle: 135, radius: 150 },
-  { name: "KHORFAKKAN", angle: 180, radius: 160 },
-  { name: "FUJAIRAH", angle: 225, radius: 150 },
-  { name: "KALBA", angle: 270, radius: 140 },
+  { name: "ABU DHABI", angle: -90, radius: 140 },
+  { name: "DUBAI", angle: -39, radius: 150 },
+  { name: "SHARJAH", angle: 13, radius: 160 },
+  { name: "AJMAN", angle: 64, radius: 140 },
+  { name: "UMM AL QUWAIN", angle: 116, radius: 150 },
+  { name: "RAS AL KHAIMAH", angle: 167, radius: 160 },
+  { name: "FUJAIRAH", angle: 219, radius: 150 },
 ];
 
 export const SHELF_TIMELINE = [

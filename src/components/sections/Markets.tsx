@@ -46,7 +46,7 @@ export default function Markets() {
               Four flavours, facing out, in stores across the northern Emirates.
             </p>
             <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-red-deep px-4 py-1.5 text-xs font-black uppercase tracking-widest text-white">
-              Eight markets · One taste
+              Seven emirates · One taste
             </div>
           </div>
 

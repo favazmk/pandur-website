@@ -84,19 +84,6 @@ export default function MarketNode({
         <circle r={isMobile ? 4 : 5} fill="#FFFDF9" />
       </motion.g>
 
-      {/* Floating City Label Pin — placed OPPOSITE to the card side to avoid overlap */}
-      <g transform={`translate(${market.side === "left" ? (isMobile ? 28 : 36) : (isMobile ? -28 : -36)}, -4)`}>
-        <text
-          textAnchor={market.side === "left" ? "start" : "end"}
-          fill="#221F1F"
-          fontSize={isMobile ? 10 : 12}
-          fontWeight="900"
-          letterSpacing="0.1em"
-          className="uppercase select-none"
-        >
-          {market.name}
-        </text>
-      </g>
     </g>
   );
 }

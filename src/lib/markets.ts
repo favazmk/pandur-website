@@ -6,14 +6,13 @@
  */
 
 export type MarketId =
+  | "abu-dhabi"
+  | "dubai"
   | "sharjah"
   | "ajman"
+  | "umm-al-quwain"
   | "ras-al-khaimah"
-  | "masafi"
-  | "dibba"
-  | "khorfakkan"
-  | "fujairah"
-  | "kalba";
+  | "fujairah";
 
 export type Market = {
   id: MarketId;
@@ -32,75 +31,75 @@ export type Market = {
 
 export const MARKETS_DATA: Market[] = [
   {
-    id: "sharjah",
-    name: "Sharjah",
+    id: "abu-dhabi",
+    name: "Abu Dhabi",
     order: 1,
     orderStr: "01",
+    x: 180,
+    y: 500,
+    region: "Capital",
+    accent: "#C5221F",
+    description: "Premium retail shelves and premier bakery distribution across the capital.",
+    flavourTag: "Butter & Cardamom",
+  },
+  {
+    id: "dubai",
+    name: "Dubai",
+    order: 2,
+    orderStr: "02",
+    x: 230,
+    y: 450,
+    region: "Global Hub",
+    accent: "#8A5A2B",
+    description: "Key supermarket partners and neighbourhood grocery shelves in Dubai.",
+    flavourTag: "Peanut & Coconut",
+  },
+  {
+    id: "sharjah",
+    name: "Sharjah",
+    order: 3,
+    orderStr: "03",
     x: 250,
     y: 395,
-    region: "Arabian Gulf Coast",
-    accent: "#C5221F",
-    description: "Retailers & bakery shelves across central Sharjah",
-    flavourTag: "Butter & Cardamom",
+    region: "Cultural Capital",
+    accent: "#4A6B2E",
+    description: "Retailers & bakery shelves across central Sharjah.",
+    flavourTag: "Cardamom & Butter",
   },
   {
     id: "ajman",
     name: "Ajman",
-    order: 2,
-    orderStr: "02",
+    order: 4,
+    orderStr: "04",
     x: 288,
     y: 355,
     region: "Arabian Gulf Coast",
-    accent: "#8A5A2B",
-    description: "Key supermarket & grocery distribution",
-    flavourTag: "Peanut & Coconut",
+    accent: "#7A4718",
+    description: "Key supermarket & grocery distribution.",
+    flavourTag: "Coconut & Butter",
+  },
+  {
+    id: "umm-al-quwain",
+    name: "Umm Al Quwain",
+    order: 5,
+    orderStr: "05",
+    x: 310,
+    y: 300,
+    region: "Northern Coast",
+    accent: "#5E3720",
+    description: "Coastal food stores and cafés.",
+    flavourTag: "Peanut & Cardamom",
   },
   {
     id: "ras-al-khaimah",
     name: "Ras Al Khaimah",
-    order: 3,
-    orderStr: "03",
+    order: 6,
+    orderStr: "06",
     x: 375,
     y: 195,
     region: "Northern Emirates",
-    accent: "#4A6B2E",
-    description: "Hypermarkets and hospitality partners",
-    flavourTag: "Cardamom & Butter",
-  },
-  {
-    id: "masafi",
-    name: "Masafi",
-    order: 4,
-    orderStr: "04",
-    x: 435,
-    y: 320,
-    region: "Hajar Mountains Crossroads",
-    accent: "#7A4718",
-    description: "Mountain route stores & travel stops",
-    flavourTag: "Coconut & Butter",
-  },
-  {
-    id: "dibba",
-    name: "Dibba",
-    order: 5,
-    orderStr: "05",
-    x: 505,
-    y: 165,
-    region: "Gulf of Oman (North)",
-    accent: "#5E3720",
-    description: "Coastal food stores and cafés",
-    flavourTag: "Peanut & Cardamom",
-  },
-  {
-    id: "khorfakkan",
-    name: "Khorfakkan",
-    order: 6,
-    orderStr: "06",
-    x: 540,
-    y: 295,
-    region: "Brand Home · East Coast",
     accent: "#C5221F",
-    description: "Royal Quality Bakes bakery home & premier shelf presence",
+    description: "Hypermarkets and hospitality partners.",
     flavourTag: "All 4 Signature Flavours",
   },
   {
@@ -112,20 +111,8 @@ export const MARKETS_DATA: Market[] = [
     y: 380,
     region: "East Coast Hub",
     accent: "#4A6B2E",
-    description: "Supermarket chains & food service partners",
+    description: "Supermarket chains & food service partners.",
     flavourTag: "Butter & Cardamom",
-  },
-  {
-    id: "kalba",
-    name: "Kalba",
-    order: 8,
-    orderStr: "08",
-    x: 536,
-    y: 460,
-    region: "Gulf of Oman (South)",
-    accent: "#8A5A2B",
-    description: "Southern east coast grocery & retail partners",
-    flavourTag: "All 4 Signature Flavours",
   },
 ];
 
@@ -158,27 +145,26 @@ export const HAJAR_MOUNTAIN_SUB_PATH =
   "C 440 210, 445 260, 435 310 " +
   "C 425 360, 440 405, 460 460";
 
-/** The animated brand route connecting the 8 markets in order */
+/** The animated brand route connecting the 7 markets in order */
 export const MARKET_ROUTE_PATH =
-  "M 250 395 " + // Sharjah
+  "M 180 500 " + // Abu Dhabi
+  "C 200 480, 215 465, 230 450 " + // to Dubai
+  "C 240 425, 245 410, 250 395 " + // to Sharjah
   "C 265 380, 278 368, 288 355 " + // to Ajman
-  "C 318 310, 345 250, 375 195 " + // to Ras Al Khaimah
-  "C 400 235, 418 280, 435 320 " + // to Masafi (mountain pass)
-  "C 460 265, 485 210, 505 165 " + // to Dibba
-  "C 525 210, 535 255, 540 295 " + // to Khorfakkan
-  "C 544 325, 546 355, 546 380 " + // to Fujairah
-  "C 544 410, 540 435, 536 460"; // to Kalba
+  "C 300 325, 305 310, 310 300 " + // to UAQ
+  "C 330 260, 350 230, 375 195 " + // to RAK
+  "C 420 250, 480 320, 546 380"; // to Fujairah
 
 /**
  * Scroll progress breakpoints (0 to 1) for each market's activation.
  */
 export const MARKET_SCROLL_STOPS = [
-  { in: 0.12, active: 0.20 }, // 0: Sharjah
-  { in: 0.22, active: 0.30 }, // 1: Ajman
-  { in: 0.32, active: 0.40 }, // 2: Ras Al Khaimah
-  { in: 0.42, active: 0.50 }, // 3: Masafi
-  { in: 0.52, active: 0.60 }, // 4: Dibba
-  { in: 0.62, active: 0.70 }, // 5: Khorfakkan
-  { in: 0.72, active: 0.80 }, // 6: Fujairah
-  { in: 0.82, active: 0.90 }, // 7: Kalba
+  { in: 0.12, active: 0.22 }, // 0: Abu Dhabi
+  { in: 0.24, active: 0.34 }, // 1: Dubai
+  { in: 0.36, active: 0.46 }, // 2: Sharjah
+  { in: 0.48, active: 0.58 }, // 3: Ajman
+  { in: 0.60, active: 0.70 }, // 4: UAQ
+  { in: 0.72, active: 0.82 }, // 5: RAK
+  { in: 0.84, active: 0.94 }, // 6: Fujairah
 ];
+

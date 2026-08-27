@@ -6,6 +6,9 @@ import {
   UAE_JOURNEY_MARKETS,
   DESKTOP_JOURNEY_PATH,
   MOBILE_JOURNEY_PATH,
+  JOURNEY_PROGRESS_STOPS,
+  DESKTOP_PATH_FRACTIONS,
+  MOBILE_PATH_FRACTIONS,
 } from "@/lib/uaeJourney";
 
 export default function TravellingCookie({
@@ -27,8 +30,13 @@ export default function TravellingCookie({
     return { measurePath: p, totalLength: p.getTotalLength() };
   }, [pathD]);
 
-  // Map progress to [0, 1] path fraction — same range as pathLength in MarketsJourney
-  const pathFraction = useTransform(progress, [0.06, 0.94], [0, 1], { clamp: true });
+  // Map progress to precise non-linear path fractions to guarantee perfect alignment with the market nodes
+  const pathFraction = useTransform(
+    progress,
+    JOURNEY_PROGRESS_STOPS,
+    isMobile ? MOBILE_PATH_FRACTIONS : DESKTOP_PATH_FRACTIONS,
+    { clamp: true }
+  );
 
   useEffect(() => {
     const el = gRef.current;

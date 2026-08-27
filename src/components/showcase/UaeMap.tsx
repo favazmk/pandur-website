@@ -31,7 +31,7 @@ export default function UaeMap({
   const mapOpacity = useTransform(progress, [0, 0.12], [0.4, 1], { clamp: true });
   const mapScale = useTransform(progress, [0, 0.15], [0.95, 1], { clamp: true });
 
-  // Route drawing: starts at Sharjah (~0.12) and finishes at Kalba (~0.90)
+  // Route drawing: starts at Sharjah (~0.12) and finishes at Fujairah (~0.90)
   const routeLength = useTransform(progress, [0.12, 0.88], [0, 1], { clamp: true });
 
   return (

@@ -113,7 +113,7 @@ export default function CloneStage({
             Every Batch Runs<br/>The Same Way.
           </h2>
           <p className="mt-2 md:mt-4 text-xs md:text-sm font-bold text-ash max-w-md uppercase tracking-widest">
-            The cookie a shop orders in Kalba is the cookie they got in Sharjah.
+            The cookie a shop orders in Ras Al Khaimah is the cookie they got in Sharjah.
           </p>
         </div>
       </motion.div>

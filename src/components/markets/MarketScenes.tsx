@@ -32,53 +32,47 @@ const DioramaCard: FC<DioramaSceneProps> = ({ src, alt, className = "" }) => {
   );
 };
 
-/** 1. SHARJAH */
+/** 1. ABU DHABI */
+export const AbuDhabiScene: FC<SceneProps> = (props) => (
+  <DioramaCard src="/markets/emirates/abu_dhabi.png" alt="Abu Dhabi City Diorama Illustration" {...props} />
+);
+
+/** 2. DUBAI */
+export const DubaiScene: FC<SceneProps> = (props) => (
+  <DioramaCard src="/markets/emirates/dubai.png" alt="Dubai City Diorama Illustration" {...props} />
+);
+
+/** 3. SHARJAH */
 export const SharjahScene: FC<SceneProps> = (props) => (
-  <DioramaCard src="/markets/sharjah.webp" alt="Sharjah City Diorama Illustration" {...props} />
+  <DioramaCard src="/markets/emirates/sharjah.png" alt="Sharjah City Diorama Illustration" {...props} />
 );
 
-/** 2. AJMAN */
+/** 4. AJMAN */
 export const AjmanScene: FC<SceneProps> = (props) => (
-  <DioramaCard src="/markets/ajman.webp" alt="Ajman City Diorama Illustration" {...props} />
+  <DioramaCard src="/markets/emirates/ajman.png" alt="Ajman City Diorama Illustration" {...props} />
 );
 
-/** 3. RAS AL KHAIMAH */
+/** 5. UMM AL QUWAIN */
+export const UaqScene: FC<SceneProps> = (props) => (
+  <DioramaCard src="/markets/emirates/umm_al_quwain.png" alt="Umm Al Quwain City Diorama Illustration" {...props} />
+);
+
+/** 6. RAS AL KHAIMAH */
 export const RakScene: FC<SceneProps> = (props) => (
-  <DioramaCard src="/markets/ras-al-khaimah.webp" alt="Ras Al Khaimah City Diorama Illustration" {...props} />
-);
-
-/** 4. MASAFI */
-export const MasafiScene: FC<SceneProps> = (props) => (
-  <DioramaCard src="/markets/masafi.webp" alt="Masafi City Diorama Illustration" {...props} />
-);
-
-/** 5. DIBBA */
-export const DibbaScene: FC<SceneProps> = (props) => (
-  <DioramaCard src="/markets/dibba.webp" alt="Dibba City Diorama Illustration" {...props} />
-);
-
-/** 6. KHORFAKKAN */
-export const KhorfakkanScene: FC<SceneProps> = (props) => (
-  <DioramaCard src="/markets/khorfakkan.webp" alt="Khorfakkan City Diorama Illustration" {...props} />
+  <DioramaCard src="/markets/emirates/ras_al_khaimah.png" alt="Ras Al Khaimah City Diorama Illustration" {...props} />
 );
 
 /** 7. FUJAIRAH */
 export const FujairahScene: FC<SceneProps> = (props) => (
-  <DioramaCard src="/markets/fujairah.webp" alt="Fujairah City Diorama Illustration" {...props} />
-);
-
-/** 8. KALBA */
-export const KalbaScene: FC<SceneProps> = (props) => (
-  <DioramaCard src="/markets/kalba.webp" alt="Kalba City Diorama Illustration" {...props} />
+  <DioramaCard src="/markets/emirates/fujairah.png" alt="Fujairah City Diorama Illustration" {...props} />
 );
 
 export const SCENE_MAP: Record<string, FC<SceneProps>> = {
+  "abu-dhabi": AbuDhabiScene,
+  dubai: DubaiScene,
   sharjah: SharjahScene,
   ajman: AjmanScene,
+  "umm-al-quwain": UaqScene,
   "ras-al-khaimah": RakScene,
-  masafi: MasafiScene,
-  dibba: DibbaScene,
-  khorfakkan: KhorfakkanScene,
   fujairah: FujairahScene,
-  kalba: KalbaScene,
 };

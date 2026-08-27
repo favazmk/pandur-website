@@ -11,17 +11,16 @@ export default function MarketCookieMotif({
   progress: MotionValue<number>;
   reduced: boolean;
 }) {
-  // Input scroll checkpoints matching the 8 market milestones
+  // Input scroll checkpoints matching the 7 market milestones
   const stops = [
     0,
-    0.16, // Market 1: Sharjah
-    0.26, // Market 2: Ajman
-    0.36, // Market 3: Ras Al Khaimah
-    0.46, // Market 4: Masafi
-    0.56, // Market 5: Dibba
-    0.66, // Market 6: Khorfakkan
-    0.76, // Market 7: Fujairah
-    0.86, // Market 8: Kalba
+    0.17, // Market 1: Abu Dhabi
+    0.29, // Market 2: Dubai
+    0.41, // Market 3: Sharjah
+    0.53, // Market 4: Ajman
+    0.65, // Market 5: UAQ
+    0.77, // Market 6: RAK
+    0.89, // Market 7: Fujairah
     1.0,
   ];
 
@@ -35,8 +34,7 @@ export default function MarketCookieMotif({
     MARKETS_DATA[4].x - 16,
     MARKETS_DATA[5].x - 16,
     MARKETS_DATA[6].x - 16,
-    MARKETS_DATA[7].x - 16,
-    MARKETS_DATA[7].x - 16,
+    MARKETS_DATA[6].x - 16,
   ];
 
   const yPositions = [
@@ -48,8 +46,7 @@ export default function MarketCookieMotif({
     MARKETS_DATA[4].y - 20,
     MARKETS_DATA[5].y - 20,
     MARKETS_DATA[6].y - 20,
-    MARKETS_DATA[7].y - 20,
-    MARKETS_DATA[7].y - 20,
+    MARKETS_DATA[6].y - 20,
   ];
 
   const cookieX = useTransform(progress, stops, xPositions);

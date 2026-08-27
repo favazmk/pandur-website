@@ -31,8 +31,8 @@ export default function MarketProgress({
         />
       </div>
 
-      <span className="text-[0.55rem] sm:text-[0.62rem] font-bold text-ink/40">
-        08
+      <span className="font-mono text-[0.62rem] sm:text-xs font-semibold tracking-wider text-ink/40 w-4 select-none">
+        07
       </span>
     </div>
   );

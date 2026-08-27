@@ -28,7 +28,7 @@
  * are the better thing to show until real photography exists. Flip to `true`
  * once it does; nothing else needs to change. See README, outstanding item 3.
  */
-export const HAS_PACK_IMAGES = false;
+export const HAS_PACK_IMAGES = true;
 
 /** The retail pair is genuine store photography and shipping. */
 export const HAS_RETAIL_IMAGES = true;
@@ -65,7 +65,7 @@ export const HAS_RETAIL_IMAGES = true;
  * quality seal garbles to "SOEMIMS GOAUTT" on peanut, and peanut carries
  * coconut's Arabic. See README, outstanding item 3.
  */
-export const packImage = (slug: FlavourSlug) => `/products/pack-${slug}.jpg`;
+export const packImage = (slug: FlavourSlug) => `/products/hero-${slug}-scene.png`;
 
 /**
  * Retail photography — Pandur on the shelf, in a real store.
@@ -201,14 +201,12 @@ export const PACK = {
   seal: "Premium Quality",
 } as const;
 
-/** Confirmed from the brief. "Aman" read as Ajman — flagged for client sign-off. */
 export const MARKETS = [
+  { name: "Abu Dhabi", x: 15, y: 65 },
+  { name: "Dubai", x: 25, y: 50 },
   { name: "Sharjah", x: 30, y: 46 },
   { name: "Ajman", x: 36, y: 40 },
+  { name: "Umm Al Quwain", x: 42, y: 35 },
   { name: "Ras Al Khaimah", x: 46, y: 22 },
-  { name: "Masafi", x: 57, y: 34 },
-  { name: "Dibba", x: 68, y: 17 },
-  { name: "Khorfakkan", x: 74, y: 33 },
   { name: "Fujairah", x: 76, y: 43 },
-  { name: "Kalba", x: 74, y: 53 },
 ] as const;

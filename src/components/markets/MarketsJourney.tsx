@@ -7,6 +7,9 @@ import {
   MOBILE_JOURNEY_PATH,
   STAGE_HEIGHT,
   type JourneyMarket,
+  JOURNEY_PROGRESS_STOPS,
+  DESKTOP_PATH_FRACTIONS,
+  MOBILE_PATH_FRACTIONS,
 } from "@/lib/uaeJourney";
 import { SCENE_MAP } from "@/components/markets/MarketScenes";
 import MarketCard from "@/components/markets/MarketCard";
@@ -42,7 +45,8 @@ export default function MarketsJourney({
   );
 
   // Progressive SVG Path Drawing
-  const pathLength = useTransform(progress, [0.06, 0.94], [0, 1], { clamp: true });
+  const desktopPathLength = useTransform(progress, JOURNEY_PROGRESS_STOPS, DESKTOP_PATH_FRACTIONS, { clamp: true });
+  const mobilePathLength = useTransform(progress, JOURNEY_PROGRESS_STOPS, MOBILE_PATH_FRACTIONS, { clamp: true });
 
   // Virtual Stage Y Translation to keep active market centered in viewport
   // Stage starts at top-1/2 (viewport center), so stageY = -market.y centers it
@@ -101,18 +105,7 @@ export default function MarketsJourney({
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,rgba(255,255,255,0.4),transparent_70%)]"
       />
 
-      {/* --- Top Chrome Bar --- */}
-      <div className="relative z-30 flex shrink-0 items-center justify-between px-4 pt-4 sm:px-8 sm:pt-6 md:px-12">
-        <div className="flex items-center gap-3">
-          <span className={`text-eyebrow ${MUTED} text-[0.65rem] sm:text-xs`}>
-            In store
-          </span>
-          <MarketProgress progress={progress} />
-        </div>
 
-        {/* Mini UAE Radar Outline */}
-        <MarketMiniMap progress={progress} />
-      </div>
 
       {/* --- Main Interactive Stage Container --- */}
       <div className="relative z-10 my-auto h-full w-full overflow-hidden flex items-center justify-center">
@@ -185,7 +178,7 @@ export default function MarketsJourney({
               strokeWidth="3.5"
               strokeLinecap="round"
               fill="none"
-              style={{ pathLength }}
+              style={{ pathLength: desktopPathLength }}
             />
 
             {/* 8 Circular Destination Waypoint Nodes */}
@@ -234,7 +227,7 @@ export default function MarketsJourney({
               strokeWidth="3"
               strokeLinecap="round"
               fill="none"
-              style={{ pathLength }}
+              style={{ pathLength: mobilePathLength }}
             />
 
             {UAE_JOURNEY_MARKETS.map((m) => (
@@ -274,11 +267,26 @@ export default function MarketsJourney({
         </motion.div>
       </div>
 
-      {/* Bottom Footer Note */}
-      <div className="relative z-30 shrink-0 flex items-center justify-center pb-4 text-center">
+      {/* Top Footer Note (Moved from bottom) */}
+      <div className="absolute top-6 sm:top-8 left-1/2 -translate-x-1/2 z-40 shrink-0 flex items-center justify-center text-center">
         <span className="text-[0.6rem] sm:text-[0.68rem] font-bold tracking-widest text-ink/40 uppercase">
-          Scroll to explore the UAE route
+          Scroll to explore the route
         </span>
+      </div>
+
+      {/* --- Bottom Chrome Bar --- */}
+      <div className="absolute bottom-0 left-0 w-full z-40 flex items-end justify-between px-4 pb-6 sm:px-8 sm:pb-8 md:px-12 pointer-events-none">
+        <div className="flex items-center gap-3 mb-2 sm:mb-4 pointer-events-auto">
+          <span className={`text-eyebrow ${MUTED} text-[0.65rem] sm:text-xs drop-shadow-sm`}>
+            In store
+          </span>
+          <MarketProgress progress={progress} />
+        </div>
+
+        {/* Mini UAE Radar Outline */}
+        <div className="pointer-events-auto">
+          <MarketMiniMap progress={progress} />
+        </div>
       </div>
     </motion.div>
   );
