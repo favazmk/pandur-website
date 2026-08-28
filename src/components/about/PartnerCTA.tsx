@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import WhatsAppCTA from "@/components/cta/WhatsAppCTA";
+import { WHATSAPP_MESSAGES } from "@/lib/whatsapp";
 
 export default function PartnerCTA() {
   return (
@@ -16,16 +18,13 @@ export default function PartnerCTA() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-          <Link
-            href="/contact"
-            data-cursor="grow"
-            className="group inline-flex items-center gap-3 rounded-full border-2 border-red-deep bg-red-deep px-10 py-5 text-sm font-extrabold uppercase tracking-[0.16em] text-cream transition-colors hover:bg-transparent hover:text-red-deep shadow-2xl w-full sm:w-auto justify-center"
-          >
-            Partner With Pandur
-            <span className="transition-transform duration-400 group-hover:translate-x-1">
-              →
-            </span>
-          </Link>
+          <WhatsAppCTA 
+            label="PARTNER WITH PANDUR"
+            message={WHATSAPP_MESSAGES.aboutPartner}
+            variant="primary"
+            context="about_partner"
+            className="w-full sm:w-auto !py-5"
+          />
 
           <Link
             href="/contact"

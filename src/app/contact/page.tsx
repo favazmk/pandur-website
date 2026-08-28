@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/layout/PageHero";
 import EnquiryForm from "@/components/forms/EnquiryForm";
-import Markets from "@/components/sections/Markets";
 import { Reveal, SplitLine } from "@/components/motion/Text";
 import { CHANNELS, COMPANY } from "@/lib/nav";
+import { DoodleWall } from "@/components/brand/DoodleField";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -19,8 +19,10 @@ export default function ContactPage() {
         lead="Retail, distribution, food service or something else — tell us what you need."
       />
 
-      <section className="relative bg-cream px-6 pb-24 md:pb-32">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-14 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
+      <section className="relative overflow-hidden bg-cream px-6 pb-24 md:pb-32">
+        <DoodleWall opacity={0.09} />
+        
+        <div className="relative mx-auto grid max-w-6xl grid-cols-1 gap-14 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
           {/* --- details --- */}
           <div>
             <Reveal>
@@ -40,11 +42,11 @@ export default function ContactPage() {
               </address>
             </Reveal>
 
-            {(COMPANY.email || COMPANY.phone || ("phone2" in COMPANY && COMPANY.phone2)) && (
+            {(COMPANY.email || COMPANY.phone || COMPANY.phone2) && (
               <Reveal delay={0.14}>
                 <div className="mt-8 space-y-2">
                   {COMPANY.email && (
-                    <p>
+                     <p>
                       <a
                         href={`mailto:${COMPANY.email}`}
                         className="text-lead text-ink underline underline-offset-4 hover:text-red-deep"
@@ -63,13 +65,13 @@ export default function ContactPage() {
                       </a>
                     </p>
                   )}
-                  {"phone2" in COMPANY && COMPANY.phone2 && (
+                  {COMPANY.phone2 && (
                     <p>
                       <a
-                        href={`tel:${(COMPANY as any).phone2.replace(/\s/g, "")}`}
+                        href={`tel:${COMPANY.phone2.replace(/\s/g, "")}`}
                         className="text-lead text-ink underline underline-offset-4 hover:text-red-deep"
                       >
-                        {(COMPANY as any).phone2}
+                        {COMPANY.phone2}
                       </a>
                     </p>
                   )}
@@ -100,8 +102,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-
-      <Markets />
     </main>
   );
 }

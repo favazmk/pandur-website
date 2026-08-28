@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Reveal, SplitLine } from "@/components/motion/Text";
 import { CookieDoodle } from "@/components/brand/Marks";
@@ -58,6 +59,20 @@ function renderBlock(b: Block, i: number) {
               </li>
             ))}
           </ul>
+        </Reveal>
+      );
+    case "image":
+      return (
+        <Reveal key={i}>
+          <div className="my-10 overflow-hidden rounded-2xl border border-ink/10 shadow-sm">
+            <Image 
+              src={b.src} 
+              alt={b.alt} 
+              width={1200} 
+              height={800} 
+              className="w-full h-auto object-cover" 
+            />
+          </div>
         </Reveal>
       );
     default:

@@ -414,7 +414,7 @@ export default function FlavourShowcase() {
             className="pointer-events-auto inline-flex min-h-11 items-center gap-2 rounded-full border px-4 py-2 text-[clamp(0.6rem,0.8vw,0.7rem)] font-bold uppercase tracking-[0.2em] transition-colors hover:bg-ink hover:text-cream"
             style={{ color: chrome, borderColor: chrome }}
           >
-            All four
+            Explore our products
             <span aria-hidden>↗</span>
           </motion.a>
         </div>

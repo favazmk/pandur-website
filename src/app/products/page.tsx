@@ -13,6 +13,8 @@ import { tiltAt } from "@/lib/motion";
 // New components built for the premium product journey
 import ProductShelf from "@/components/products/ProductShelf";
 import FlavourSelector from "@/components/products/FlavourSelector";
+import WhatsAppCTA from "@/components/cta/WhatsAppCTA";
+import { WHATSAPP_MESSAGES } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Products",
@@ -90,13 +92,13 @@ export default function ProductsPage() {
                 →
               </span>
             </Link>
-            <Link
-              href="/contact"
-              data-cursor="grow"
-              className="group inline-flex items-center gap-3 rounded-full border border-ink/20 px-9 py-4 text-xs font-extrabold uppercase tracking-[0.16em] text-ink transition-colors hover:bg-ink hover:text-white"
-            >
-              Contact Us
-            </Link>
+            <WhatsAppCTA 
+              label="ENQUIRE ABOUT PRODUCTS"
+              message={WHATSAPP_MESSAGES.productsGeneral}
+              variant="secondary"
+              context="products_general"
+              className="!py-4"
+            />
           </div>
         </div>
       </section>

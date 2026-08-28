@@ -5,6 +5,8 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { SplitLine } from "@/components/motion/Text";
 import { usePrefersReducedMotion } from "@/lib/useMedia";
+import WhatsAppCTA from "@/components/cta/WhatsAppCTA";
+import { WHATSAPP_MESSAGES } from "@/lib/whatsapp";
 
 /**
  * Vision section ("Next: the GCC.").
@@ -87,6 +89,14 @@ export default function Vision() {
         <p className="mt-4 text-xs sm:text-sm md:text-base font-medium text-dough/85 max-w-xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
           To build Pandur into a leading UAE-origin bakery brand across the GCC and international markets.
         </p>
+        <div className="mt-8 flex justify-center drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+          <WhatsAppCTA 
+            label="ENQUIRE ON WHATSAPP" 
+            message={WHATSAPP_MESSAGES.homeGeneral} 
+            variant="secondary"
+            context="home_vision" 
+          />
+        </div>
       </div>
     </section>
   );

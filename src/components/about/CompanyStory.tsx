@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import { useScroll, useTransform, motion } from "motion/react";
 import Image from "next/image";
+import WhatsAppCTA from "@/components/cta/WhatsAppCTA";
+import { WHATSAPP_MESSAGES } from "@/lib/whatsapp";
 
 export default function CompanyStory() {
   const container = useRef<HTMLElement>(null);
@@ -51,6 +53,15 @@ export default function CompanyStory() {
                 <span className="block text-3xl font-display font-black text-ink">Traditional</span>
                 <span className="block text-xs uppercase tracking-widest text-ash mt-1">Bakery Expertise</span>
               </div>
+            </div>
+
+            <div className="mt-12">
+              <WhatsAppCTA 
+                label="TALK TO PANDUR" 
+                message={WHATSAPP_MESSAGES.aboutTalk} 
+                variant="primary"
+                context="about_talk"
+              />
             </div>
           </div>
 

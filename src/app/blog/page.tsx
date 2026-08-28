@@ -40,20 +40,34 @@ export default function BlogPage() {
                 >
                   <HoverDrift
                     amount={18}
-                    className="flex aspect-[16/10] items-center justify-center"
+                    className="flex aspect-[16/10] items-center justify-center bg-cream/10 relative overflow-hidden"
                   >
-                    <div
-                      className="flex h-full w-full items-center justify-center"
-                      style={{
-                        backgroundColor: FLAVOURS[i % FLAVOURS.length].ground,
-                      }}
-                    >
-                      <CookieDoodle
-                        className={`h-24 w-24 ${tiltAt(i)}`}
-                        strokeWidth={5}
-                        stroke={FLAVOURS[i % FLAVOURS.length].line}
-                      />
-                    </div>
+                    {(() => {
+                      const imgBlock = p.body.find(b => b.type === "image");
+                      if (imgBlock && imgBlock.type === "image") {
+                        return (
+                          <img 
+                            src={imgBlock.src} 
+                            alt={imgBlock.alt} 
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                        );
+                      }
+                      return (
+                        <div
+                          className="flex h-full w-full items-center justify-center"
+                          style={{
+                            backgroundColor: FLAVOURS[i % FLAVOURS.length].ground,
+                          }}
+                        >
+                          <CookieDoodle
+                            className={`h-24 w-24 ${tiltAt(i)}`}
+                            strokeWidth={5}
+                            stroke={FLAVOURS[i % FLAVOURS.length].line}
+                          />
+                        </div>
+                      );
+                    })()}
                   </HoverDrift>
 
                   <HoverSpotlight className="flex flex-1 flex-col p-8">

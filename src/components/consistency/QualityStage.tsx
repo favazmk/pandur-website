@@ -140,9 +140,9 @@ function Destination({
               read small, and 8px sat below any legibility floor — the emirate
               names are content, not texture. The extra width this costs is
               accounted for in `--dest-reach`; see globals.css. */}
-          <span className="whitespace-nowrap text-[10px] md:text-xs font-black uppercase tracking-widest text-cocoa bg-cream/90 backdrop-blur-sm px-2 py-1 rounded-full border border-ink/10 shadow-sm">
+          <div className="w-max shrink-0 whitespace-nowrap text-[10px] md:text-xs font-black uppercase tracking-widest text-cocoa bg-cream/90 backdrop-blur-sm px-3 py-1.5 rounded-full border border-ink/10 shadow-sm">
             {dest.name}
-          </span>
+          </div>
         </motion.div>
       </motion.div>
     </motion.div>

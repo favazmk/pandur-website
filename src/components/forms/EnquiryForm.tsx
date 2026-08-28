@@ -21,7 +21,6 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 function validate(f: Fields): Errors {
   const e: Errors = {};
   if (!f.name.trim()) e.name = "Please enter your name.";
-  if (!f.company.trim()) e.company = "Please enter your company.";
   if (!f.email.trim()) e.email = "Please enter your email.";
   else if (!EMAIL_RE.test(f.email.trim())) e.email = "That email doesn't look right.";
   return e;
@@ -35,9 +34,28 @@ function validate(f: Fields): Errors {
  * the body of this function and nothing else changes.
  */
 async function submitEnquiry(fields: Fields, topic: string): Promise<void> {
-  // TODO(client): POST to the real endpoint / email service.
-  console.info(`[pandur] ${topic} enquiry (not yet delivered anywhere):`, fields);
-  await new Promise((r) => setTimeout(r, 700));
+  const response = await fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      access_key: "782667f9-6ce9-48ba-9e8c-49030915552a",
+      subject: `New Pandur Enquiry: ${topic}`,
+      from_name: fields.name,
+      name: fields.name,
+      email: fields.email,
+      company: fields.company || "N/A",
+      interest: fields.interest || "N/A",
+      message: fields.message,
+    }),
+  });
+
+  if (!response.ok) {
+    console.error("Form submission failed:", response.statusText);
+    throw new Error("Failed to send message");
+  }
 }
 
 const EMPTY: Fields = {
@@ -140,7 +158,7 @@ export default function EnquiryForm({
           />
           <Field
             id="enq-company"
-            label="Company"
+            label="Company (optional)"
             value={fields.company}
             onChange={set("company")}
             error={errors.company}

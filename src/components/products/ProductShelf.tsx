@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { SCENES } from "@/lib/showcase";
@@ -63,10 +64,12 @@ export default function ProductShelf() {
                   transition={{ type: "spring", stiffness: 200, damping: 20 }}
                   className="relative w-full aspect-square md:aspect-[3/4]"
                 >
-                  <img 
+                  <Image 
                     src={product.packImage} 
                     alt={product.name}
-                    className={`w-full h-full object-contain drop-shadow-xl transition-all duration-500 group-hover:drop-shadow-2xl ${product.id === 'butter' ? 'scale-[0.85]' : ''}`}
+                    fill
+                    sizes="(max-width: 768px) 80vw, 25vw"
+                    className={`object-contain drop-shadow-xl transition-all duration-500 group-hover:drop-shadow-2xl ${product.id === 'butter' ? 'scale-[0.85]' : ''}`}
                   />
                 </motion.div>
                 

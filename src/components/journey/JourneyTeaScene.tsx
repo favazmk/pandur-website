@@ -56,7 +56,7 @@ export default function JourneyTeaScene({
       <div
         className={`absolute pointer-events-none select-none ${
           isMobile
-            ? "left-6 right-6 bottom-10 text-center"
+            ? "left-6 right-6 bottom-24 text-center"
             : "right-10 lg:right-16 top-1/2 -translate-y-1/2 max-w-md text-right"
         }`}
       >

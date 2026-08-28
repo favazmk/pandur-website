@@ -136,7 +136,7 @@ export default function MarketsJourney({
           className="hidden md:block absolute top-1/2 w-full max-w-6xl h-[3600px] pointer-events-none will-change-transform"
         >
           {/* HTML Overlay Layers: 8 Pairs of (MarketCard, MarketScene) */}
-          <div className="absolute inset-0 z-10">
+          <div className="absolute inset-0 z-20">
             {UAE_JOURNEY_MARKETS.map((market) => (
               <DesktopMarketPair
                 key={market.id}
@@ -148,7 +148,7 @@ export default function MarketsJourney({
 
           <svg
             viewBox={`0 0 1000 ${STAGE_HEIGHT}`}
-            className="w-full h-full overflow-visible relative z-20"
+            className="w-full h-full overflow-visible relative z-10"
             fill="none"
           >
             <defs>
@@ -197,7 +197,7 @@ export default function MarketsJourney({
           className="block md:hidden absolute top-1/2 w-full max-w-sm h-[3600px] pointer-events-none will-change-transform"
         >
           {/* Mobile Overlay: Stacked Compact Cards & Scenes */}
-          <div className="absolute inset-0 z-10">
+          <div className="absolute inset-0 z-20">
             {UAE_JOURNEY_MARKETS.map((market) => (
               <MobileMarketPair
                 key={market.id}
@@ -209,7 +209,7 @@ export default function MarketsJourney({
 
           <svg
             viewBox={`0 0 400 ${STAGE_HEIGHT}`}
-            className="w-full h-full overflow-visible relative z-20"
+            className="w-full h-full overflow-visible relative z-10"
             fill="none"
           >
             <path

@@ -227,6 +227,7 @@ export interface FlavourLayerInstance {
     widthVw: number;
     rotateDeg: number;
     opacity: number;
+    triggerProgress?: number;
   };
 }
 
@@ -245,7 +246,7 @@ export const FLAVOUR_LAYER_INSTANCES: FlavourLayerInstance[] = [
     driftX: 18,
     driftY: -12,
     driftRotate: 10,
-    mobile: { x: 50, y: 36, widthVw: 42, rotateDeg: 4, opacity: 0.95 },
+    mobile: { x: 26, y: 36, widthVw: 42, rotateDeg: 4, opacity: 0.95, triggerProgress: 0.14 },
   },
 
   /* 2. PEANUT WORLD (0.2 - 0.4) */
@@ -262,7 +263,7 @@ export const FLAVOUR_LAYER_INSTANCES: FlavourLayerInstance[] = [
     driftX: -20,
     driftY: -14,
     driftRotate: -12,
-    mobile: { x: 50, y: 52, widthVw: 42, rotateDeg: -4, opacity: 0.95 },
+    mobile: { x: 76, y: 46, widthVw: 42, rotateDeg: -4, opacity: 0.95, triggerProgress: 0.22 },
   },
 
   /* 3. CARDAMOM WORLD (0.4 - 0.6) */
@@ -279,7 +280,7 @@ export const FLAVOUR_LAYER_INSTANCES: FlavourLayerInstance[] = [
     driftX: 20,
     driftY: -12,
     driftRotate: 12,
-    mobile: { x: 50, y: 56, widthVw: 42, rotateDeg: 6, opacity: 0.95 },
+    mobile: { x: 24, y: 64, widthVw: 42, rotateDeg: 6, opacity: 0.95, triggerProgress: 0.52 },
   },
 
   /* 4. BUTTER WORLD (0.6 - 0.8) */
@@ -296,6 +297,6 @@ export const FLAVOUR_LAYER_INSTANCES: FlavourLayerInstance[] = [
     driftX: 18,
     driftY: 12,
     driftRotate: 12,
-    mobile: { x: 50, y: 58, widthVw: 42, rotateDeg: -6, opacity: 0.95 },
+    mobile: { x: 76, y: 60, widthVw: 42, rotateDeg: -6, opacity: 0.95, triggerProgress: 0.64 },
   },
 ];

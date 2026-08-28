@@ -185,11 +185,14 @@ export function Tilt3D({
   if (touch || reduced) return <div className={className}>{children}</div>;
 
   return (
-    <div className={className} style={{ perspective }}>
+    <div
+      ref={ref}
+      onPointerMove={onMove}
+      onPointerLeave={reset}
+      className={className} 
+      style={{ perspective }}
+    >
       <motion.div
-        ref={ref}
-        onPointerMove={onMove}
-        onPointerLeave={reset}
         style={{
           rotateX: rx,
           rotateY: ry,

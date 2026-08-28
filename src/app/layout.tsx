@@ -62,7 +62,6 @@ export const metadata: Metadata = {
     locale: "en_AE",
     siteName: "Pandur",
   },
-  icons: { icon: "/brand/favicon.svg" },
 };
 
 export const viewport: Viewport = {

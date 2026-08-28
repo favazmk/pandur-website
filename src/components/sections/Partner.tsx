@@ -4,8 +4,18 @@ import { SplitLine, Reveal } from "@/components/motion/Text";
 import EnquiryForm from "@/components/forms/EnquiryForm";
 import { CHANNELS } from "@/lib/nav";
 import { DoodleWall } from "@/components/brand/DoodleField";
+import WhatsAppCTA from "@/components/cta/WhatsAppCTA";
+import { WHATSAPP_MESSAGES } from "@/lib/whatsapp";
 
-export default function Partner() {
+export default function Partner({
+  ctaLabel = "TALK TO PANDUR",
+  ctaMessage = WHATSAPP_MESSAGES.homeFinal,
+  ctaContext = "home_final",
+}: {
+  ctaLabel?: string;
+  ctaMessage?: string;
+  ctaContext?: string;
+} = {}) {
   return (
     <section id="partner" className="relative overflow-hidden bg-cream py-24 md:py-36">
       {/*
@@ -40,6 +50,16 @@ export default function Partner() {
             <p className="text-lead mx-auto mt-6 max-w-2xl text-ash">
               {CHANNELS.join(" · ")}
             </p>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <div className="mt-8 flex justify-center">
+              <WhatsAppCTA 
+                label={ctaLabel} 
+                message={ctaMessage} 
+                variant="primary" 
+                context={ctaContext} 
+              />
+            </div>
           </Reveal>
         </div>
 

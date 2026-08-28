@@ -12,7 +12,7 @@ import { SplitLine } from "@/components/motion/Text";
  */
 export default function Bite() {
   return (
-    <section className="relative flex min-h-[70svh] flex-col items-center justify-center overflow-hidden bg-cocoa py-24 md:py-32">
+    <section className="relative flex min-h-[40svh] md:min-h-[70svh] flex-col items-center justify-center overflow-hidden bg-cocoa py-24 md:py-32">
       <div className="relative z-content max-w-3xl px-6 text-center">
         <SplitLine
           as="h2"

@@ -239,7 +239,7 @@ export function HoverDrift({
       onPointerLeave={reset}
       className={`overflow-hidden ${className ?? ""}`}
     >
-      <motion.div style={enabled ? { x: sx, y: sy } : undefined}>
+      <motion.div className="w-full h-full" style={enabled ? { x: sx, y: sy } : undefined}>
         {children}
       </motion.div>
     </div>
@@ -310,20 +310,26 @@ export function HoverSweep({
 
 /* ---------------------------------------------------------------- 7 */
 
-/** Dashed outline that draws itself around the element on hover. */
 export function HoverOutline({
   children,
   className,
   radius = 32,
+  on = "self",
 }: {
   children: ReactNode;
   className?: string;
   radius?: number;
+  on?: "self" | "group";
 }) {
   const enabled = useHoverEnabled();
 
+  const trigger =
+    on === "group"
+      ? "group-hover:opacity-100 group-hover:[stroke-dashoffset:0]"
+      : "group-hover/outline:opacity-100 group-hover/outline:[stroke-dashoffset:0]";
+
   return (
-    <span className={`group/outline relative block ${className ?? ""}`}>
+    <span className={`${on === "self" ? "group/outline" : ""} relative block ${className ?? ""}`}>
       {children}
       {enabled && (
         <svg
@@ -343,7 +349,7 @@ export function HoverOutline({
             pathLength={1}
             strokeDasharray="1"
             strokeDashoffset="1"
-            className="opacity-0 transition-all duration-700 ease-[var(--ease-expo)] group-hover/outline:opacity-100 group-hover/outline:[stroke-dashoffset:0]"
+            className={`opacity-0 transition-all duration-700 ease-[var(--ease-expo)] ${trigger}`}
           />
         </svg>
       )}

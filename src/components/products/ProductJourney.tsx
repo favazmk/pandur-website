@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue, type MotionValue } from "motion/react";
 import { SCENES } from "@/lib/showcase";
@@ -99,11 +100,15 @@ function FlavourWorld({
           className="relative z-10 w-full max-w-2xl px-6 md:px-0"
           style={{ rotateX, rotateY, perspective: 1000 }}
         >
-          <img 
-            src={scene.packImage} 
-            alt={scene.name}
-            className="w-full h-auto drop-shadow-2xl"
-          />
+          <div className="relative w-full aspect-[4/3]">
+            <Image 
+              src={scene.packImage} 
+              alt={scene.name}
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-contain drop-shadow-2xl"
+            />
+          </div>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] text-center pointer-events-none">
             <h2 className="text-8xl md:text-[10rem] font-display font-black tracking-tight text-white/20 uppercase">
               {scene.name}

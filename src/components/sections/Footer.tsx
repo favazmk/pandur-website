@@ -64,8 +64,16 @@ export default function Footer() {
           <p className="text-eyebrow text-cream/70">
             {COMPANY.legal} · {COMPANY.address} · {COMPANY.country}
           </p>
-          <p className="text-xs text-cream/60">
+          <div className="text-eyebrow text-cream/70 flex gap-2 justify-center">
+            {COMPANY.email && <a href={`mailto:${COMPANY.email}`} className="hover:text-cream transition-colors">{COMPANY.email}</a>}
+            {COMPANY.email && COMPANY.phone && <span>·</span>}
+            {COMPANY.phone && <a href={`tel:${COMPANY.phone.replace(/\s/g, "")}`} className="hover:text-cream transition-colors">{COMPANY.phone}</a>}
+          </div>
+          <p className="text-xs text-cream/60 mt-2">
             © {new Date().getFullYear()} {COMPANY.name}. All rights reserved.
+          </p>
+          <p className="text-xs text-cream/60">
+            Site by <a href="https://webbranding.ae" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-purple-500">WebBranding</a>
           </p>
         </Reveal>
       </div>

@@ -44,7 +44,8 @@ function FlavourIngredientCluster({
   isMobile?: boolean;
   reduced?: boolean;
 }) {
-  const { flavour, triggerProgress, driftX, driftY, driftRotate } = instance;
+  const { flavour, driftX, driftY, driftRotate } = instance;
+  const triggerProgress = isMobile && instance.mobile?.triggerProgress ? instance.mobile.triggerProgress : instance.triggerProgress;
   const config = FLAVOUR_SVG_CONFIGS[flavour];
   const { worldStart, worldEnd } = config;
 
