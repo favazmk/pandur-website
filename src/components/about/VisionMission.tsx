@@ -44,7 +44,7 @@ export default function VisionMission() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="border border-cream/15 relative bg-ink/50 backdrop-blur-sm"
+          className="border border-cream/15 relative bg-ink/50 md:backdrop-blur-sm"
         >
           {/* Top Bar */}
           <div className="border-b border-cream/15 p-6 flex justify-between items-center">

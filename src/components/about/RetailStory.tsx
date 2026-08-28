@@ -27,7 +27,7 @@ export default function RetailStory() {
         className="absolute inset-0 w-full h-[140%] -top-[20%]"
       >
         <Image
-          src="/products/retail-shelf.jpg"
+          src="/products/retail-shelf.webp"
           alt="Retail Environment"
           fill
           className="object-cover opacity-40 mix-blend-screen"
@@ -64,7 +64,7 @@ export default function RetailStory() {
             className="relative w-64 h-64 md:w-96 md:h-96 z-20"
           >
             <Image
-              src="/products/hero-butter-box.png"
+              src="/products/hero-butter-box-scene2.webp"
               alt="Retail Carton"
               fill
               className="object-contain drop-shadow-2xl"
@@ -73,7 +73,7 @@ export default function RetailStory() {
           
           <div className="absolute right-0 top-1/2 -translate-y-1/2 w-48 h-48 md:w-64 md:h-64 z-10 opacity-80 blur-[2px] translate-x-12 translate-y-12">
              <Image
-              src="/products/hero-butter-sachet.png"
+              src="/products/hero-butter-sachet.webp"
               alt="Sachet"
               fill
               className="object-contain drop-shadow-xl"

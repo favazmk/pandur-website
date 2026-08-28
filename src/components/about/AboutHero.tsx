@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { useScroll, useTransform, motion } from "motion/react";
-import Image from "next/image";
 
 export default function AboutHero() {
   const container = useRef<HTMLElement>(null);
@@ -25,22 +24,42 @@ export default function AboutHero() {
         style={{ y, opacity }}
         className="absolute inset-0 z-0 pointer-events-none"
       >
-        {/* Desktop Image */}
-        <Image
-          src="/brand/about hero desktop.png" 
-          alt="About Pandur"
-          fill
-          priority
-          className="object-cover hidden md:block"
-        />
-        {/* Mobile Image */}
-        <Image
-          src="/brand/about hero mobilr.png" 
-          alt="About Pandur"
-          fill
-          priority
-          className="object-cover block md:hidden"
-        />
+        {/*
+         * `<picture>` rather than two `next/image`s hidden by CSS.
+         *
+         * This is the LCP element of the page, and both cuts carried
+         * `priority` — so every visitor preloaded the landscape crop AND the
+         * portrait one and discarded whichever the breakpoint hid. A phone
+         * paid 830KB to display 227KB of it, at the exact moment it was
+         * trying to paint.
+         *
+         * `next/image` has no art-direction switch, so real `<source media>`
+         * is what expresses "one of these two, decided before the request".
+         * The browser picks in the preload scanner, ahead of hydration, which
+         * a `useIsMobile()` branch could not do — that would have to wait for
+         * JS and would push the LCP out rather than pull it in. Both files are
+         * already exported at the size they are shown at, so nothing is lost
+         * by stepping outside the optimiser here.
+         *
+         * The filenames must not contain spaces. In `srcset` a space is the
+         * separator before a descriptor, so "/brand/about hero mobilr.webp"
+         * parses as the URL "/brand/about" followed by two descriptors — a
+         * 404, and silently, because the browser just falls back to `src`.
+         * That is why these two were renamed rather than URL-encoded.
+         */}
+        <picture>
+          <source
+            media="(max-width: 767px)"
+            srcSet="/brand/about-hero-mobile.webp"
+          />
+          <img
+            src="/brand/about-hero-desktop.webp"
+            alt=""
+            fetchPriority="high"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </picture>
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-ink/60 z-10" />
       </motion.div>

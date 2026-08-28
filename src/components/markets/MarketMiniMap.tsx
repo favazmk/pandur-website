@@ -13,7 +13,7 @@ export default function MarketMiniMap({
 }) {
   return (
     <div
-      className={`relative rounded-2xl bg-white/70 backdrop-blur-md p-2.5 sm:p-3 border border-ink/10 shadow-xs select-none ${className}`}
+      className={`relative rounded-2xl bg-white/92 md:bg-white/70 md:backdrop-blur-md p-2.5 sm:p-3 border border-ink/10 shadow-xs select-none ${className}`}
       aria-label="UAE Regional Progress Radar"
     >
       <div className="flex items-center justify-between gap-2 mb-1.5 px-0.5">

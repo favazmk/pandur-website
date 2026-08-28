@@ -125,7 +125,7 @@ function Destination({
         className="relative flex items-center justify-center"
       >
         <Image
-          src="/products/gcc-cookie.png"
+          src="/products/gcc-cookie.webp"
           alt="Pandur Cookie Clone"
           width={180}
           height={180}
@@ -140,7 +140,7 @@ function Destination({
               read small, and 8px sat below any legibility floor — the emirate
               names are content, not texture. The extra width this costs is
               accounted for in `--dest-reach`; see globals.css. */}
-          <div className="w-max shrink-0 whitespace-nowrap text-[10px] md:text-xs font-black uppercase tracking-widest text-cocoa bg-cream/90 backdrop-blur-sm px-3 py-1.5 rounded-full border border-ink/10 shadow-sm">
+          <div className="w-max shrink-0 whitespace-nowrap text-[10px] md:text-xs font-black uppercase tracking-widest text-cocoa bg-cream/90 px-3 py-1.5 rounded-full border border-ink/10 shadow-sm">
             {dest.name}
           </div>
         </motion.div>
@@ -180,7 +180,7 @@ export default function QualityStage({
         style={{ opacity: textOpacity, y: textY }}
         className="absolute inset-x-0 bottom-24 md:bottom-32 flex flex-col items-center justify-center text-center px-6 z-50"
       >
-        <div className="bg-cream/40 backdrop-blur-md px-6 py-4 md:px-10 md:py-6 rounded-3xl border border-white/50 shadow-[0_8px_32px_rgba(58,35,24,0.1)]">
+        <div className="bg-cream/85 md:bg-cream/40 md:backdrop-blur-md px-6 py-4 md:px-10 md:py-6 rounded-3xl border border-white/50 shadow-[0_8px_32px_rgba(58,35,24,0.1)]">
           <h2 className="text-3xl md:text-5xl font-display font-black text-cocoa uppercase tracking-tight">
             Consistent,<br/>Every Batch.
           </h2>

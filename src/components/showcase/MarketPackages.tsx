@@ -5,10 +5,10 @@ import { useTransform, motion, type MotionValue } from "motion/react";
 import { FLAVOURS } from "@/lib/assets";
 
 const FLAVOUR_SHOTS = [
-  { slug: "coconut", name: "Coconut", shot: "/products/flavour-coconut.png", accent: "#5E3720", ground: "#F4E7D3" },
-  { slug: "peanut", name: "Peanut", shot: "/products/flavour-peanut.png", accent: "#7A4718", ground: "#F7E9C9" },
-  { slug: "cardamom", name: "Cardamom", shot: "/products/flavour-cardamom.png", accent: "#4A6B2E", ground: "#E9F0E2" },
-  { slug: "butter", name: "Butter", shot: "/products/flavour-butter.png", accent: "#C5221F", ground: "#F5F0D6" },
+  { slug: "coconut", name: "Coconut", shot: "/products/flavour-coconut.webp", accent: "#5E3720", ground: "#F4E7D3" },
+  { slug: "peanut", name: "Peanut", shot: "/products/flavour-peanut.webp", accent: "#7A4718", ground: "#F7E9C9" },
+  { slug: "cardamom", name: "Cardamom", shot: "/products/flavour-cardamom.webp", accent: "#4A6B2E", ground: "#E9F0E2" },
+  { slug: "butter", name: "Butter", shot: "/products/flavour-butter.webp", accent: "#C5221F", ground: "#F5F0D6" },
 ] as const;
 
 export default function MarketPackages({
@@ -28,7 +28,7 @@ export default function MarketPackages({
   return (
     <motion.div
       style={reduced ? undefined : { opacity, y, scale }}
-      className={`rounded-2xl border border-ink/10 bg-cream/80 p-2.5 md:p-4 backdrop-blur-md shadow-[0_8px_24px_rgba(58,35,24,0.06)] ${className}`}
+      className={`rounded-2xl border border-ink/10 bg-cream/92 md:bg-cream/80 p-2.5 md:p-4 md:backdrop-blur-md shadow-[0_8px_24px_rgba(58,35,24,0.06)] ${className}`}
     >
       <div className="flex items-center justify-between border-b border-ink/8 pb-1.5 md:pb-2.5">
         <span className="text-[0.58rem] md:text-[0.65rem] font-black uppercase tracking-widest text-ink/60">

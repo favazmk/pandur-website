@@ -12,10 +12,10 @@ import { WHATSAPP_MESSAGES } from "@/lib/whatsapp";
 const PRODUCTS_ORDER = ["butter", "cardamom", "coconut", "peanut"] as const;
 
 const PACK_IMAGES: Record<string, string> = {
-  butter: "/products/pack-butter.jpg",
-  cardamom: "/products/pack-cardamom.jpg",
-  coconut: "/products/pack-coconut.jpg",
-  peanut: "/products/pack-peanut.jpg",
+  butter: "/products/pack-butter.webp",
+  cardamom: "/products/pack-cardamom.webp",
+  coconut: "/products/pack-coconut.webp",
+  peanut: "/products/pack-peanut.webp",
 };
 
 const SELECTOR_SCENES = PRODUCTS_ORDER.map(slug => {

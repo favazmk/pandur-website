@@ -64,7 +64,7 @@ function Layer({
             next/image would need dangerouslyAllowSVG and gains nothing on a
             file the optimiser passes straight through. */}
         <img
-          src={`/ingredient/${layer.slug}.svg`}
+          src={`/ingredient/${layer.slug}.webp`}
           alt=""
           aria-hidden
           width={768}

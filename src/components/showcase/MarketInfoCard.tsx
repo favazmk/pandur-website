@@ -112,7 +112,7 @@ function MarketCardItem({
               right: 0,
             }
       }
-      className={`rounded-2xl border border-ink/10 bg-cream/95 shadow-[0_10px_24px_rgba(58,35,24,0.07)] backdrop-blur-md transition-shadow ${
+      className={`rounded-2xl border border-ink/10 bg-cream/95 shadow-[0_10px_24px_rgba(58,35,24,0.07)] transition-shadow ${
         compact ? "p-3.5" : "p-4 md:p-5"
       }`}
     >
@@ -136,7 +136,7 @@ function MarketCardView({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -8, scale: 0.98 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
-      className={`rounded-2xl border bg-cream/95 shadow-[0_14px_32px_rgba(58,35,24,0.1)] backdrop-blur-md ${
+      className={`rounded-2xl border bg-cream/95 shadow-[0_14px_32px_rgba(58,35,24,0.1)] ${
         compact ? "p-3.5" : "p-4 md:p-5"
       } ${
         isInteractive ? "border-red-deep/30 ring-2 ring-red-deep/15" : "border-ink/10"

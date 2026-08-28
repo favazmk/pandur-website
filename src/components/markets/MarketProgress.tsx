@@ -14,7 +14,7 @@ export default function MarketProgress({
 
   return (
     <div
-      className={`flex items-center gap-3 sm:gap-4 rounded-full bg-white/75 backdrop-blur-md px-3.5 py-1.5 sm:px-4 sm:py-2 border border-ink/10 shadow-xs select-none ${className}`}
+      className={`flex items-center gap-3 sm:gap-4 rounded-full bg-white/92 md:bg-white/75 md:backdrop-blur-md px-3.5 py-1.5 sm:px-4 sm:py-2 border border-ink/10 shadow-xs select-none ${className}`}
     >
       {/* City Title Swapper */}
       <div className="relative h-4 sm:h-5 overflow-hidden min-w-[90px] sm:min-w-[120px]">

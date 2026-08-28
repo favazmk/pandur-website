@@ -18,6 +18,7 @@ import MarketProgress from "@/components/markets/MarketProgress";
 import MarketMiniMap from "@/components/markets/MarketMiniMap";
 import TravellingCookie from "@/components/markets/TravellingCookie";
 import { MUTED } from "@/lib/assets";
+import { useIsMobile } from "@/lib/useMedia";
 
 export default function MarketsJourney({
   progress,
@@ -25,6 +26,23 @@ export default function MarketsJourney({
   progress: MotionValue<number>;
   reduced?: boolean;
 }) {
+  /*
+   * One stage, not two.
+   *
+   * The phone route and the desktop route were both mounted, with CSS hiding
+   * the wrong one. Each carries eight market pairs, and every pair is a card
+   * and a diorama driven by its own `useTransform` chain — so a phone was
+   * computing sixteen markets' worth of scroll transforms to show eight, on
+   * top of an SVG route it never drew. Both stages also sat under an explicit
+   * `will-change: transform` on a 3600px box, which pins a layer that tall in
+   * GPU memory permanently, twice over.
+   *
+   * Mounting only the matching stage halves the per-frame transform work
+   * through the longest section on the site and leaves one promoted layer
+   * instead of two.
+   */
+  const isMobile = useIsMobile();
+
   // Background Tint Morphing across the 8 markets
   const bgTint = useTransform(
     progress,
@@ -114,7 +132,7 @@ export default function MarketsJourney({
           style={{ opacity: introOpacity, y: introY }}
           className="pointer-events-none absolute inset-0 z-30 flex flex-col items-center justify-center p-6 text-center select-none"
         >
-          <div className="max-w-2xl bg-white/60 backdrop-blur-md rounded-3xl p-8 sm:p-10 border border-ink/8 shadow-sm">
+          <div className="max-w-2xl bg-white/90 md:bg-white/60 md:backdrop-blur-md rounded-3xl p-8 sm:p-10 border border-ink/8 shadow-sm">
             <span className="text-[0.65rem] sm:text-xs font-black uppercase tracking-[0.24em] text-red-deep block mb-2">
               UAE Retail Presence
             </span>
@@ -131,9 +149,10 @@ export default function MarketsJourney({
         </motion.div>
 
         {/* ----------------- DESKTOP VERTICAL JOURNEY STAGE ----------------- */}
+        {!isMobile && (
         <motion.div
           style={{ y: desktopStageY }}
-          className="hidden md:block absolute top-1/2 w-full max-w-6xl h-[3600px] pointer-events-none will-change-transform"
+          className="absolute top-1/2 w-full max-w-6xl h-[3600px] pointer-events-none"
         >
           {/* HTML Overlay Layers: 8 Pairs of (MarketCard, MarketScene) */}
           <div className="absolute inset-0 z-20">
@@ -190,11 +209,13 @@ export default function MarketsJourney({
             <TravellingCookie progress={progress} isMobile={false} />
           </svg>
         </motion.div>
+        )}
 
         {/* ----------------- MOBILE VERTICAL JOURNEY STAGE ----------------- */}
+        {isMobile && (
         <motion.div
           style={{ y: mobileStageY }}
-          className="block md:hidden absolute top-1/2 w-full max-w-sm h-[3600px] pointer-events-none will-change-transform"
+          className="absolute top-1/2 w-full max-w-sm h-[3600px] pointer-events-none"
         >
           {/* Mobile Overlay: Stacked Compact Cards & Scenes */}
           <div className="absolute inset-0 z-20">
@@ -237,13 +258,14 @@ export default function MarketsJourney({
             <TravellingCookie progress={progress} isMobile={true} />
           </svg>
         </motion.div>
+        )}
 
         {/* ----------------- FINALE OUTRO SCREEN (0.90 -> 1.0) ----------------- */}
         <motion.div
           style={{ opacity: finaleOpacity, y: finaleY }}
           className="pointer-events-none absolute inset-0 z-30 flex flex-col items-center justify-center p-6 text-center select-none"
         >
-          <div className="max-w-2xl bg-white/90 backdrop-blur-xl rounded-3xl p-8 sm:p-12 border border-ink/10 shadow-lg">
+          <div className="max-w-2xl bg-white/90 rounded-3xl p-8 sm:p-12 border border-ink/10 shadow-lg">
             <span className="text-[0.65rem] sm:text-xs font-black uppercase tracking-[0.24em] text-red-deep block mb-2">
               The UAE Standard
             </span>

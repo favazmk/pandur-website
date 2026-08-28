@@ -188,7 +188,7 @@ export const CRUMB_BURSTS: CrumbBurst[] = [
 
 /**
  * Dedicated SVG assets for each flavour:
- * /ingredient/coconut.svg, /ingredient/peanut.svg, /ingredient/cardamom.svg, /ingredient/butter.svg
+ * /ingredient/coconut.webp, /ingredient/peanut.webp, /ingredient/cardamom.webp, /ingredient/butter.webp
  */
 export type FlavourQuadrant = "coconut" | "peanut" | "cardamom" | "butter";
 
@@ -196,10 +196,10 @@ export const FLAVOUR_SVG_CONFIGS: Record<
   FlavourQuadrant,
   { name: string; svgSrc: string; worldStart: number; worldEnd: number }
 > = {
-  coconut: { name: "Coconut", svgSrc: "/ingredient/coconut.svg", worldStart: 0.0, worldEnd: 0.2 },
-  peanut: { name: "Peanut", svgSrc: "/ingredient/peanut.svg", worldStart: 0.2, worldEnd: 0.4 },
-  cardamom: { name: "Cardamom", svgSrc: "/ingredient/cardamom.svg", worldStart: 0.4, worldEnd: 0.6 },
-  butter: { name: "Butter", svgSrc: "/ingredient/butter.svg", worldStart: 0.6, worldEnd: 0.8 },
+  coconut: { name: "Coconut", svgSrc: "/ingredient/coconut.webp", worldStart: 0.0, worldEnd: 0.2 },
+  peanut: { name: "Peanut", svgSrc: "/ingredient/peanut.webp", worldStart: 0.2, worldEnd: 0.4 },
+  cardamom: { name: "Cardamom", svgSrc: "/ingredient/cardamom.webp", worldStart: 0.4, worldEnd: 0.6 },
+  butter: { name: "Butter", svgSrc: "/ingredient/butter.webp", worldStart: 0.6, worldEnd: 0.8 },
 };
 
 /**

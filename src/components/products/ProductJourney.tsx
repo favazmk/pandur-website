@@ -12,7 +12,7 @@ const PRODUCT_SCENES = PRODUCTS_ORDER.map(slug => {
   const base = SCENES.find(s => s.id === slug)!;
   return {
     ...base,
-    packImage: `/products/hero-${slug}-scene.png`,
+    packImage: `/products/hero-${slug}-scene.webp`,
     bg: slug === "butter" ? "#dfe8b2" 
       : slug === "cardamom" ? "#31581e" 
       : slug === "coconut" ? "#dcc29a" 

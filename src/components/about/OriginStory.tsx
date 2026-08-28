@@ -46,7 +46,7 @@ export default function OriginStory() {
               className="absolute inset-0 w-full h-full rounded-[2rem] md:rounded-[4rem] overflow-hidden shadow-2xl"
             >
               <Image
-                src="/brand/factory.png"
+                src="/brand/factory.webp"
                 alt="Royal Quality Bakes LLC Factory"
                 fill
                 className="object-cover"

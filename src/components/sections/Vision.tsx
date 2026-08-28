@@ -68,7 +68,7 @@ export default function Vision() {
         }
       >
         <Image
-          src="/products/gcc-cookie.png"
+          src="/products/gcc-cookie.webp"
           alt=""
           width={800}
           height={800}

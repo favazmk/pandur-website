@@ -56,7 +56,7 @@ export default function Markets() {
               return (
                 <div
                   key={market.id}
-                  className="flex flex-col sm:flex-row items-center gap-4 rounded-3xl bg-white/70 backdrop-blur-md p-4 border border-ink/10 shadow-xs"
+                  className="flex flex-col sm:flex-row items-center gap-4 rounded-3xl bg-white/92 md:bg-white/70 md:backdrop-blur-md p-4 border border-ink/10 shadow-xs"
                 >
                   <div className="w-full sm:w-1/2">
                     <MarketCard market={market} className="max-w-none shadow-none" />

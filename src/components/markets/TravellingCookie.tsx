@@ -84,7 +84,7 @@ export default function TravellingCookie({
 
         {/* High-res Pandur Cookie */}
         <image
-          href="/products/gcc-cookie.png"
+          href="/products/gcc-cookie.webp"
           x={-cookieSize / 2}
           y={-cookieSize / 2}
           width={cookieSize}

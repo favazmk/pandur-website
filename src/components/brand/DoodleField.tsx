@@ -103,7 +103,7 @@ export function DoodleLayer({
       {/* eslint-disable-next-line @next/next/no-img-element -- ships as-is;
           next/image would need dangerouslyAllowSVG and gains nothing here. */}
       <img
-        src="/ingredient/ingredient-doodle-field.svg"
+        src="/ingredient/ingredient-doodle-field.webp"
         alt=""
         width={2400}
         height={1600}

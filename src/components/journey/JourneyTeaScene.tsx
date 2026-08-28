@@ -42,7 +42,7 @@ export default function JourneyTeaScene({
       >
         <div className="relative aspect-3/2 w-full select-none pointer-events-none drop-shadow-[0_16px_32px_rgba(58,35,24,0.16)]">
           <Image
-            src="/ingredient/tea-plate-empty.png"
+            src="/ingredient/tea-plate-empty.webp"
             alt="Pandur Tea Plate and Karak Chai Cup"
             width={1536}
             height={1024}

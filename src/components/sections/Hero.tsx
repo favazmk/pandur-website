@@ -22,11 +22,11 @@ import {
 const FILM = {
   desktop: {
     src: "/hero/hero-desktop.mp4",
-    poster: "/hero/hero-desktop-poster.jpg",
+    poster: "/hero/hero-desktop-poster.webp",
   },
   mobile: {
     src: "/hero/hero-mobile.mp4",
-    poster: "/hero/hero-mobile-poster.jpg",
+    poster: "/hero/hero-mobile-poster.webp",
   },
 } as const;
 

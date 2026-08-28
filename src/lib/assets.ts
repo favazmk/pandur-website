@@ -36,10 +36,10 @@ export const HAS_RETAIL_IMAGES = true;
 /**
  * Packaging photography — the box on a styled kitchen set.
  *
- *   public/products/pack-butter.jpg
- *   public/products/pack-coconut.jpg
- *   public/products/pack-peanut.jpg
- *   public/products/pack-cardamom.jpg
+ *   public/products/pack-butter.webp
+ *   public/products/pack-coconut.webp
+ *   public/products/pack-peanut.webp
+ *   public/products/pack-cardamom.webp
  *
  * Portrait 3:4, >= 1600px on the long edge, JPEG (these are photographs on
  * full-bleed sets — there is no transparency to preserve and PNG would triple
@@ -65,23 +65,23 @@ export const HAS_RETAIL_IMAGES = true;
  * quality seal garbles to "SOEMIMS GOAUTT" on peanut, and peanut carries
  * coconut's Arabic. See README, outstanding item 3.
  */
-export const packImage = (slug: FlavourSlug) => `/products/hero-${slug}-scene.png`;
+export const packImage = (slug: FlavourSlug) => `/products/hero-${slug}-scene.webp`;
 
 /**
  * Retail photography — Pandur on the shelf, in a real store.
  *
- *   public/products/retail-shelf.jpg   the tall gondola end, boxes facing
- *   public/products/retail-aisle.jpg   the wider aisle view
+ *   public/products/retail-shelf.webp   the tall gondola end, boxes facing
+ *   public/products/retail-aisle.webp   the wider aisle view
  *
  * Landscape 4:3, >= 2000px on the long edge, JPEG.
  */
 export const RETAIL_IMAGES = [
   {
-    src: "/products/retail-shelf.jpg",
+    src: "/products/retail-shelf.webp",
     alt: "Pandur cookie boxes facing out across a shelf display in a UAE store",
   },
   {
-    src: "/products/retail-aisle.jpg",
+    src: "/products/retail-aisle.webp",
     alt: "A bakery aisle stocked with Pandur cookies alongside fresh bread",
   },
 ] as const;

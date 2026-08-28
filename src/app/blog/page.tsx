@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import PageHero from "@/components/layout/PageHero";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Text";
 import { Tilt3D } from "@/components/motion/Scroll";
@@ -46,10 +47,18 @@ export default function BlogPage() {
                       const imgBlock = p.body.find(b => b.type === "image");
                       if (imgBlock && imgBlock.type === "image") {
                         return (
-                          <img 
-                            src={imgBlock.src} 
-                            alt={imgBlock.alt} 
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          /* `next/image` rather than a bare `<img>`: these
+                             covers are square masters shown in a 16:10 card
+                             about a third of the viewport wide, so serving the
+                             original was several times the pixels the card can
+                             show. `sizes` is what lets the optimiser know
+                             that. */
+                          <Image
+                            src={imgBlock.src}
+                            alt={imgBlock.alt}
+                            fill
+                            sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw"
+                            className="object-cover transition-transform duration-700 group-hover:scale-105"
                           />
                         );
                       }

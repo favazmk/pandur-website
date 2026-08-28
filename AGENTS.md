@@ -16,14 +16,11 @@ Lenis for scroll. Static — every route prerenders.
 
 ## Read this before you trust the README
 
-**The README's stack section is stale.** It describes a WebGL/React Three Fiber
-experience with a procedural 3D cookie in `src/components/three/`. That is gone:
-there is no `three`, `@react-three/*` or `three-bvh-csg` in `package.json` and no
-`components/three/` directory. The hero is video and typography now. Everything
-else in the README — the outstanding-client-items table, the pack-image
-decision, the flavour system, the asset contract — is current and worth reading.
-
-Fix the stale sections if you touch them; do not restore the 3D.
+The README once described a WebGL/React Three Fiber experience with a procedural
+3D cookie in `src/components/three/`. **That has been corrected** — the README's
+stack section is now accurate, and the hero is video and typography. There is no
+`three`, `@react-three/*` or `three-bvh-csg` in `package.json` and no
+`components/three/` directory. Do not restore the 3D.
 
 ## Where the truth lives
 
@@ -76,6 +73,53 @@ These are not style preferences. Each one was arrived at by hitting the failure.
   desktop pixel-identical, the `vw` term rescues the narrow ones. Everything
   else is expressed as a fraction of them, so the geometry scales as one piece.
   Do not reintroduce a bare pixel radius.
+- **Everything raster ships as WebP, and the sizes are display-derived.** The
+  originals are still in `public/` beside them; the `.webp` is what the code
+  references. Four of the "SVG" files were never vector — `ingredient/
+  {butter,cardamom,coconut,peanut}.svg` and `ingredient-doodle-field.svg` were a
+  single base64 PNG inside an SVG wrapper, which paid a 33% base64 tax, could
+  not be resized per device and was invisible to the image optimiser. Do not
+  reintroduce that shape. Each file is exported at roughly 2x the largest CSS
+  size it is ever drawn at; if you change a layout so something is drawn bigger,
+  re-export it rather than letting the browser upscale.
+
+- **A phone must not render the desktop variant, even hidden.** Several scenes
+  used to mount both cuts with `hidden md:block` / `block md:hidden` deciding
+  which was seen. `display: none` hides a subtree from the screen; it does not
+  stop Motion driving it — every `useTransform` in the hidden cut still
+  recomputed and wrote a style attribute on every scroll frame, and its `next/
+  image`s still downloaded. Switch on `useIsMobile()` and mount one. This
+  applies to `CookieJourney`, `JourneyWorldLayer`, `MarketsJourney`,
+  `GrowthStory` and `PartnershipNetwork`; keep it that way.
+
+- **The expensive decorative layers are gated on `pointer: coarse`, in CSS.**
+  The film grain (a full-viewport `feTurbulence` under `mix-blend-multiply`,
+  stepped ten times a second) and Lenis (whose `raf` loop ran every frame for
+  the life of the page while `syncTouch: false` meant it was not smoothing touch
+  anyway) are both off on phones. Both were measurable heat, not theory. Grain
+  is decided in `globals.css` for the same reason reduced motion is — a JS
+  decision would mount then unmount the layer after hydration.
+
+- **`backdrop-filter` is desktop-only, and never sits behind an opaque
+  surface.** It is the most expensive effect per pixel on the page: the
+  compositor snapshots and blurs everything behind the element, and redoes it
+  whenever either moves. At 90% background opacity or more the blur is
+  invisible, so it is simply deleted; below that it is `md:`-gated with the
+  mobile opacity raised to hold contrast. A mobile homepage now computes zero
+  backdrop filters, down from 29. Do not add a bare `backdrop-blur-*`.
+
+- **Scrub seeks are quantised to the video's frame grid.** `ScrubVideo` damps
+  the playhead every frame but only *writes* `currentTime` when the request
+  lands on a different 1/24s frame and no seek is already in flight. Writing it
+  every frame asks a phone's decoder for ~60 seeks a second, which is what made
+  the handset hot. The damping still runs per frame, so the motion is unchanged.
+
+- **No spaces in a filename that reaches a `srcset`.** In `srcset` a space
+  separates the URL from its descriptor, so `/brand/about hero mobilr.webp`
+  parses as the URL `/brand/about` plus two descriptors — a 404, and a silent
+  one, because the browser just falls back to `src`. That pair is now
+  `about-hero-desktop.webp` / `about-hero-mobile.webp`.
+
 - **`HAS_PACK_IMAGES` is `false` by decision, not by omission.** The four pack
   files exist and are wired; they read as AI mockups and two carry visible
   errors, so procedural stand-ins render instead. README has the detail. Flip it
@@ -101,7 +145,11 @@ If new artwork arrives, or you want to add a prop:
 - `SHEET.width`/`height` and the quadrant origins are load-bearing; the crop
   maths is relative to them.
 - If you re-encode the sheet, **the alpha channel must survive intact** — the
-  whole technique rests on it. WebP q92 was verified bit-for-bit on alpha.
+  whole technique rests on it. The sheet now ships at WebP q85 with
+  `alpha_quality=100, exact=True`, which was verified bit-for-bit on alpha
+  against the q92 original (RGB mean absolute error 1.71/255, invisible at the
+  size a prop is drawn). Verify the same way if you re-encode: compare the
+  alpha planes as arrays and assert equality, do not eyeball it.
 - A prop's drift direction is computed from its position (away from the stage
   centre, which is where the pack is), not stored. Move a prop and its exit
   moves with it.

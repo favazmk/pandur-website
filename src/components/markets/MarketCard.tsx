@@ -11,7 +11,7 @@ export default function MarketCard({
 }) {
   return (
     <div
-      className={`relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px] rounded-3xl bg-[#FFFDF9]/95 backdrop-blur-xl p-5 sm:p-6 md:p-7 border border-ink/10 shadow-[0_16px_36px_rgba(34,31,31,0.08)] select-none transition-all ${className}`}
+      className={`relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px] rounded-3xl bg-[#FFFDF9]/95 p-5 sm:p-6 md:p-7 border border-ink/10 shadow-[0_16px_36px_rgba(34,31,31,0.08)] select-none transition-all ${className}`}
     >
       {/* Top Meta Bar */}
       <div className="flex items-center justify-between gap-3 border-b border-ink/8 pb-3">

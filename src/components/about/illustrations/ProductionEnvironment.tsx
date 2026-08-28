@@ -89,7 +89,7 @@ export default function ProductionEnvironment({ progress }: Props) {
           
           {/* 1. MIXING STATION */}
           <div className="flex-none w-full h-[100vh] md:w-[100vw] md:h-full flex items-center justify-center relative z-10">
-            <div className="absolute top-[15%] md:top-auto md:bottom-24 left-6 md:left-24 z-20 max-w-xs bg-[#F3EEE4]/90 backdrop-blur-md p-4 rounded-2xl border border-[#33412B]/10 shadow-lg">
+            <div className="absolute top-[15%] md:top-auto md:bottom-24 left-6 md:left-24 z-20 max-w-xs bg-[#F3EEE4]/90 p-4 rounded-2xl border border-[#33412B]/10 shadow-lg">
               <span className="block text-3xl md:text-4xl font-display font-black text-[#33412B]">01 / MIXING</span>
               <p className="mt-2 text-xs md:text-sm text-[#33412B]/90 font-medium">
                 Ingredients come together under strictly controlled mixing conditions to ensure perfect dough consistency.
@@ -142,7 +142,7 @@ export default function ProductionEnvironment({ progress }: Props) {
 
           {/* 2. BAKING STATION */}
           <div className="flex-none w-full h-[100vh] md:w-[100vw] md:h-full flex items-center justify-center relative z-10">
-            <div className="absolute top-[15%] md:top-auto md:bottom-24 left-6 md:left-24 z-20 max-w-xs bg-[#F3EEE4]/90 backdrop-blur-md p-4 rounded-2xl border border-[#33412B]/10 shadow-lg">
+            <div className="absolute top-[15%] md:top-auto md:bottom-24 left-6 md:left-24 z-20 max-w-xs bg-[#F3EEE4]/90 p-4 rounded-2xl border border-[#33412B]/10 shadow-lg">
               <span className="block text-3xl md:text-4xl font-display font-black text-[#33412B]">02 / BAKING</span>
               <p className="mt-2 text-xs md:text-sm text-[#33412B]/90 font-medium">
                 Passing through temperature-profiled industrial ovens to achieve the exact golden bake and texture.
@@ -207,7 +207,7 @@ export default function ProductionEnvironment({ progress }: Props) {
 
           {/* 3. COOLING STATION */}
           <div className="flex-none w-full h-[100vh] md:w-[100vw] md:h-full flex items-center justify-center relative z-10">
-            <div className="absolute top-[15%] md:top-auto md:bottom-24 left-6 md:left-24 z-20 max-w-xs bg-[#F3EEE4]/90 backdrop-blur-md p-4 rounded-2xl border border-[#33412B]/10 shadow-lg">
+            <div className="absolute top-[15%] md:top-auto md:bottom-24 left-6 md:left-24 z-20 max-w-xs bg-[#F3EEE4]/90 p-4 rounded-2xl border border-[#33412B]/10 shadow-lg">
               <span className="block text-3xl md:text-4xl font-display font-black text-[#33412B]">03 / COOLING</span>
               <p className="mt-2 text-xs md:text-sm text-[#33412B]/90 font-medium">
                 Controlled ambient airflow brings the product down to the precise temperature required for packaging.
@@ -272,7 +272,7 @@ export default function ProductionEnvironment({ progress }: Props) {
 
           {/* 4. QUALITY STATION */}
           <div className="flex-none w-full h-[100vh] md:w-[100vw] md:h-full flex items-center justify-center relative z-10">
-            <div className="absolute top-[15%] md:top-auto md:bottom-24 left-6 md:left-24 z-20 max-w-xs bg-[#F3EEE4]/90 backdrop-blur-md p-4 rounded-2xl border border-[#33412B]/10 shadow-lg">
+            <div className="absolute top-[15%] md:top-auto md:bottom-24 left-6 md:left-24 z-20 max-w-xs bg-[#F3EEE4]/90 p-4 rounded-2xl border border-[#33412B]/10 shadow-lg">
               <span className="block text-3xl md:text-4xl font-display font-black text-[#33412B]">04 / QUALITY</span>
               <p className="mt-2 text-xs md:text-sm text-[#33412B]/90 font-medium">
                 Continuous automated inspection ensures every piece meets our strict visual and structural standards.
@@ -331,7 +331,7 @@ export default function ProductionEnvironment({ progress }: Props) {
 
           {/* 5. PACKAGING STATION */}
           <div className="flex-none w-full h-[100vh] md:w-[100vw] md:h-full flex items-center justify-center relative z-10">
-            <div className="absolute top-[15%] md:top-auto md:bottom-24 left-6 md:left-24 z-20 max-w-xs bg-[#F3EEE4]/90 backdrop-blur-md p-4 rounded-2xl border border-[#33412B]/10 shadow-lg">
+            <div className="absolute top-[15%] md:top-auto md:bottom-24 left-6 md:left-24 z-20 max-w-xs bg-[#F3EEE4]/90 p-4 rounded-2xl border border-[#33412B]/10 shadow-lg">
               <span className="block text-3xl md:text-4xl font-display font-black text-[#33412B]">05 / PACKAGING</span>
               <p className="mt-2 text-xs md:text-sm text-[#33412B]/90 font-medium">
                 Swift automated sealing preserves freshness immediately, preparing the product for market distribution.
@@ -390,7 +390,7 @@ export default function ProductionEnvironment({ progress }: Props) {
 
           {/* 6. MAGNETIC TESTING STATION */}
           <div className="flex-none w-full h-[100vh] md:w-[100vw] md:h-full flex items-center justify-center relative z-10">
-            <div className="absolute top-[15%] md:top-auto md:bottom-24 left-6 md:left-24 z-20 max-w-xs bg-[#F3EEE4]/90 backdrop-blur-md p-4 rounded-2xl border border-[#33412B]/10 shadow-lg">
+            <div className="absolute top-[15%] md:top-auto md:bottom-24 left-6 md:left-24 z-20 max-w-xs bg-[#F3EEE4]/90 p-4 rounded-2xl border border-[#33412B]/10 shadow-lg">
               <span className="block text-3xl md:text-4xl font-display font-black text-[#33412B]">06 / MAGNETIC TESTING</span>
               <p className="mt-2 text-xs md:text-sm text-[#33412B]/90 font-medium">
                 Advanced magnetic inspection guarantees safety and purity before final shipment.

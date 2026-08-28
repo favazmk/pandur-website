@@ -131,7 +131,7 @@ export function WhyPartnerScene({ progress }: SceneProps) {
           return (
             <motion.div
               key={title}
-              className="absolute text-center bg-white/80 backdrop-blur-sm p-2 md:p-3 rounded-xl shadow-sm border border-ink/5"
+              className="absolute text-center bg-white/92 md:bg-white/80 md:backdrop-blur-sm p-2 md:p-3 rounded-xl shadow-sm border border-ink/5"
               style={{
                 x: `calc(${cos} * min(38vw, 250px))`,
                 y: `calc(${sin} * min(38vw, 250px))`,
@@ -235,7 +235,7 @@ export function BusinessFlowScene({ progress }: SceneProps) {
                 className={`flex w-full items-center ${node.align === 'left' ? 'justify-start' : 'justify-end'}`}
                 style={{ opacity: nodeOpacity }}
               >
-                <div className={`bg-white/90 backdrop-blur-sm border border-ink/10 p-3 md:p-4 rounded-xl shadow-sm max-w-[42vw] md:w-56 ${node.align === 'left' ? 'ml-3 md:ml-16' : 'mr-3 md:mr-16'}`}>
+                <div className={`bg-white/90 border border-ink/10 p-3 md:p-4 rounded-xl shadow-sm max-w-[42vw] md:w-56 ${node.align === 'left' ? 'ml-3 md:ml-16' : 'mr-3 md:mr-16'}`}>
                   <h3 className="font-display font-black text-ink text-sm md:text-xl leading-none">{node.label}</h3>
                   <p className="text-ash text-[10px] md:text-xs uppercase tracking-wider mt-1 md:mt-2 leading-tight">{node.desc}</p>
                 </div>

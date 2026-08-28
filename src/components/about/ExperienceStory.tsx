@@ -41,7 +41,7 @@ export default function ExperienceStory() {
           {ARCHIVE_ITEMS.map((item, index) => (
             <div 
               key={index} 
-              className={`group relative bg-cream/5 border border-cream/10 rounded-3xl p-8 md:p-12 overflow-hidden transition-all duration-700 hover:-translate-y-2 hover:border-red-deep/40 hover:shadow-[0_30px_60px_rgba(0,0,0,0.4)] hover:bg-cream/10 backdrop-blur-sm ${
+              className={`group relative bg-cream/5 border border-cream/10 rounded-3xl p-8 md:p-12 overflow-hidden transition-all duration-700 hover:-translate-y-2 hover:border-red-deep/40 hover:shadow-[0_30px_60px_rgba(0,0,0,0.4)] hover:bg-cream/10 md:backdrop-blur-sm ${
                 index % 2 !== 0 ? 'md:mt-24' : ''
               }`}
             >

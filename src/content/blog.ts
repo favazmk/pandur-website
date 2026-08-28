@@ -40,7 +40,7 @@ export const POSTS: Post[] = [
     body: [
       {
         type: "image",
-        src: "/blog/shelf_life.jpg",
+        src: "/blog/shelf_life.webp",
         alt: "Packaged Pandur cookies neatly arranged on a modern retail shelf",
       },
       {
@@ -93,7 +93,7 @@ export const POSTS: Post[] = [
     body: [
       {
         type: "image",
-        src: "/blog/manufacturing.jpg",
+        src: "/blog/manufacturing.webp",
         alt: "A pristine, modern bakery production line producing uniform cookies",
       },
       {
@@ -137,7 +137,7 @@ export const POSTS: Post[] = [
     body: [
       {
         type: "image",
-        src: "/blog/heritage.jpg",
+        src: "/blog/heritage.webp",
         alt: "A beautifully lit, high-end commercial bakery oven with a golden glow",
       },
       {

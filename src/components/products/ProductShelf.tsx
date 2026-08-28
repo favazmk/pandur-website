@@ -8,10 +8,10 @@ import { SCENES } from "@/lib/showcase";
 const PRODUCTS_ORDER = ["butter", "cardamom", "coconut", "peanut"] as const;
 
 const PACK_IMAGES: Record<string, string> = {
-  butter: "/products/hero-butter-box-scene2.png",
-  cardamom: "/products/hero-cardamom-box.png",
-  coconut: "/products/hero-coconut-box-scene.png",
-  peanut: "/products/hero-peanut-box-scene.png",
+  butter: "/products/hero-butter-box-scene2.webp",
+  cardamom: "/products/hero-cardamom-box.webp",
+  coconut: "/products/hero-coconut-box-scene.webp",
+  peanut: "/products/hero-peanut-box-scene.webp",
 };
 
 const SHELF_PRODUCTS = PRODUCTS_ORDER.map(slug => {

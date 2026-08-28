@@ -30,7 +30,7 @@ export default function ContactPage() {
           <div className="flex flex-col gap-6">
             <Reveal>
               <HoverOutline on="group" radius={24} className="h-full group text-red-deep">
-                <HoverSpotlight className="h-full rounded-3xl border border-ink/10 bg-white/60 backdrop-blur-md p-8 md:p-10 flex flex-col">
+                <HoverSpotlight className="h-full rounded-3xl border border-ink/10 bg-white/90 md:bg-white/60 md:backdrop-blur-md p-8 md:p-10 flex flex-col">
                   <h2 className="text-eyebrow text-red-deep mb-6">Headquarters</h2>
                   
                   <address className="not-italic flex-1">
@@ -84,7 +84,7 @@ export default function ContactPage() {
 
             <Reveal delay={0.1}>
               <HoverOutline on="group" radius={24} className="h-full group text-red-deep">
-                <HoverSpotlight className="h-full rounded-3xl border border-ink/10 bg-white/60 backdrop-blur-md p-8 md:p-10">
+                <HoverSpotlight className="h-full rounded-3xl border border-ink/10 bg-white/90 md:bg-white/60 md:backdrop-blur-md p-8 md:p-10">
                   <h3 className="text-eyebrow text-red-deep mb-4">Direct Message</h3>
                   <p className="text-ash mb-8 text-sm leading-relaxed">
                     Need a faster response? Our team is available on WhatsApp for business enquiries, franchising, and support.
@@ -112,7 +112,7 @@ export default function ContactPage() {
           <div className="relative">
             <Reveal>
               <HoverOutline on="group" radius={24} className="h-full group text-red-deep">
-                <HoverSpotlight className="h-full rounded-3xl border border-ink/10 bg-white/60 backdrop-blur-md p-8 md:p-12 flex flex-col justify-center">
+                <HoverSpotlight className="h-full rounded-3xl border border-ink/10 bg-white/90 md:bg-white/60 md:backdrop-blur-md p-8 md:p-12 flex flex-col justify-center">
                   <div className="mb-10">
                     <SplitLine
                       as="h2"
@@ -120,7 +120,7 @@ export default function ContactPage() {
                       className="text-3xl md:text-5xl font-display font-black text-ink"
                     />
                     <p className="text-ash mt-4 font-medium">
-                      Fill out the form below and we'll get back to you shortly.
+                      Fill out the form below and we&rsquo;ll get back to you shortly.
                     </p>
                   </div>
                   <EnquiryForm topic="contact" submitLabel="Send Message" />

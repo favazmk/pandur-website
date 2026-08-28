@@ -427,11 +427,32 @@ html.lenis body {
    at any scale.
    ============================================================ */
 
+/*
+ * The doodle ground.
+ *
+ * The artwork used to ship as an `.svg`, but it never was one: the file was a
+ * single base64-encoded PNG inside an SVG wrapper, so it carried the 33%
+ * base64 tax, could not be resized for the device, and was invisible to the
+ * image optimiser. As WebP it is the same picture at half the bytes.
+ *
+ * Two sizes, because this is a `cover` background: a phone paints it about
+ * 420px wide and a desktop section several times that, and one file cannot
+ * serve both without wasting one of them. The small tile is the default so
+ * that the narrow viewport — the one least able to afford the bytes — gets
+ * the small file, and the wide tile is opted into above the fold width where
+ * upscaling line art would start to show.
+ */
 @utility doodle-pattern {
-  background-image: url("/ingredient/ingredient-doodle-field.svg");
+  background-image: url("/ingredient/ingredient-doodle-field-sm.webp");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+}
+
+@media (min-width: 768px) {
+  .doodle-pattern {
+    background-image: url("/ingredient/ingredient-doodle-field.webp");
+  }
 }
 
 /*
@@ -635,6 +656,32 @@ html.lenis body {
 @media (min-width: 768px) {
   .quality-stage {
     --dest-reach: 240px;
+  }
+}
+
+/*
+ * The film grain is a desktop-only pass.
+ *
+ * It is a full-viewport `feTurbulence` filter under `mix-blend-multiply`,
+ * stepped through ten offsets a second, forever. Two separate costs follow
+ * from that, and on a phone both are severe:
+ *
+ *   - the animation re-rasterises a viewport-sized SVG filter ~10x a second
+ *     whether or not anything else on the page has changed, which is why the
+ *     handset warms up while sitting still;
+ *   - `mix-blend-multiply` on a fixed full-bleed layer puts the whole document
+ *     in one blend group, so every scroll frame re-composites everything
+ *     underneath it rather than just shifting a layer.
+ *
+ * Switched off wholesale on coarse pointers. At 0.16 opacity the texture is
+ * essentially invisible at phone dpi, so this costs the design nothing it can
+ * show on that screen and returns the scroll to a plain layer shift. Decided
+ * in CSS rather than from a hook for the same reason reduced motion is: a
+ * JS decision would mount, then unmount, the layer after hydration.
+ */
+@media (pointer: coarse) {
+  .grain-layer {
+    display: none;
   }
 }
 

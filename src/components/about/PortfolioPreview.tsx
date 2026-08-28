@@ -3,10 +3,10 @@
 import Image from "next/image";
 
 const PORTFOLIO = [
-  { id: "coconut", name: "Coconut", src: "/products/hero-coconut-box.png" },
-  { id: "peanut", name: "Peanut", src: "/products/hero-peanut-box.png" },
-  { id: "cardamom", name: "Cardamom", src: "/products/hero-cardamom-box.png" },
-  { id: "butter", name: "Butter", src: "/products/hero-butter-box.png" },
+  { id: "coconut", name: "Coconut", src: "/products/hero-coconut-box-scene.webp" },
+  { id: "peanut", name: "Peanut", src: "/products/hero-peanut-box-scene.webp" },
+  { id: "cardamom", name: "Cardamom", src: "/products/hero-cardamom-box.webp" },
+  { id: "butter", name: "Butter", src: "/products/hero-butter-box-scene2.webp" },
 ];
 
 export default function PortfolioPreview() {

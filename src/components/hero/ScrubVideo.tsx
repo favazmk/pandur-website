@@ -44,6 +44,22 @@ const EASE = 0.12;
 /** Below this the playhead has arrived and the loop can stop. */
 const SETTLED = 0.004;
 
+/**
+ * The smallest playhead move worth asking the decoder for.
+ *
+ * Every write to `currentTime` is a seek, and a seek is not free: the decoder
+ * walks from the preceding keyframe to the requested time. Writing it once per
+ * animation frame asks for ~60 of those a second, which a desktop absorbs and
+ * a phone does not — that is the hero warming the handset up.
+ *
+ * The film is 24fps, so anything finer than 1/24s cannot change the picture.
+ * Rounding requests to that grid drops the seek rate by more than half and is
+ * invisible by construction: the frame it would have shown IS the frame it
+ * shows. The damping above still runs per frame, so the motion stays smooth —
+ * only the requests the decoder cannot act on are dropped.
+ */
+const FRAME = 1 / 24;
+
 export default function ScrubVideo({
   /** the pinned section — its travel past the viewport is the playhead */
   targetRef,
@@ -92,7 +108,23 @@ export default function ScrubVideo({
 
       const gap = want - current;
       current = Math.abs(gap) < SETTLED ? want : current + gap * EASE;
-      v.currentTime = current;
+
+      /*
+       * Two guards, and they are doing different jobs.
+       *
+       * `v.seeking` means the decoder has not finished the last request. Piling
+       * another one on top does not make it arrive sooner — it lengthens the
+       * queue, and on mobile that queue is what turns a scroll into a stutter.
+       * Skipping the write here costs nothing: `current` has already advanced,
+       * so the next frame asks for a position that is newer still.
+       *
+       * The FRAME quantise then drops any request that would land on the video
+       * frame already on screen.
+       */
+      if (!v.seeking) {
+        const next = Math.round(current / FRAME) * FRAME;
+        if (Math.abs(next - v.currentTime) >= FRAME) v.currentTime = next;
+      }
 
       frame = Math.abs(want - current) > 0 ? requestAnimationFrame(loop) : 0;
     };

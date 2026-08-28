@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, MotionValue, useTransform } from "motion/react";
+import { useIsMobile } from "@/lib/useMedia";
 
 type PartnershipNetworkProps = {
   progress: MotionValue<number>;
@@ -36,6 +37,9 @@ export default function PartnershipNetwork({ progress }: PartnershipNetworkProps
     "M 50 50 Q 80 60 80 80",
   ];
 
+  const isMobile = useIsMobile();
+  const paths = isMobile ? mobilePaths : desktopPaths;
+
   const nodeOpacity = useTransform(progress, [0.05, 0.10], [0, 1]);
 
   return (
@@ -44,22 +48,15 @@ export default function PartnershipNetwork({ progress }: PartnershipNetworkProps
       style={{ opacity: networkOpacity }}
     >
       <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-        {desktopPaths.map((d, i) => (
+        {/*
+         * Only this breakpoint's paths are built. Both sets used to be drawn
+         * with CSS hiding one, which meant every node and every stroke in the
+         * unused layout still had a live `pathLength` / `opacity` driven off
+         * the scroll — animation work for something no one could see.
+         */}
+        {paths.map((d, i) => (
           <motion.path
-            key={`desktop-path-${i}`}
-            className="hidden md:block"
-            d={d}
-            fill="none"
-            stroke="var(--color-ash)"
-            strokeWidth="0.1"
-            strokeLinecap="round"
-            style={{ pathLength }}
-          />
-        ))}
-        {mobilePaths.map((d, i) => (
-          <motion.path
-            key={`mobile-path-${i}`}
-            className="block md:hidden"
+            key={`path-${i}`}
             d={d}
             fill="none"
             stroke="var(--color-ash)"
@@ -69,29 +66,13 @@ export default function PartnershipNetwork({ progress }: PartnershipNetworkProps
           />
         ))}
 
-        {desktopPaths.map((d, i) => {
+        {paths.map((d, i) => {
           const parts = d.split(" ");
           const endX = parts[parts.length - 2];
           const endY = parts[parts.length - 1];
           return (
             <motion.circle
-              key={`desktop-node-${i}`}
-              className="hidden md:block"
-              cx={endX} cy={endY} r="0.5"
-              fill="var(--color-ink)"
-              style={{ opacity: nodeOpacity }}
-            />
-          );
-        })}
-        
-        {mobilePaths.map((d, i) => {
-          const parts = d.split(" ");
-          const endX = parts[parts.length - 2];
-          const endY = parts[parts.length - 1];
-          return (
-            <motion.circle
-              key={`mobile-node-${i}`}
-              className="block md:hidden"
+              key={`node-${i}`}
               cx={endX} cy={endY} r="0.5"
               fill="var(--color-ink)"
               style={{ opacity: nodeOpacity }}

@@ -2,10 +2,17 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "pandur",
+      "name": "pandur-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 3210,
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "pandur-prod",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start"],
+      "port": 3000,
       "autoPort": true
     }
   ]

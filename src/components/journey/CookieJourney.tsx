@@ -8,11 +8,27 @@ import JourneyPlatform from "@/components/journey/JourneyPlatform";
 import JourneyCrumbs from "@/components/journey/JourneyCrumbs";
 import JourneyCookie from "@/components/journey/JourneyCookie";
 import JourneyTeaScene from "@/components/journey/JourneyTeaScene";
-import { usePrefersReducedMotion } from "@/lib/useMedia";
+import { useIsMobile, usePrefersReducedMotion } from "@/lib/useMedia";
 
 export default function CookieJourney() {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
+  /*
+   * ONE variant is mounted, not both.
+   *
+   * These three scenes used to render their phone and desktop cuts side by
+   * side with `hidden md:block` / `block md:hidden` deciding which was seen.
+   * `display: none` hides a subtree from the screen; it does not stop Motion
+   * from driving it. Every `useTransform` in the hidden cut still recomputed
+   * and still wrote a style attribute on every scroll frame, so a phone paid
+   * for the desktop scene it would never show — and downloaded its artwork.
+   *
+   * Switching on the breakpoint instead means one tree, half the per-frame
+   * work, and only the artwork this device will actually display. The swap
+   * lands at hydration, thousands of pixels above this section, so nothing
+   * visibly changes over.
+   */
+  const isMobile = useIsMobile();
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -43,31 +59,16 @@ export default function CookieJourney() {
         <JourneyPlatform progress={progress} reduced={reduced} />
 
         {/* Reactive Single Transparent Ingredient per Flavour */}
-        <div className="hidden md:block">
-          <JourneyIngredients progress={progress} isMobile={false} reduced={reduced} />
-        </div>
-        <div className="block md:hidden">
-          <JourneyIngredients progress={progress} isMobile={true} reduced={reduced} />
-        </div>
+        <JourneyIngredients progress={progress} isMobile={isMobile} reduced={reduced} />
 
         {/* Deterministic Impact Crumb Particle Bursts */}
         <JourneyCrumbs progress={progress} reduced={reduced} />
 
         {/* The Main Hero: Physical Pandur Cookie Character */}
-        <div className="hidden md:block">
-          <JourneyCookie progress={progress} isMobile={false} reduced={reduced} />
-        </div>
-        <div className="block md:hidden">
-          <JourneyCookie progress={progress} isMobile={true} reduced={reduced} />
-        </div>
+        <JourneyCookie progress={progress} isMobile={isMobile} reduced={reduced} />
 
         {/* Final Tea & Empty Ceramic Plate Setting */}
-        <div className="hidden md:block">
-          <JourneyTeaScene progress={progress} isMobile={false} reduced={reduced} />
-        </div>
-        <div className="block md:hidden">
-          <JourneyTeaScene progress={progress} isMobile={true} reduced={reduced} />
-        </div>
+        <JourneyTeaScene progress={progress} isMobile={isMobile} reduced={reduced} />
       </div>
     </section>
   );

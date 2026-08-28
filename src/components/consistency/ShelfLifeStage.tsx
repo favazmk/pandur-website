@@ -122,7 +122,7 @@ export default function ShelfLifeStage({
         style={{ opacity: textOpacity, y: textY }}
         className="absolute inset-x-0 bottom-24 md:bottom-32 flex flex-col items-center justify-center text-center px-6 z-50"
       >
-        <div className="bg-ink/30 backdrop-blur-md px-6 py-4 md:px-10 md:py-6 rounded-3xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.2)] flex flex-col items-center">
+        <div className="bg-ink/30 md:backdrop-blur-md px-6 py-4 md:px-10 md:py-6 rounded-3xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.2)] flex flex-col items-center">
           <h2 className="text-3xl md:text-5xl font-display font-black text-cream uppercase tracking-tight">
             Built for the Shelf.
           </h2>

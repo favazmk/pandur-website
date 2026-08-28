@@ -85,13 +85,12 @@ export default function ConsistencyJourney() {
           className="absolute inset-0 flex items-center justify-center z-40 pointer-events-none"
         >
           <Image
-            src="/products/gcc-cookie.png"
+            src="/products/gcc-cookie.webp"
             alt="Pandur Cookie"
             width={280}
             height={280}
             // Fixed size mapping across breakpoints to match exactly what the clones/stages expect
             className="w-32 h-32 md:w-48 md:h-48 object-contain drop-shadow-2xl"
-            priority
           />
         </motion.div>
 

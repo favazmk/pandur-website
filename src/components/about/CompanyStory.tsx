@@ -73,7 +73,7 @@ export default function CompanyStory() {
               className="absolute inset-0 w-full h-full rounded-[2rem] md:rounded-[4rem] overflow-hidden shadow-2xl"
             >
               <Image
-                src="/products/retail-shelf.jpg" 
+                src="/products/retail-shelf.webp" 
                 alt="Bakery Products on Retail Shelf"
                 fill
                 className="object-cover"

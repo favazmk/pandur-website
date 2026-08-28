@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useTransform, motion, type MotionValue } from "motion/react";
 import { FLAVOUR_WORLDS, type FlavourWorld } from "@/lib/cookieJourney";
+import { useIsMobile } from "@/lib/useMedia";
 
 export default function JourneyWorldLayer({
   progress,
@@ -11,6 +12,8 @@ export default function JourneyWorldLayer({
   progress: MotionValue<number>;
   reduced?: boolean;
 }) {
+  const isMobile = useIsMobile();
+
   // Enhanced colour tint overlay for optimal text readability and brand contrast
   const tintColor = useTransform(
     progress,
@@ -31,27 +34,23 @@ export default function JourneyWorldLayer({
 
   return (
     <div className="absolute inset-0 overflow-hidden select-none bg-[#F4E7D3]">
-      {/* Desktop Background Texture */}
-      <div className="hidden md:block absolute inset-0 pointer-events-none select-none">
+      {/*
+       * One background, chosen by breakpoint.
+       *
+       * Both cuts used to be mounted with CSS hiding the wrong one, and both
+       * carried `priority` — so every visitor preloaded a portrait background
+       * and a landscape one, and threw one away. The section sits several
+       * screens down the page, so `priority` was also competing with the hero
+       * for the connection at the moment the hero needed it most. It is gone
+       * on both counts: one file, and lazily, when the scroll approaches.
+       */}
+      <div className="absolute inset-0 pointer-events-none select-none">
         <Image
-          src="/ingredient/journey-bg.png"
-          alt="Pandur Cookie Journey Background"
+          src={isMobile ? "/ingredient/journey-bg-mobile.webp" : "/ingredient/journey-bg.webp"}
+          alt=""
           fill
           sizes="100vw"
           className="object-cover object-center pointer-events-none select-none"
-          priority
-        />
-      </div>
-
-      {/* Mobile Dedicated Portrait Background Texture */}
-      <div className="block md:hidden absolute inset-0 pointer-events-none select-none">
-        <Image
-          src="/ingredient/journey-bg-mobile.png"
-          alt="Pandur Cookie Journey Mobile Background"
-          fill
-          sizes="100vw"
-          className="object-cover object-center pointer-events-none select-none"
-          priority
         />
       </div>
 

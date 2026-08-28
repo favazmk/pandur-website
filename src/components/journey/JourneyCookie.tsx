@@ -72,12 +72,11 @@ export default function JourneyCookie({
     return (
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-36 md:w-48 select-none">
         <Image
-          src="/products/gcc-cookie.png"
+          src="/products/gcc-cookie.webp"
           alt="Pandur Golden Baked Cookie"
           width={400}
           height={400}
           className="h-auto w-full drop-shadow-[0_12px_24px_rgba(58,35,24,0.3)]"
-          priority
         />
       </div>
     );
@@ -108,12 +107,11 @@ export default function JourneyCookie({
           {/* Continuous Roll Rotation */}
           <motion.div style={{ rotate, filter: cookieFilter }} className="h-full w-full">
             <Image
-              src="/products/gcc-cookie.png"
+              src="/products/gcc-cookie.webp"
               alt="Pandur Golden Cookie"
               width={480}
               height={480}
               className="h-auto w-full"
-              priority
             />
           </motion.div>
         </motion.div>

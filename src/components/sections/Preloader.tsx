@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { CookieRingDraw } from "@/components/brand/Marks";
 import { ease } from "@/lib/motion";
@@ -15,7 +15,18 @@ import { usePrefersReducedMotion } from "@/lib/useMedia";
 export default function Preloader() {
   const reduced = usePrefersReducedMotion();
   const [elapsed, setElapsed] = useState(false);
-  const [pct, setPct] = useState(0);
+
+  /*
+   * The counter is written to the DOM, not held in state.
+   *
+   * It used to `setPct` on every animation frame, which is ~110 React renders
+   * in the 1.8s the preloader is up — and that is the single worst moment on
+   * the page to be re-rendering, because it is competing with hydration, the
+   * hero video's first bytes and the font swap. The number is a leaf that
+   * nothing else reads, so a ref writes it straight to the text node and React
+   * is left out of the loop entirely.
+   */
+  const pctRef = useRef<HTMLSpanElement>(null);
 
   // Derived, not stored — reduced motion skips the preloader without needing an
   // effect to have run first.
@@ -32,7 +43,8 @@ export default function Preloader() {
 
     const tick = (now: number) => {
       const t = Math.min(1, (now - start) / CAP);
-      setPct(Math.round(t * 100));
+      const node = pctRef.current;
+      if (node) node.textContent = String(Math.round(t * 100));
       if (t < 1) raf = requestAnimationFrame(tick);
       else setElapsed(true);
     };
@@ -62,12 +74,13 @@ export default function Preloader() {
             duration={1.5}
           />
           <motion.span
+            ref={pctRef}
             className="mt-8 font-display text-2xl tabular-nums text-ink/70"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            {pct}
+            0
           </motion.span>
         </motion.div>
       )}

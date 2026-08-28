@@ -54,7 +54,7 @@ export default function SiteHeader() {
         <div
           className={`transition-colors duration-500 ${
             scrolled && !open
-              ? "border-b border-ink/10 bg-cream/80 backdrop-blur-xl"
+              ? "border-b border-ink/10 bg-cream/95 md:bg-cream/80 md:backdrop-blur-xl"
               : "border-b border-transparent"
           }`}
         >

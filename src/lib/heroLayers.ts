@@ -41,7 +41,7 @@ export type HeroProduct = {
 export const HERO_PRODUCTS: HeroProduct[] = [
   {
     slug: "butter",
-    src: "/products/hero-butter-box-sachet.png",
+    src: "/products/hero-butter-box-sachet.webp",
     width: 1230,
     height: 1278,
     alt: "Pandur Butter Cookies — the 16-piece box beside a single sachet",
@@ -49,7 +49,7 @@ export const HERO_PRODUCTS: HeroProduct[] = [
   },
   {
     slug: "cardamom",
-    src: "/products/hero-cardamom-box-sachet.png",
+    src: "/products/hero-cardamom-box-sachet.webp",
     width: 1224,
     height: 1285,
     alt: "Pandur Cardamom Cookies — the 16-piece box beside a single sachet",

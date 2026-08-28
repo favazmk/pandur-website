@@ -4,9 +4,11 @@ import { useRef } from "react";
 import { useScroll } from "motion/react";
 import GrowthMapDesktop from "./illustrations/GrowthMapDesktop";
 import GrowthMapMobile from "./illustrations/GrowthMapMobile";
+import { useIsMobile } from "@/lib/useMedia";
 
 export default function GrowthStory() {
   const container = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
   
   // Track scroll progress through this section to drive the SVG paths
   const { scrollYProgress } = useScroll({
@@ -27,15 +29,12 @@ export default function GrowthStory() {
       </div>
 
       <div className="relative w-full px-6">
-        {/* Desktop Interactive SVG */}
-        <div className="hidden md:block">
-          <GrowthMapDesktop progress={scrollYProgress} />
-        </div>
-
-        {/* Mobile Interactive SVG */}
-        <div className="block md:hidden">
+        {/* One map, not both: the hidden one still ran its transforms. */}
+        {isMobile ? (
           <GrowthMapMobile progress={scrollYProgress} />
-        </div>
+        ) : (
+          <GrowthMapDesktop progress={scrollYProgress} />
+        )}
       </div>
     </section>
   );

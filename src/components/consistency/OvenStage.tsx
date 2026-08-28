@@ -135,7 +135,7 @@ export default function OvenStage({
         style={{ opacity: textOpacity, y: textY }}
         className="absolute inset-x-0 bottom-24 flex flex-col items-center justify-center text-center px-6 z-50"
       >
-        <div className="bg-cream/40 backdrop-blur-md px-6 py-4 md:px-10 md:py-6 rounded-3xl border border-white/50 shadow-[0_8px_32px_rgba(58,35,24,0.1)]">
+        <div className="bg-cream/85 md:bg-cream/40 md:backdrop-blur-md px-6 py-4 md:px-10 md:py-6 rounded-3xl border border-white/50 shadow-[0_8px_32px_rgba(58,35,24,0.1)]">
           <h2 className="text-3xl md:text-5xl font-display font-black text-cocoa uppercase tracking-tight">
             45 Years in the Oven.
           </h2>

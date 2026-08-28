@@ -75,7 +75,7 @@ export default function IngredientPhoto({
           next/image would need dangerouslyAllowSVG and gains nothing on a
           file the optimiser passes straight through. */}
       <img
-        src={`/ingredient/${slug}.svg`}
+        src={`/ingredient/${slug}.webp`}
         alt={alt}
         aria-hidden={alt === "" ? true : undefined}
         /* intrinsic 3:2 declared, so the box holds its ratio before the
