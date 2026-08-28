@@ -91,7 +91,7 @@ export default function ContactPage() {
                   </p>
                   <WhatsAppCTA 
                     label="CHAT ON WHATSAPP" 
-                    message={WHATSAPP_MESSAGES.general}
+                    message={WHATSAPP_MESSAGES.contact}
                     variant="primary" 
                     context="contact_page"
                     className="w-full"
