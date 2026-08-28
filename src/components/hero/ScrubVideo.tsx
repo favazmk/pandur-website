@@ -93,10 +93,29 @@ export default function ScrubVideo({
     const loop = () => {
       const d = v.duration;
       if (!d || Number.isNaN(d)) {
-        // metadata not in yet — keep the loop alive rather than dropping it
-        frame = requestAnimationFrame(loop);
+        /*
+         * No metadata yet, so there is nothing to seek to. STOP the loop
+         * rather than rescheduling it.
+         *
+         * It used to re-request a frame here, which meant that on any device
+         * where the metadata never arrived — a phone that downgraded
+         * `preload`, a failed request — this ran sixty times a second forever,
+         * doing nothing, for the life of the page. The media listeners at the
+         * bottom of this effect call `onScroll` on `loadedmetadata`,
+         * `durationchange`, `loadeddata` and `canplay`, and any one of them
+         * restarts the loop the moment there is something to seek to. A scroll
+         * restarts it too. So stopping here costs nothing and cannot strand us.
+         */
+        frame = 0;
         return;
       }
+
+      /*
+       * Priming (below) plays the element for an instant. If anything else
+       * ever resumes it, writing `currentTime` underneath a playing video
+       * fights the playback clock and the picture judders. Cheap to assert.
+       */
+      if (!v.paused) v.pause();
 
       /*
        * Held a hair short of the end. Seeking exactly to `duration` puts some
@@ -136,18 +155,76 @@ export default function ScrubVideo({
       if (!frame) frame = requestAnimationFrame(loop);
     };
 
+    /*
+     * WAKE THE DECODER UP.
+     *
+     * `preload="auto"` is a hint, and phones are the devices most likely to
+     * refuse it: iOS Safari treats it as `metadata` and on a cellular
+     * connection often as `none`, and Android Chrome downgrades it under Data
+     * Saver. Worse, a `<video>` that has never been played will, on iOS, keep
+     * showing its poster no matter what you write to `currentTime` — the
+     * decoder pipeline is not running, so a seek has nothing to paint into.
+     * That is the "hero sometimes just does not play" case: not a slow
+     * download, an element that was never started.
+     *
+     * Muted + `playsInline` means a play() is permitted without a user
+     * gesture, so the fix is to start it and immediately stop it. That is
+     * enough to bring the decoder up and make seeks paint. The pause is in the
+     * promise callback, so it lands within a frame — no visible motion.
+     *
+     * If autoplay IS refused (a stricter setting, low power mode), the catch
+     * leaves us primed to try again on the visitor's first real interaction,
+     * where permission is guaranteed. `once: true` so it costs nothing after.
+     */
+    let disposed = false;
+
+    const prime = () => {
+      if (disposed) return;
+      // The browser may not have started fetching at all; ask explicitly.
+      if (v.networkState === v.NETWORK_EMPTY) v.load();
+      const p = v.play();
+      if (p && typeof p.then === "function") {
+        p.then(() => {
+          if (!disposed) v.pause();
+          onScroll();
+        }).catch(() => {
+          // Refused. Fall back to the first gesture, which cannot be refused.
+          if (!disposed) {
+            window.addEventListener("touchstart", prime, { once: true, passive: true });
+            window.addEventListener("pointerdown", prime, { once: true, passive: true });
+          }
+        });
+      } else {
+        try { v.pause(); } catch { /* older engines return no promise */ }
+        onScroll();
+      }
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
-    // However the metadata arrives — before hydration or after — sync then.
+    /*
+     * However the data arrives — before hydration or long after — sync then.
+     * `loadeddata` and `canplay` are here as well as the metadata events
+     * because a phone that deferred the download reaches them late, and each
+     * one is a chance to restart a loop that stopped with no duration.
+     */
     v.addEventListener("loadedmetadata", onScroll);
     v.addEventListener("durationchange", onScroll);
+    v.addEventListener("loadeddata", onScroll);
+    v.addEventListener("canplay", onScroll);
+    prime();
     onScroll();
 
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      disposed = true;
       v.removeEventListener("loadedmetadata", onScroll);
       v.removeEventListener("durationchange", onScroll);
+      v.removeEventListener("loadeddata", onScroll);
+      v.removeEventListener("canplay", onScroll);
+      window.removeEventListener("touchstart", prime);
+      window.removeEventListener("pointerdown", prime);
       if (frame) cancelAnimationFrame(frame);
     };
   }, [targetRef]);

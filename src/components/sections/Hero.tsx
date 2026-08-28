@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { CookieDoodle } from "@/components/brand/Marks";
 import ScrubVideo from "@/components/hero/ScrubVideo";
@@ -120,14 +119,42 @@ export default function Hero() {
               className="h-full w-full object-cover"
             />
           ) : (
-            <Image
-              src={film.poster}
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
+            /*
+             * The still, art-directed, and deliberately NOT through the image
+             * optimiser.
+             *
+             * This branch is what the server renders — `mounted` is false
+             * until hydration — so it is the hero's first paint for everyone,
+             * not just the reduced-motion visitor who keeps it. It used to be
+             * one `next/image` on `film.poster`, and because `useIsMobile()`
+             * reads false on the server that always resolved to the DESKTOP
+             * still. A phone therefore preloaded a landscape frame at up to
+             * 3840w, painted it cropped into a portrait viewport, and then
+             * threw it away when hydration swapped in the video — whose own
+             * `poster` is the portrait file. Wasted bytes, a visible change of
+             * picture, and the "preloaded but not used" warning.
+             *
+             * `<source media>` picks in the preload scanner, before any JS, so
+             * the correct still is the one that is fetched and the one that is
+             * painted. The URLs are the raw files, which is what the `<video
+             * poster>` attribute also points at — so the still the browser
+             * already holds is reused rather than re-fetched through a second,
+             * optimised URL. Both are under 12KB; there is nothing for the
+             * optimiser to win here.
+             */
+            <picture>
+              <source
+                media="(max-width: 767px)"
+                srcSet={FILM.mobile.poster}
+              />
+              <img
+                src={FILM.desktop.poster}
+                alt=""
+                fetchPriority="high"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            </picture>
           )}
         </div>
 
