@@ -45,10 +45,10 @@ export function FourCardsScene({ progress, cards }: FourCardsProps) {
 
   return (
     <motion.div
-      className="absolute inset-0 flex items-start justify-center pointer-events-auto z-20 w-full"
+      className="absolute top-0 w-full min-h-screen flex flex-col items-center justify-center pointer-events-auto z-20"
       style={{ opacity, y, display }}
     >
-      <div className="w-full max-w-7xl px-4 md:px-8 pt-[15vh] pb-32">
+      <div className="w-full max-w-7xl px-4 md:px-8 pt-20 md:pt-[15vh] pb-32">
         {/* Render the untouched cards passed from the page.tsx */}
         {cards}
       </div>
