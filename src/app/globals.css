@@ -445,9 +445,9 @@ html.lenis body {
  */
 @utility doodle-pattern {
   background-image: url("/ingredient/ingredient-doodle-field-sm.webp");
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   background-position: center;
-  background-size: cover;
+  background-size: 420px auto;
 }
 
 @media (min-width: 768px) {
