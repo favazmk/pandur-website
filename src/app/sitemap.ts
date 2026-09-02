@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { getAllPosts } from "@/content/blog";
 
+export const dynamic = "force-static";
+
 const SITE = "https://pandur.ae";
 
 /**

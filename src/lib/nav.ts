@@ -28,7 +28,7 @@ export const CHANNELS = [
 export const COMPANY = {
   name: "Pandur",
   legal: "Royal Quality Bakes LLC",
-  address: "Zubara, Khorfakkan",
+  address: "Khorfakkan, Sharjah",
   country: "United Arab Emirates",
   email: "pandurcookies@gmail.com",
   phone: "+971 565048823",

@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 
+export const dynamic = "force-static";
+
 /**
  * There was no robots.txt at all, so `/robots.txt` returned a 404 — which
  * crawlers treat as "no restrictions" and is therefore harmless, but it also

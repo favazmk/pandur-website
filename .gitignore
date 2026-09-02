@@ -50,3 +50,6 @@ next-env.d.ts
 reference/3d/raw-*.png
 reference/3d/cookie-bottom.jpg
 reference/3d/cookie-top-lit.jpg
+
+# deployment archives
+*.zip

@@ -6,6 +6,7 @@ import { CookieDoodle } from "@/components/brand/Marks";
 import ScrubVideo from "@/components/hero/ScrubVideo";
 import HeroBeats, { type Beat } from "@/components/hero/HeroBeats";
 import { ease } from "@/lib/motion";
+import { HoverSweep } from "@/components/motion/Hover";
 import { PACK } from "@/lib/assets";
 import {
   useClientValue,
@@ -57,7 +58,7 @@ const BEATS: Beat[] = [
   ...b,
   // the same note under every line: it is the one fact a trade visitor needs
   // held in front of them, and rotating it made it read as decoration
-  note: `Four signature flavours, ${PACK.pieces} pieces to a box.`,
+  note: `Signature cookies crafted with care.`,
 }));
 
 export default function Hero() {
@@ -95,6 +96,7 @@ export default function Hero() {
   // Copy holds through the film, then lifts away as the hero releases.
   const copyY = useTransform(scrollYProgress, [0.86, 1], [0, -90]);
   const copyOpacity = useTransform(scrollYProgress, [0.88, 0.99], [1, 0]);
+  const scrollCueOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
 
   return (
     <section
@@ -201,12 +203,28 @@ export default function Hero() {
             className="relative mx-auto h-[11rem] max-w-[20rem] sm:h-[11rem] sm:max-w-[30rem] lg:h-[10.5rem] lg:max-w-[46rem]"
             footerClassName="mt-4"
             footer={
-              <a
-                href="#partner"
-                className="inline-flex items-center gap-3 rounded-full bg-red-deep px-9 py-4 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition-colors hover:bg-ink shadow-md"
-              >
-                Become a stockist
-              </a>
+              <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+                <a
+                  href="/products"
+                  className="inline-flex overflow-hidden rounded-full bg-white text-xs font-extrabold uppercase tracking-[0.16em] text-ink shadow-md"
+                >
+                  <HoverSweep fill="bg-ink" className="px-9 py-4">
+                    <span className="flex items-center gap-3 transition-colors duration-500 group-hover/sweep:text-white">
+                      View Products
+                    </span>
+                  </HoverSweep>
+                </a>
+                <a
+                  href="#partner"
+                  className="inline-flex overflow-hidden rounded-full bg-red-deep text-xs font-extrabold uppercase tracking-[0.16em] text-white shadow-md"
+                >
+                  <HoverSweep fill="bg-ink" className="px-9 py-4">
+                    <span className="flex items-center gap-3">
+                      Become a stockist
+                    </span>
+                  </HoverSweep>
+                </a>
+              </div>
             }
           />
         </motion.div>
@@ -214,15 +232,26 @@ export default function Hero() {
         {/* --- scroll cue --- */}
         <motion.div
           className="relative z-content mt-auto flex justify-center pb-10"
-          style={scrub ? { opacity: copyOpacity } : undefined}
+          style={scrub ? { opacity: scrollCueOpacity } : undefined}
         >
           <motion.div
-            className="animate-bob"
+            className="animate-bob flex flex-col items-center gap-2"
             initial={{ opacity: 0, scale: 0.6 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1.4, duration: 0.8, ease: ease.pop }}
           >
-            <CookieDoodle className="h-9 w-9 text-ink/45" strokeWidth={5} />
+            <span className="block text-center text-xs font-bold uppercase tracking-[0.2em] text-ink/90">
+              Scroll to unbox the experience
+            </span>
+            <svg
+              className="h-5 w-5 text-ink/70"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
           </motion.div>
         </motion.div>
 
