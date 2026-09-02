@@ -29,8 +29,7 @@ export default function OriginStory() {
           <div>
             <p className="text-red-deep font-bold tracking-widest uppercase text-sm mb-6">Our Origin</p>
             <h2 className="text-4xl md:text-6xl font-display font-black text-ink uppercase tracking-tight leading-[1.1]">
-              Zubara,
-              <br />Khorfakkan,
+              Khorfakkan,
               <br />UAE.
             </h2>
             <p className="mt-8 text-lg text-ash max-w-md leading-relaxed">

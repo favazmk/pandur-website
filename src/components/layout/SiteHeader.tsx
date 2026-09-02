@@ -224,7 +224,7 @@ export default function SiteHeader() {
                 exit={{ opacity: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                Zubara, Khorfakkan · UAE
+                Khorfakkan · UAE
               </motion.p>
             </div>
           </motion.div>

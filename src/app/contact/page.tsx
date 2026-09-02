@@ -12,7 +12,7 @@ import { getSocialIcon } from "@/components/ui/SocialIcons";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Pandur — Royal Quality Bakes LLC, Zubara, Khorfakkan, UAE. Enquiries from retail, distribution and food service welcome.",
+    "Get in touch with Pandur — Royal Quality Bakes LLC, Khorfakkan, UAE. Enquiries from retail, distribution and food service welcome.",
 };
 
 export default function ContactPage() {
