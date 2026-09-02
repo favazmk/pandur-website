@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import PageHero from "@/components/layout/PageHero";
 import EnquiryForm from "@/components/forms/EnquiryForm";
 import { Reveal, SplitLine } from "@/components/motion/Text";
-import { CHANNELS, COMPANY } from "@/lib/nav";
+import { CHANNELS, COMPANY, SOCIALS } from "@/lib/nav";
 import { DoodleWall } from "@/components/brand/DoodleField";
 import { HoverSpotlight, HoverOutline } from "@/components/motion/Hover";
 import WhatsAppCTA from "@/components/cta/WhatsAppCTA";
 import { WHATSAPP_MESSAGES } from "@/lib/whatsapp";
+import { getSocialIcon } from "@/components/ui/SocialIcons";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -78,6 +79,22 @@ export default function ContactPage() {
                       )}
                     </div>
                   )}
+
+                  <div className="mt-8 pt-8 border-t border-ink/10 flex items-center justify-start gap-4">
+                    {SOCIALS.map((social) => (
+                      <a
+                        key={social.platform}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-full bg-cream flex items-center justify-center text-red-deep shrink-0 transition-transform hover:scale-110 hover:bg-red-deep hover:text-white"
+                        aria-label={social.platform}
+                      >
+                        {getSocialIcon(social.icon)}
+                      </a>
+                    ))}
+                  </div>
+
                 </HoverSpotlight>
               </HoverOutline>
             </Reveal>

@@ -34,3 +34,9 @@ export const COMPANY = {
   phone: "+971 565048823",
   phone2: "+971 567103008",
 } as const;
+
+/** Social media links. */
+export const SOCIALS = [
+  { platform: "Instagram", href: "https://www.instagram.com/pandurcookies/", icon: "instagram" },
+  { platform: "Facebook", href: "https://www.facebook.com/pandurcookies/", icon: "facebook" },
+];

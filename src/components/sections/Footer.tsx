@@ -5,7 +5,8 @@ import { CookieDoodle, Wordmark } from "@/components/brand/Marks";
 import { Reveal } from "@/components/motion/Text";
 import { Parallax, ClipReveal } from "@/components/motion/Scroll";
 import { HoverRule } from "@/components/motion/Hover";
-import { COMPANY, NAV } from "@/lib/nav";
+import { COMPANY, NAV, SOCIALS } from "@/lib/nav";
+import { getSocialIcon } from "@/components/ui/SocialIcons";
 
 /** Independent drift per doodle — no two share a delay, so they never sync. */
 const DOODLES = [
@@ -73,6 +74,20 @@ export default function Footer() {
             {COMPANY.email && <a href={`mailto:${COMPANY.email}`} className="hover:text-cream transition-colors">{COMPANY.email}</a>}
             {COMPANY.email && COMPANY.phone && <span className="hidden sm:inline">·</span>}
             {COMPANY.phone && <a href={`tel:${COMPANY.phone.replace(/\s/g, "")}`} className="hover:text-cream transition-colors">{COMPANY.phone}</a>}
+          </div>
+          <div className="flex items-center justify-center gap-4 mt-2 mb-2">
+            {SOCIALS.map((social) => (
+              <a
+                key={social.platform}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cream/60 hover:text-red-deep transition-colors"
+                aria-label={social.platform}
+              >
+                {getSocialIcon(social.icon)}
+              </a>
+            ))}
           </div>
           <p className="text-xs text-cream/60 mt-1">
             © {new Date().getFullYear()} {COMPANY.name}. All rights reserved.
