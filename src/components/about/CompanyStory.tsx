@@ -87,7 +87,7 @@ export default function CompanyStory() {
               style={{ y: y2 }}
               className="relative z-10 p-8 md:p-12"
             >
-              <h3 className="text-7xl md:text-9xl font-display font-black text-cream/80 drop-shadow-2xl uppercase tracking-tighter leading-none mb-[-2rem] ml-[-1rem]">
+              <h3 className="text-5xl md:text-9xl font-display font-black text-cream/80 drop-shadow-2xl uppercase tracking-tighter leading-none mb-[-2rem] ml-[-1rem]">
                 Market
               </h3>
               <div className="h-px bg-red-deep w-full max-w-xs mt-12 mb-6" />

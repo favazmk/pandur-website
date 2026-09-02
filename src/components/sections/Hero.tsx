@@ -2,12 +2,11 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { CookieDoodle } from "@/components/brand/Marks";
 import ScrubVideo from "@/components/hero/ScrubVideo";
 import HeroBeats, { type Beat } from "@/components/hero/HeroBeats";
 import { ease } from "@/lib/motion";
 import { HoverSweep } from "@/components/motion/Hover";
-import { PACK } from "@/lib/assets";
+
 import {
   useClientValue,
   useIsMobile,
@@ -95,7 +94,6 @@ export default function Hero() {
 
   // Copy holds through the film, then lifts away as the hero releases.
   const copyY = useTransform(scrollYProgress, [0.86, 1], [0, -90]);
-  const copyOpacity = useTransform(scrollYProgress, [0.88, 0.99], [1, 0]);
   const scrollCueOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
 
   return (
@@ -200,7 +198,7 @@ export default function Hero() {
             progress={scrollYProgress}
             beats={BEATS}
             active={scrub}
-            className="relative mx-auto h-[11rem] max-w-[20rem] sm:h-[11rem] sm:max-w-[30rem] lg:h-[10.5rem] lg:max-w-[46rem]"
+            className="relative mx-auto h-[13rem] max-w-[20rem] sm:h-[11rem] sm:max-w-[30rem] lg:h-[10.5rem] lg:max-w-[46rem]"
             footerClassName="mt-4"
             footer={
               <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">

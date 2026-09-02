@@ -60,7 +60,7 @@ export default function OriginStory() {
               style={{ y: y2 }}
               className="relative z-10 p-8 md:p-12"
             >
-              <h3 className="text-7xl md:text-9xl font-display font-black text-cream/20 uppercase tracking-tighter leading-none mb-[-2rem] ml-[-1rem]">
+              <h3 className="text-5xl md:text-9xl font-display font-black text-ink/20 drop-shadow-sm uppercase tracking-tighter leading-none mb-[-2rem] ml-[-1rem]">
                 Origin
               </h3>
               <div className="h-px bg-red-deep w-full max-w-xs mt-12 mb-6" />

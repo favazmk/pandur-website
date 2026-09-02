@@ -33,7 +33,7 @@ export default function WhatsAppCTA({
 }: WhatsAppCTAProps) {
   const url = getWhatsAppUrl(message);
 
-  const baseStyles = "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-display text-sm font-bold transition-all duration-300 ease-[var(--ease-pop)] hover:-translate-y-0.5 hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-deep";
+  const baseStyles = "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-display text-sm font-bold text-center whitespace-normal transition-all duration-300 ease-[var(--ease-pop)] hover:-translate-y-0.5 hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-deep";
 
   const variants = {
     primary: "bg-ink text-cream hover:bg-red-deep hover:text-white shadow-sm",

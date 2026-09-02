@@ -59,17 +59,22 @@ export default function Footer() {
 
         <Reveal
           delay={0.15}
-          className="mt-14 flex flex-col items-center gap-3 border-t border-cream/15 pt-8 text-center"
+          className="mt-14 flex flex-col items-center gap-4 border-t border-cream/15 pt-8 text-center"
         >
-          <p className="text-eyebrow text-cream/70">
-            {COMPANY.legal} · {COMPANY.address} · {COMPANY.country}
-          </p>
-          <div className="text-eyebrow text-cream/70 flex gap-2 justify-center">
+          <div className="flex flex-col items-center gap-1">
+            <p className="text-eyebrow text-cream/70">
+              {COMPANY.legal}
+            </p>
+            <p className="text-eyebrow text-cream/70">
+              {COMPANY.address} · {COMPANY.country}
+            </p>
+          </div>
+          <div className="text-eyebrow text-cream/70 flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
             {COMPANY.email && <a href={`mailto:${COMPANY.email}`} className="hover:text-cream transition-colors">{COMPANY.email}</a>}
-            {COMPANY.email && COMPANY.phone && <span>·</span>}
+            {COMPANY.email && COMPANY.phone && <span className="hidden sm:inline">·</span>}
             {COMPANY.phone && <a href={`tel:${COMPANY.phone.replace(/\s/g, "")}`} className="hover:text-cream transition-colors">{COMPANY.phone}</a>}
           </div>
-          <p className="text-xs text-cream/60 mt-2">
+          <p className="text-xs text-cream/60 mt-1">
             © {new Date().getFullYear()} {COMPANY.name}. All rights reserved.
           </p>
           <p className="text-xs text-cream/60">

@@ -1,0 +1,4 @@
+# Large files not needed for the build
+*.zip
+reference/
+.git

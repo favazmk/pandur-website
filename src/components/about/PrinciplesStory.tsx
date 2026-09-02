@@ -36,7 +36,7 @@ export default function PrinciplesStory() {
                 onClick={() => setActiveId(principle.id)}
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between px-4">
-                  <h3 className={`font-display font-black uppercase tracking-tight transition-all duration-500 ${isActive ? 'text-4xl md:text-6xl text-ink' : 'text-2xl md:text-3xl text-ink/30'}`}>
+                  <h3 className={`font-display font-black uppercase tracking-tight transition-all duration-500 ${isActive ? 'text-3xl md:text-6xl text-ink' : 'text-2xl md:text-3xl text-ink/30'}`}>
                     {principle.title}
                   </h3>
                   

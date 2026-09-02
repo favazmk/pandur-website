@@ -103,7 +103,14 @@ export default function ContactPage() {
             <Reveal delay={0.2}>
                <div className="rounded-3xl border border-ink/5 bg-ink/5 p-8 text-center shadow-inner">
                  <h3 className="text-eyebrow text-ash mb-3">We work with</h3>
-                 <p className="text-[11px] md:text-sm font-bold text-ink uppercase tracking-widest">{CHANNELS.join(" · ")}</p>
+                 <div className="flex flex-wrap justify-center gap-x-2 gap-y-1 text-[11px] md:text-sm font-bold text-ink uppercase tracking-widest">
+                   {CHANNELS.map((channel, i) => (
+                     <span key={channel}>
+                       {channel}
+                       {i < CHANNELS.length - 1 && <span className="mx-2 opacity-50">·</span>}
+                     </span>
+                   ))}
+                 </div>
                </div>
             </Reveal>
           </div>

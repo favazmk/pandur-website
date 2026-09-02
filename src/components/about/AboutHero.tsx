@@ -70,7 +70,7 @@ export default function AboutHero() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-5xl md:text-7xl lg:text-[6rem] leading-[0.9] font-display font-black text-cream uppercase tracking-tight drop-shadow-lg"
+          className="text-4xl md:text-7xl lg:text-[6rem] leading-[1.05] md:leading-[0.95] font-display font-black text-cream uppercase tracking-tight drop-shadow-lg"
         >
           The Story<br />Behind Pandur.
         </motion.h1>
