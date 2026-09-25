@@ -126,7 +126,7 @@ function SceneCopy({
        * each one floating a different distance above the name's baseline.
        */}
       <div className="mt-2 flex items-end justify-center gap-3 md:justify-start md:gap-4">
-        <span className="text-title block font-display font-black text-ink">
+        <span className="text-title block shrink-0 whitespace-nowrap font-display font-black text-ink">
           {scene.name}
         </span>
         <Image
